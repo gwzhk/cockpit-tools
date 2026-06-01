@@ -2288,7 +2288,11 @@
       "runtimeConfigCodexCliPlaceholder": "örn. /opt/homebrew/bin/codex",
       "runtimeConfigNodeLabel": "node yolu",
       "runtimeConfigNodePlaceholder": "örn. /opt/homebrew/bin/node",
-      "runtimeConfigApplyHint": "Değişiklikten sonra \"CLI’yi yeniden kontrol et\"e tıklayarak hemen kaydedip uygulayın."
+      "runtimeConfigApplyHint": "Değişiklikten sonra \"CLI’yi yeniden kontrol et\"e tıklayarak hemen kaydedip uygulayın.",
+      "officialChatRuntimeTitle": "Resmi doğrudan",
+      "officialChatRuntimePath": "ChatGPT resmi Codex sohbeti",
+      "officialChatRuntimeSource": "Resmi doğrudan",
+      "officialChatRuntimeMessage": "OAuth hesabıyla doğrudan sohbet"
     },
     "sessionManager": {
       "title": "Oturum yöneticisi",

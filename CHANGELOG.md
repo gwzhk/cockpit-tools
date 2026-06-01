@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 - **Codex API Service account pools now support account-level disabled model rules**: each account can configure blocked models, apply rules in bulk, and have Legacy, WebSocket, and Sidecar routing avoid accounts that cannot serve the requested model.
+- **Codex wakeup tasks now use direct official Codex chat**: wakeup runs through the selected OAuth account without requiring Codex CLI or a running local API Service, follows the saved upstream proxy and timeout settings, parses official streaming responses, and shows the execution result as official direct chat.
 
 ### Changed
 - **Codex API Service account-pool controls are visually more consistent**: the Codex API/Cockpit API copy, scheduling options, checkboxes, form control heights, and typography now use a more aligned layout.

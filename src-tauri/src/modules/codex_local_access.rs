@@ -775,6 +775,154 @@ async fn get_prepared_account(account_id: &str) -> Result<CodexAccount, String> 
     Ok(account)
 }
 
+pub struct CodexOfficialWakeupChatResult {
+    pub account: CodexAccount,
+    pub reply: String,
+    pub duration_ms: u64,
+}
+
+async fn official_wakeup_network_config() -> (Option<String>, CodexLocalAccessTimeouts) {
+    if let Err(err) = ensure_runtime_loaded_without_start().await {
+        logger::log_warn(&format!(
+            "[CodexWakeup] 加载官方直连网络配置失败，使用默认网络配置: {}",
+            err
+        ));
+        return (None, CodexLocalAccessTimeouts::default());
+    }
+
+    let runtime = gateway_runtime().lock().await;
+    runtime
+        .collection
+        .as_ref()
+        .map(|collection| {
+            (
+                collection.upstream_proxy_url.clone(),
+                collection_timeouts(collection),
+            )
+        })
+        .unwrap_or_else(|| (None, CodexLocalAccessTimeouts::default()))
+}
+
+pub async fn run_official_wakeup_chat(
+    account_id: &str,
+    model: Option<&str>,
+    reasoning_effort: Option<&str>,
+    prompt: &str,
+) -> Result<CodexOfficialWakeupChatResult, String> {
+    let account = get_prepared_account(account_id).await?;
+    if account.is_api_key_auth() {
+        return Err("Codex 官方直连唤醒仅支持 OAuth 账号。".to_string());
+    }
+
+    let model = model
+        .map(str::trim)
+        .filter(|value| !value.is_empty())
+        .unwrap_or("gpt-5-codex");
+    let reasoning_effort = reasoning_effort
+        .map(str::trim)
+        .filter(|value| !value.is_empty())
+        .unwrap_or("medium");
+    let prompt = prompt.trim();
+    if prompt.is_empty() {
+        return Err("唤醒提示词不能为空".to_string());
+    }
+
+    let request_body = json!({
+        "model": model,
+        "input": [
+            {
+                "type": "message",
+                "role": "user",
+                "content": [
+                    {
+                        "type": "input_text",
+                        "text": prompt,
+                    }
+                ],
+            }
+        ],
+        "instructions": "",
+        "reasoning": {
+            "effort": reasoning_effort,
+            "summary": "auto",
+        },
+        "include": ["reasoning.encrypted_content"],
+        "parallel_tool_calls": true,
+        "store": false,
+        "stream": true,
+    });
+    let body = serde_json::to_vec(&request_body)
+        .map_err(|e| format!("序列化官方直连唤醒请求失败: {}", e))?;
+    let mut headers = HashMap::new();
+    headers.insert("accept".to_string(), "text/event-stream".to_string());
+    headers.insert("content-type".to_string(), "application/json".to_string());
+    for header in CODEX_OFFICIAL_EMPTY_HEADERS {
+        headers
+            .entry((*header).to_string())
+            .or_insert_with(String::new);
+    }
+
+    let (upstream_proxy_url, timeouts) = official_wakeup_network_config().await;
+    let upstream_connect_timeout = duration_from_millis(
+        timeouts.legacy_upstream_connect_timeout_ms,
+        DEFAULT_UPSTREAM_CONNECT_TIMEOUT,
+    );
+    let upstream_target = resolve_upstream_target(RESPONSES_PATH)?;
+    let started_at = Instant::now();
+    let response = send_upstream_request(
+        "POST",
+        &upstream_target,
+        &headers,
+        &body,
+        &account,
+        upstream_proxy_url.as_deref(),
+        upstream_connect_timeout,
+        &timeouts,
+        CodexLocalAccessImageGenerationMode::Disabled,
+        CodexLocalAccessRequestKind::Text,
+    )
+    .await
+    .map_err(|err| {
+        let detail = err
+            .split_once("技术细节:")
+            .map(|(_, detail)| detail.trim())
+            .filter(|detail| !detail.is_empty())
+            .unwrap_or(err.as_str());
+        format!(
+            "Codex 官方服务暂时不可用，未能连接到所选账号的官方对话服务。请检查网络和代理配置。技术细节: {}",
+            detail
+        )
+    })?;
+    let status = response.status();
+    let body_text = response
+        .text()
+        .await
+        .map_err(|e| format!("读取官方直连唤醒响应失败: {}", e))?;
+
+    if !status.is_success() {
+        let message = extract_upstream_error_message(&body_text)
+            .unwrap_or_else(|| truncate_diagnostic_text(body_text.trim(), 4000));
+        return Err(format!(
+            "官方直连唤醒失败({}): {}",
+            status.as_u16(),
+            message
+        ));
+    }
+
+    let response_body = parse_responses_payload_from_upstream(body_text.as_bytes())
+        .map_err(|e| format!("解析官方直连唤醒响应失败: {}", e))?;
+    let reply = extract_output_text_from_response(&response_body);
+    if reply.trim().is_empty() {
+        return Err("官方直连唤醒未返回可读回复。".to_string());
+    }
+
+    Ok(CodexOfficialWakeupChatResult {
+        account,
+        reply,
+        duration_ms: started_at.elapsed().as_millis() as u64,
+    })
+}
+
 async fn schedule_stats_flush_if_needed() {
     let should_spawn = {
         let mut runtime = gateway_runtime().lock().await;

@@ -2288,7 +2288,11 @@
       "runtimeConfigCodexCliPlaceholder": "ví dụ: /opt/homebrew/bin/codex",
       "runtimeConfigNodeLabel": "Đường dẫn node",
       "runtimeConfigNodePlaceholder": "ví dụ: /opt/homebrew/bin/node",
-      "runtimeConfigApplyHint": "Sau khi chỉnh sửa, bấm \"Kiểm tra lại CLI\" để lưu và áp dụng ngay."
+      "runtimeConfigApplyHint": "Sau khi chỉnh sửa, bấm \"Kiểm tra lại CLI\" để lưu và áp dụng ngay.",
+      "officialChatRuntimeTitle": "Trực tiếp chính thức",
+      "officialChatRuntimePath": "Trò chuyện Codex chính thức của ChatGPT",
+      "officialChatRuntimeSource": "Trực tiếp chính thức",
+      "officialChatRuntimeMessage": "Trò chuyện trực tiếp bằng tài khoản OAuth"
     },
     "sessionManager": {
       "title": "Quản lý phiên",

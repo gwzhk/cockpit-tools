@@ -2288,7 +2288,11 @@
       "runtimeConfigCodexCliPlaceholder": "es. /opt/homebrew/bin/codex",
       "runtimeConfigNodeLabel": "Percorso node",
       "runtimeConfigNodePlaceholder": "es. /opt/homebrew/bin/node",
-      "runtimeConfigApplyHint": "Dopo la modifica, fai clic su \"Ricontrolla CLI\" per salvare e applicare subito."
+      "runtimeConfigApplyHint": "Dopo la modifica, fai clic su \"Ricontrolla CLI\" per salvare e applicare subito.",
+      "officialChatRuntimeTitle": "Diretto ufficiale",
+      "officialChatRuntimePath": "Chat Codex ufficiale di ChatGPT",
+      "officialChatRuntimeSource": "Diretto ufficiale",
+      "officialChatRuntimeMessage": "Chat diretto con account OAuth"
     },
     "sessionManager": {
       "title": "Gestione sessioni",

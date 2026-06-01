@@ -2334,7 +2334,11 @@
       "runtimeConfigCodexCliPlaceholder": "مثال: /opt/homebrew/bin/codex",
       "runtimeConfigNodeLabel": "مسار node",
       "runtimeConfigNodePlaceholder": "مثال: /opt/homebrew/bin/node",
-      "runtimeConfigApplyHint": "بعد التعديل، انقر \"إعادة فحص CLI\" للحفظ والتطبيق فورًا."
+      "runtimeConfigApplyHint": "بعد التعديل، انقر \"إعادة فحص CLI\" للحفظ والتطبيق فورًا.",
+      "officialChatRuntimeTitle": "اتصال رسمي مباشر",
+      "officialChatRuntimePath": "دردشة Codex الرسمية من ChatGPT",
+      "officialChatRuntimeSource": "اتصال رسمي مباشر",
+      "officialChatRuntimeMessage": "محادثة مباشرة بحساب OAuth"
     },
     "sessionManager": {
       "title": "إدارة الجلسات",

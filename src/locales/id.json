@@ -2445,7 +2445,11 @@
         "medium": "Sedang",
         "high": "Tinggi",
         "xhigh": "Sangat Tinggi"
-      }
+      },
+      "officialChatRuntimeTitle": "Langsung resmi",
+      "officialChatRuntimePath": "Chat Codex resmi ChatGPT",
+      "officialChatRuntimeSource": "Langsung resmi",
+      "officialChatRuntimeMessage": "Chat langsung akun OAuth"
     },
     "sessionManager": {
       "title": "Manajer Sesi",

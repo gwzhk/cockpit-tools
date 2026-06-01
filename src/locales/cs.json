@@ -2288,7 +2288,11 @@
       "runtimeConfigCodexCliPlaceholder": "např. /opt/homebrew/bin/codex",
       "runtimeConfigNodeLabel": "Cesta k node",
       "runtimeConfigNodePlaceholder": "např. /opt/homebrew/bin/node",
-      "runtimeConfigApplyHint": "Po úpravě klikněte na „Znovu zkontrolovat CLI“ a změny se ihned uloží i použijí."
+      "runtimeConfigApplyHint": "Po úpravě klikněte na „Znovu zkontrolovat CLI“ a změny se ihned uloží i použijí.",
+      "officialChatRuntimeTitle": "Přímé oficiální",
+      "officialChatRuntimePath": "Oficiální chat Codex v ChatGPT",
+      "officialChatRuntimeSource": "Přímé oficiální",
+      "officialChatRuntimeMessage": "Přímý chat účtem OAuth"
     },
     "sessionManager": {
       "title": "Správce relací",

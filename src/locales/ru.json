@@ -2288,7 +2288,11 @@
       "runtimeConfigCodexCliPlaceholder": "например: /opt/homebrew/bin/codex",
       "runtimeConfigNodeLabel": "Путь к node",
       "runtimeConfigNodePlaceholder": "например: /opt/homebrew/bin/node",
-      "runtimeConfigApplyHint": "После изменения нажмите «Проверить CLI снова», чтобы сразу сохранить и применить."
+      "runtimeConfigApplyHint": "После изменения нажмите «Проверить CLI снова», чтобы сразу сохранить и применить.",
+      "officialChatRuntimeTitle": "Официально напрямую",
+      "officialChatRuntimePath": "Официальный чат Codex в ChatGPT",
+      "officialChatRuntimeSource": "Официально напрямую",
+      "officialChatRuntimeMessage": "Прямой чат через OAuth-аккаунт"
     },
     "sessionManager": {
       "title": "Управление сессиями",
