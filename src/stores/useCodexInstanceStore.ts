@@ -1,7 +1,6 @@
 import * as codexInstanceService from '../services/codexInstanceService';
 import type {
   CodexSessionVisibilityRepairSummary,
-  CodexInstanceThreadSyncSummary,
   CodexInstanceTargetThreadSyncSummary,
   CodexSessionRecord,
   CodexSessionTokenStats,
@@ -12,7 +11,6 @@ import type {
 import { createInstanceStore, type InstanceStoreState } from './createInstanceStore';
 
 type CodexInstanceStoreState = InstanceStoreState & {
-  syncThreadsAcrossInstances: () => Promise<CodexInstanceThreadSyncSummary>;
   syncSessionsToInstance: (
     sessionIds: string[],
     targetInstanceId: string,
@@ -34,12 +32,6 @@ type CodexInstanceStoreHook = {
 
 const baseStore = createInstanceStore(codexInstanceService, 'agtools.codex.instances.cache');
 const typedBaseStore = baseStore as unknown as CodexInstanceStoreHook;
-
-const syncThreadsAcrossInstances = async (): Promise<CodexInstanceThreadSyncSummary> => {
-  const summary = await codexInstanceService.syncThreadsAcrossInstances();
-  await typedBaseStore.getState().fetchInstances();
-  return summary;
-};
 
 const syncSessionsToInstance = async (
   sessionIds: string[],
@@ -87,7 +79,6 @@ const restoreSessionsFromTrashAcrossInstances = async (
 };
 
 typedBaseStore.setState({
-  syncThreadsAcrossInstances,
   syncSessionsToInstance,
   repairSessionVisibilityAcrossInstances,
   listSessionsAcrossInstances,

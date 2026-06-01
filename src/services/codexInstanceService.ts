@@ -2,7 +2,6 @@ import { invoke } from "@tauri-apps/api/core";
 import { createPlatformInstanceService } from "./platform/createPlatformInstanceService";
 import type {
   CodexSessionVisibilityRepairSummary,
-  CodexInstanceThreadSyncSummary,
   CodexInstanceTargetThreadSyncSummary,
   CodexSessionRecord,
   CodexSessionTokenStats,
@@ -137,10 +136,6 @@ export async function executeCodexInstanceLaunchCommand(
     instanceId,
     terminal: terminal ?? null,
   });
-}
-
-export async function syncThreadsAcrossInstances(): Promise<CodexInstanceThreadSyncSummary> {
-  return await invoke("codex_sync_threads_across_instances");
 }
 
 export async function syncSessionsToInstance(

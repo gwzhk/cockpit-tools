@@ -190,56 +190,6 @@ fn resolve_instance_launch_context(instance_id: &str) -> Result<CodexLaunchConte
     })
 }
 
-fn sync_codex_threads_across_idle_instances(context: &str) {
-    let started = Instant::now();
-    let default_settings = match modules::codex_instance::load_default_settings() {
-        Ok(settings) => settings,
-        Err(error) => {
-            modules::logger::log_warn(&format!(
-                "[Codex Thread Sync] {}: skipped automatic idle sync, failed to read settings: {}",
-                context, error
-            ));
-            return;
-        }
-    };
-    if !default_settings.auto_sync_threads {
-        return;
-    }
-
-    match modules::codex_thread_sync::sync_threads_across_instances_if_all_stopped() {
-        Ok(Some(summary)) => {
-            if summary.total_synced_thread_count > 0 {
-                modules::logger::log_info(&format!(
-                    "[Codex Thread Sync] {}: synced {} sessions across {} instances, elapsed_ms={}",
-                    context,
-                    summary.total_synced_thread_count,
-                    summary.mutated_instance_count,
-                    started.elapsed().as_millis()
-                ));
-            } else {
-                modules::logger::log_info(&format!(
-                    "[Codex Thread Sync] {}: completed with no changes, elapsed_ms={}",
-                    context,
-                    started.elapsed().as_millis()
-                ));
-            }
-        }
-        Ok(None) => {
-            modules::logger::log_info(&format!(
-                "[Codex Thread Sync] {}: skipped because instances are not idle or not enough instances, elapsed_ms={}",
-                context,
-                started.elapsed().as_millis()
-            ));
-        }
-        Err(error) => {
-            modules::logger::log_warn(&format!(
-                "[Codex Thread Sync] {}: skipped automatic idle sync: {}",
-                context, error
-            ));
-        }
-    }
-}
-
 fn repair_session_visibility_before_launch(
     context: &str,
     launch_credential_change: &Option<CodexLaunchCredentialChange>,
@@ -489,12 +439,6 @@ pub async fn codex_open_instance_config_toml(
 }
 
 #[tauri::command]
-pub async fn codex_sync_threads_across_instances(
-) -> Result<modules::codex_thread_sync::CodexInstanceThreadSyncSummary, String> {
-    modules::codex_thread_sync::sync_threads_across_instances()
-}
-
-#[tauri::command]
 pub async fn codex_sync_sessions_to_instance(
     session_ids: Vec<String>,
     target_instance_id: String,
@@ -716,14 +660,6 @@ async fn codex_start_instance_internal(
             read_launch_credential_kind_for_dir(&default_dir),
         );
         repair_session_visibility_before_launch("before-start-default", &launch_credential_change)?;
-        if skip_default_bind_account_injection {
-            modules::logger::log_info(
-                "[Codex Thread Sync] before-start-default: skipped on prepared-profile fast path",
-            );
-        } else {
-            sync_codex_threads_across_idle_instances("before-start-default");
-        }
-
         if default_settings.launch_mode == InstanceLaunchMode::Cli {
             let context = resolve_instance_launch_context(DEFAULT_INSTANCE_ID)?;
             let _ = build_launch_command(&context)?;
@@ -790,7 +726,6 @@ async fn codex_start_instance_internal(
     );
     modules::codex_speed::write_app_speed_for_dir(instance_dir, instance.app_speed.clone())?;
     repair_session_visibility_before_launch("before-start-instance", &launch_credential_change)?;
-    sync_codex_threads_across_idle_instances("before-start-instance");
 
     if instance.launch_mode == InstanceLaunchMode::Cli {
         let context = resolve_instance_launch_context(&instance.id)?;
@@ -832,7 +767,6 @@ pub async fn codex_stop_instance(instance_id: String) -> Result<CodexInstancePro
         modules::process::close_codex_default(20)?;
         let updated = modules::codex_instance::update_default_pid(None)?;
         let default_bind_account_id = resolve_default_account_id(&updated);
-        sync_codex_threads_across_idle_instances("after-stop-default");
         return Ok(default_instance_view(
             &default_dir,
             &updated,
@@ -856,7 +790,6 @@ pub async fn codex_stop_instance(instance_id: String) -> Result<CodexInstancePro
     }
     let updated = modules::codex_instance::update_instance_pid(&instance.id, None)?;
     let initialized = is_profile_initialized(&updated.user_data_dir);
-    sync_codex_threads_across_idle_instances("after-stop-instance");
     Ok(CodexInstanceProfileView::from_profile(
         updated,
         false,
@@ -879,7 +812,6 @@ pub async fn codex_close_all_instances() -> Result<(), String> {
 
     modules::process::close_codex_instances(&target_homes, 20)?;
     let _ = modules::codex_instance::clear_all_pids();
-    sync_codex_threads_across_idle_instances("after-close-all");
     Ok(())
 }
 

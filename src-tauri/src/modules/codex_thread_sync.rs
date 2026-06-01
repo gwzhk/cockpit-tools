@@ -19,30 +19,6 @@ const SESSION_DIRS: [&str; 2] = ["sessions", "archived_sessions"];
 
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct CodexInstanceThreadSyncItem {
-    pub instance_id: String,
-    pub instance_name: String,
-    pub added_thread_count: usize,
-    pub updated_thread_count: usize,
-    pub backup_dir: Option<String>,
-}
-
-#[derive(Debug, Clone, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct CodexInstanceThreadSyncSummary {
-    pub instance_count: usize,
-    pub thread_universe_count: usize,
-    pub mutated_instance_count: usize,
-    pub total_synced_thread_count: usize,
-    pub total_added_thread_count: usize,
-    pub total_updated_thread_count: usize,
-    pub items: Vec<CodexInstanceThreadSyncItem>,
-    pub backup_dirs: Vec<String>,
-    pub message: String,
-}
-
-#[derive(Debug, Clone, Serialize)]
-#[serde(rename_all = "camelCase")]
 pub struct CodexInstanceTargetThreadSyncSummary {
     pub requested_session_count: usize,
     pub target_instance_id: String,
@@ -67,9 +43,7 @@ struct CodexSyncInstance {
 struct ThreadSnapshot {
     id: String,
     rollout_path: PathBuf,
-    rollout_actual_modified_at: Option<SystemTime>,
     rollout_modified_at: Option<SystemTime>,
-    merged_rollout_content: Option<String>,
     session_index_entry: JsonValue,
     workspace_root: Option<String>,
     source_root: PathBuf,
@@ -94,206 +68,6 @@ struct ThreadSyncPlanItem {
 struct ThreadSyncWriteResult {
     backup_dir: PathBuf,
     metadata_rebuild_failed: bool,
-}
-
-#[derive(Debug, Clone)]
-struct RolloutMergeLine {
-    line: String,
-    timestamp_ms: Option<i128>,
-    source_rank: usize,
-    line_index: usize,
-}
-
-pub fn sync_threads_across_instances() -> Result<CodexInstanceThreadSyncSummary, String> {
-    let instances = collect_instances()?;
-    if instances.len() < 2 {
-        return Err("至少需要两个 Codex 实例才能同步线程".to_string());
-    }
-
-    let mut snapshots_by_thread = HashMap::<String, Vec<ThreadSnapshot>>::new();
-    let mut snapshots_by_instance = HashMap::<String, HashMap<String, ThreadSnapshot>>::new();
-
-    for instance in &instances {
-        let snapshots = load_thread_snapshots(instance)?;
-        let mut snapshots_by_id = HashMap::<String, ThreadSnapshot>::new();
-        for snapshot in snapshots {
-            snapshots_by_thread
-                .entry(snapshot.id.clone())
-                .or_default()
-                .push(snapshot.clone());
-            match snapshots_by_id.get(&snapshot.id) {
-                Some(existing) if existing.freshness >= snapshot.freshness => {}
-                _ => {
-                    snapshots_by_id.insert(snapshot.id.clone(), snapshot);
-                }
-            }
-        }
-        snapshots_by_instance.insert(instance.id.clone(), snapshots_by_id);
-    }
-
-    let mut thread_universe = HashMap::<String, ThreadSnapshot>::new();
-    for (thread_id, snapshots) in snapshots_by_thread {
-        thread_universe.insert(thread_id, merge_thread_snapshots(&snapshots)?);
-    }
-
-    let mut universe_ids = thread_universe.keys().cloned().collect::<Vec<_>>();
-    universe_ids.sort();
-
-    let process_entries = modules::process::collect_codex_process_entries();
-    let mut items = Vec::with_capacity(instances.len());
-    let mut backup_dirs = Vec::new();
-    let mut mutated_instance_count = 0usize;
-    let mut total_synced_thread_count = 0usize;
-    let mut total_added_thread_count = 0usize;
-    let mut total_updated_thread_count = 0usize;
-    let mut project_index_repaired_instance_count = 0usize;
-    let mut mutated_running_instance_count = 0usize;
-    let mut metadata_rebuild_failed_instance_count = 0usize;
-
-    for instance in &instances {
-        let existing_snapshots = snapshots_by_instance
-            .get(&instance.id)
-            .cloned()
-            .unwrap_or_default();
-        let mut plan_items = Vec::new();
-        let mut added_thread_count = 0usize;
-        let mut updated_thread_count = 0usize;
-        let expected_snapshots = universe_ids
-            .iter()
-            .filter_map(|id| thread_universe.get(id).cloned())
-            .collect::<Vec<_>>();
-
-        for id in &universe_ids {
-            let Some(best_snapshot) = thread_universe.get(id) else {
-                continue;
-            };
-            match existing_snapshots.get(id) {
-                Some(existing)
-                    if existing.freshness >= best_snapshot.freshness
-                        && snapshot_rollout_matches(existing, best_snapshot)
-                        && snapshot_modified_time_matches(existing, best_snapshot) => {}
-                Some(existing) => {
-                    updated_thread_count += 1;
-                    plan_items.push(ThreadSyncPlanItem {
-                        snapshot: best_snapshot.clone(),
-                        existing_rollout_path: Some(existing.rollout_path.clone()),
-                        is_update: true,
-                    });
-                }
-                None => {
-                    added_thread_count += 1;
-                    plan_items.push(ThreadSyncPlanItem {
-                        snapshot: best_snapshot.clone(),
-                        existing_rollout_path: None,
-                        is_update: false,
-                    });
-                }
-            }
-        }
-
-        let missing_workspace_roots =
-            find_missing_thread_workspace_roots(&instance.data_dir, &expected_snapshots)?;
-        let repairs_project_index = !missing_workspace_roots.is_empty();
-
-        if plan_items.is_empty() && !repairs_project_index {
-            items.push(CodexInstanceThreadSyncItem {
-                instance_id: instance.id.clone(),
-                instance_name: instance.name.clone(),
-                added_thread_count: 0,
-                updated_thread_count: 0,
-                backup_dir: None,
-            });
-            continue;
-        }
-
-        let write_result =
-            sync_thread_plan_to_instance(instance, &plan_items, &expected_snapshots)?;
-        let backup_dir = write_result.backup_dir;
-        let backup_dir_string = backup_dir.to_string_lossy().to_string();
-        backup_dirs.push(backup_dir_string.clone());
-        mutated_instance_count += 1;
-        if repairs_project_index {
-            project_index_repaired_instance_count += 1;
-        }
-        if write_result.metadata_rebuild_failed {
-            metadata_rebuild_failed_instance_count += 1;
-        }
-        total_synced_thread_count += plan_items.len();
-        total_added_thread_count += added_thread_count;
-        total_updated_thread_count += updated_thread_count;
-        if is_instance_running(instance, &process_entries) {
-            mutated_running_instance_count += 1;
-        }
-
-        items.push(CodexInstanceThreadSyncItem {
-            instance_id: instance.id.clone(),
-            instance_name: instance.name.clone(),
-            added_thread_count,
-            updated_thread_count,
-            backup_dir: Some(backup_dir_string),
-        });
-    }
-
-    let message = if total_synced_thread_count == 0 && project_index_repaired_instance_count == 0 {
-        "所有 Codex 实例会话已是最新，无需同步".to_string()
-    } else if total_synced_thread_count == 0 {
-        format!(
-            "会话内容已是最新，已修复 {} 个实例的项目索引",
-            project_index_repaired_instance_count
-        )
-    } else if mutated_running_instance_count > 0 {
-        format!(
-            "已为 {} 个实例同步 {} 条会话（新增 {} 条，更新 {} 条），并已触发官方 Codex 重建会话索引；运行中的实例可能需要刷新或重启后显示",
-            mutated_instance_count,
-            total_synced_thread_count,
-            total_added_thread_count,
-            total_updated_thread_count
-        )
-    } else {
-        format!(
-            "已为 {} 个实例同步 {} 条会话（新增 {} 条，更新 {} 条），并已触发官方 Codex 重建会话索引",
-            mutated_instance_count,
-            total_synced_thread_count,
-            total_added_thread_count,
-            total_updated_thread_count
-        )
-    };
-
-    let message = append_metadata_rebuild_warning(
-        message,
-        metadata_rebuild_failed_instance_count,
-        total_synced_thread_count,
-    );
-
-    Ok(CodexInstanceThreadSyncSummary {
-        instance_count: instances.len(),
-        thread_universe_count: thread_universe.len(),
-        mutated_instance_count,
-        total_synced_thread_count,
-        total_added_thread_count,
-        total_updated_thread_count,
-        items,
-        backup_dirs,
-        message,
-    })
-}
-
-pub fn sync_threads_across_instances_if_all_stopped(
-) -> Result<Option<CodexInstanceThreadSyncSummary>, String> {
-    let instances = collect_instances()?;
-    if instances.len() < 2 {
-        return Ok(None);
-    }
-
-    let process_entries = modules::process::collect_codex_process_entries();
-    if instances
-        .iter()
-        .any(|instance| is_instance_running(instance, &process_entries))
-    {
-        return Ok(None);
-    }
-
-    sync_threads_across_instances().map(Some)
 }
 
 pub fn sync_sessions_to_instance(
@@ -484,20 +258,16 @@ fn load_thread_snapshots(instance: &CodexSyncInstance) -> Result<Vec<ThreadSnaps
                 build_fallback_session_index_entry(&id, &title, updated_at.as_deref())
             });
             let workspace_root = session_meta_cwd(&session_meta);
-            let rollout_actual_modified_at =
-                modules::codex_session_file_time::read_modified_time(&rollout_path);
             let rollout_modified_at =
                 modules::codex_session_file_time::system_time_from_unix_millis(
                     freshness.activity_ms,
                 )
-                .or(rollout_actual_modified_at);
+                .or_else(|| modules::codex_session_file_time::read_modified_time(&rollout_path));
 
             snapshots.push(ThreadSnapshot {
                 id,
                 rollout_path,
-                rollout_actual_modified_at,
                 rollout_modified_at,
-                merged_rollout_content: None,
                 session_index_entry,
                 workspace_root,
                 source_root: instance.data_dir.clone(),
@@ -663,117 +433,6 @@ fn append_metadata_rebuild_warning(
     )
 }
 
-fn merge_thread_snapshots(snapshots: &[ThreadSnapshot]) -> Result<ThreadSnapshot, String> {
-    let mut ordered = snapshots.to_vec();
-    ordered.sort_by(|left, right| right.freshness.cmp(&left.freshness));
-    let Some(mut merged) = ordered.first().cloned() else {
-        return Err("没有可同步的会话快照".to_string());
-    };
-
-    if ordered.len() <= 1 {
-        return Ok(merged);
-    }
-
-    let merged_rollout_content = merge_rollout_contents(&ordered)?;
-    let (activity_ms, rollout_len) = rollout_content_activity_and_len(&merged_rollout_content);
-    merged.freshness = ThreadFreshness {
-        activity_ms: merged.freshness.activity_ms.max(activity_ms),
-        rollout_len,
-        rollout_modified_ms: ordered
-            .iter()
-            .map(|snapshot| snapshot.freshness.rollout_modified_ms)
-            .max()
-            .unwrap_or(merged.freshness.rollout_modified_ms),
-    };
-    merged.rollout_modified_at = ordered
-        .iter()
-        .filter_map(|snapshot| snapshot.rollout_modified_at)
-        .max_by_key(|modified_at| {
-            modified_at
-                .duration_since(UNIX_EPOCH)
-                .map(|duration| duration.as_nanos())
-                .unwrap_or(0)
-        });
-    merged.rollout_actual_modified_at = merged.rollout_modified_at;
-    merged.merged_rollout_content = Some(merged_rollout_content);
-    Ok(merged)
-}
-
-fn merge_rollout_contents(snapshots: &[ThreadSnapshot]) -> Result<String, String> {
-    let mut session_meta = None::<String>;
-    let mut seen_lines = HashSet::<String>::new();
-    let mut merged_lines = Vec::<RolloutMergeLine>::new();
-
-    for (source_rank, snapshot) in snapshots.iter().enumerate() {
-        let content = fs::read_to_string(&snapshot.rollout_path).map_err(|error| {
-            format!(
-                "读取 rollout 文件失败 ({}): {}",
-                snapshot.rollout_path.display(),
-                error
-            )
-        })?;
-
-        for (line_index, line) in content.lines().enumerate() {
-            let trimmed = line.trim();
-            if trimmed.is_empty() {
-                continue;
-            }
-
-            let parsed = serde_json::from_str::<JsonValue>(trimmed).ok();
-            if parsed
-                .as_ref()
-                .and_then(|value| value.get("type"))
-                .and_then(JsonValue::as_str)
-                == Some("session_meta")
-            {
-                if session_meta.is_none() {
-                    session_meta = Some(trimmed.to_string());
-                }
-                continue;
-            }
-
-            let key = rollout_line_dedupe_key(trimmed, parsed.as_ref());
-            if !seen_lines.insert(key) {
-                continue;
-            }
-
-            merged_lines.push(RolloutMergeLine {
-                line: trimmed.to_string(),
-                timestamp_ms: parsed.as_ref().and_then(parse_rollout_line_timestamp_ms),
-                source_rank,
-                line_index,
-            });
-        }
-    }
-
-    merged_lines.sort_by(|left, right| {
-        match (left.timestamp_ms, right.timestamp_ms) {
-            (Some(left_time), Some(right_time)) => left_time.cmp(&right_time),
-            (Some(_), None) => std::cmp::Ordering::Less,
-            (None, Some(_)) => std::cmp::Ordering::Greater,
-            (None, None) => std::cmp::Ordering::Equal,
-        }
-        .then_with(|| left.source_rank.cmp(&right.source_rank))
-        .then_with(|| left.line_index.cmp(&right.line_index))
-    });
-
-    let mut output_lines = Vec::with_capacity(merged_lines.len() + 1);
-    if let Some(meta) = session_meta {
-        output_lines.push(meta);
-    }
-    output_lines.extend(merged_lines.into_iter().map(|line| line.line));
-
-    let mut output = output_lines.join("\n");
-    output.push('\n');
-    Ok(output)
-}
-
-fn rollout_line_dedupe_key(line: &str, parsed: Option<&JsonValue>) -> String {
-    parsed
-        .and_then(|value| serde_json::to_string(value).ok())
-        .unwrap_or_else(|| line.to_string())
-}
-
 fn rollout_content_activity_and_len(content: &str) -> (i128, u64) {
     let activity_ms = content
         .lines()
@@ -814,24 +473,6 @@ fn parse_json_timestamp_ms(value: &JsonValue) -> Option<i128> {
             .or_else(|| text.parse::<i64>().ok().map(normalize_codex_timestamp_ms)),
         _ => None,
     }
-}
-
-fn snapshot_rollout_matches(existing: &ThreadSnapshot, expected: &ThreadSnapshot) -> bool {
-    let Some(expected_content) = expected.merged_rollout_content.as_deref() else {
-        return paths_point_to_same_file(&existing.rollout_path, &expected.rollout_path)
-            || existing.freshness == expected.freshness;
-    };
-
-    fs::read_to_string(&existing.rollout_path)
-        .map(|content| content == expected_content)
-        .unwrap_or(false)
-}
-
-fn snapshot_modified_time_matches(existing: &ThreadSnapshot, expected: &ThreadSnapshot) -> bool {
-    modules::codex_session_file_time::same_modified_time_millis(
-        existing.rollout_actual_modified_at,
-        expected.rollout_modified_at,
-    )
 }
 
 fn build_thread_freshness(
@@ -1314,36 +955,6 @@ fn copy_rollout_file_to_path(
     snapshot: &ThreadSnapshot,
     target_path: &Path,
 ) -> Result<PathBuf, String> {
-    if let Some(content) = snapshot.merged_rollout_content.as_deref() {
-        let parent = target_path
-            .parent()
-            .ok_or_else(|| format!("无法解析目标 rollout 父目录: {}", target_path.display()))?;
-        fs::create_dir_all(parent)
-            .map_err(|error| format!("创建 rollout 目录失败 ({}): {}", parent.display(), error))?;
-        if fs::read_to_string(target_path)
-            .map(|existing| existing == content)
-            .unwrap_or(false)
-        {
-            modules::codex_session_file_time::restore_modified_time(
-                target_path,
-                snapshot.rollout_modified_at,
-            )?;
-            return Ok(target_path.to_path_buf());
-        }
-        modules::atomic_write::write_string_atomic(target_path, content).map_err(|error| {
-            format!(
-                "写入合并 rollout 文件失败 ({}): {}",
-                target_path.display(),
-                error
-            )
-        })?;
-        modules::codex_session_file_time::restore_modified_time(
-            target_path,
-            snapshot.rollout_modified_at,
-        )?;
-        return Ok(target_path.to_path_buf());
-    }
-
     if paths_point_to_same_file(&snapshot.rollout_path, target_path) {
         modules::codex_session_file_time::restore_modified_time(
             target_path,
@@ -1545,9 +1156,7 @@ mod tests {
         let snapshot = ThreadSnapshot {
             id: "s1".to_string(),
             rollout_path: rollout_path.clone(),
-            rollout_actual_modified_at: Some(source_modified_at),
             rollout_modified_at: Some(source_modified_at),
-            merged_rollout_content: None,
             session_index_entry: json!({"id":"s1"}),
             workspace_root: None,
             source_root: source_root.clone(),

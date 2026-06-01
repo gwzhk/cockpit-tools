@@ -128,26 +128,6 @@ export interface CodexCodeReviewQuotaMetric {
   resetTime?: number;
 }
 
-export interface CodexInstanceThreadSyncItem {
-  instanceId: string;
-  instanceName: string;
-  addedThreadCount: number;
-  updatedThreadCount: number;
-  backupDir?: string | null;
-}
-
-export interface CodexInstanceThreadSyncSummary {
-  instanceCount: number;
-  threadUniverseCount: number;
-  mutatedInstanceCount: number;
-  totalSyncedThreadCount: number;
-  totalAddedThreadCount: number;
-  totalUpdatedThreadCount: number;
-  items: CodexInstanceThreadSyncItem[];
-  backupDirs: string[];
-  message: string;
-}
-
 export interface CodexSessionVisibilityRepairItem {
   instanceId: string;
   instanceName: string;

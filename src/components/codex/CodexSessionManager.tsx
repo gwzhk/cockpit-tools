@@ -100,7 +100,6 @@ export function CodexSessionManager() {
   const { t, i18n } = useTranslation();
   const instances = useCodexInstanceStore((state) => state.instances);
   const refreshInstances = useCodexInstanceStore((state) => state.refreshInstances);
-  const syncThreadsAcrossInstances = useCodexInstanceStore((state) => state.syncThreadsAcrossInstances);
   const syncSessionsToInstance = useCodexInstanceStore((state) => state.syncSessionsToInstance);
   const repairSessionVisibilityAcrossInstances = useCodexInstanceStore(
     (state) => state.repairSessionVisibilityAcrossInstances,
@@ -127,7 +126,6 @@ export function CodexSessionManager() {
   const [trashedSessions, setTrashedSessions] = useState<CodexTrashedSessionRecord[]>([]);
   const [selectedTrashIds, setSelectedTrashIds] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-  const [syncing, setSyncing] = useState(false);
   const [syncingToInstance, setSyncingToInstance] = useState(false);
   const [repairingVisibility, setRepairingVisibility] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -173,8 +171,6 @@ export function CodexSessionManager() {
       session.locations.some((location) => location.instanceId === syncTargetInstance.id),
     ).length;
   }, [selectedSessions, syncTargetInstance]);
-  const instanceCount = instances.length;
-
   const loadSessions = useCallback(async () => {
     if (loadSessionsPromiseRef.current) {
       return await loadSessionsPromiseRef.current;
@@ -379,42 +375,6 @@ export function CodexSessionManager() {
 
   useEscClose(showRestoreModal, handleCloseRestoreModal);
 
-  const handleSyncSessions = async () => {
-    setMessage(null);
-    try {
-      const latestInstances = await refreshInstances();
-      if (latestInstances.length < 2) {
-        setMessage({
-          text: t('codex.sessionManager.messages.syncNeedTwo', '至少需要两个实例才能同步会话'),
-          tone: 'error',
-        });
-        return;
-      }
-
-      const confirmed = await confirmDialog(
-        t(
-          'codex.sessionManager.confirm.syncMessage',
-          '会将缺失会话的 rollout、session_index 条目和会话文件时间同步到所有实例，并对同 ID 会话做事件级合并，随后触发官方 Codex 重建会话索引；写入前会备份目标文件。确认继续？',
-        ),
-        {
-          title: t('codex.sessionManager.actions.syncSessions', '同步会话'),
-          okLabel: t('common.confirm', '确认'),
-          cancelLabel: t('common.cancel', '取消'),
-        },
-      );
-      if (!confirmed) return;
-
-      setSyncing(true);
-      const summary = await syncThreadsAcrossInstances();
-      setMessage({ text: summary.message });
-      await loadSessions();
-    } catch (error) {
-      setMessage({ text: String(error), tone: 'error' });
-    } finally {
-      setSyncing(false);
-    }
-  };
-
   const handleSyncSelectedToInstance = async () => {
     if (selectedIds.length === 0) {
       setSyncTargetModalError(t('codex.sessionManager.messages.pickOne', '请至少选择一条会话'));
@@ -571,22 +531,8 @@ export function CodexSessionManager() {
           <button
             className="btn btn-secondary codex-session-manager__action-button"
             type="button"
-            onClick={() => void handleSyncSessions()}
-            disabled={syncing || syncingToInstance || repairingVisibility || deleting || loading || instanceCount < 2}
-            title={
-              instanceCount < 2
-                ? t('codex.sessionManager.messages.syncNeedTwo', '至少需要两个实例才能同步会话')
-                : t('codex.sessionManager.actions.syncSessions', '同步会话')
-            }
-          >
-            <RefreshCw size={14} className={syncing ? 'icon-spin' : undefined} />
-            {t('codex.sessionManager.actions.syncSessions', '同步会话')}
-          </button>
-          <button
-            className="btn btn-secondary codex-session-manager__action-button"
-            type="button"
             onClick={() => void handleOpenSyncTargetModal()}
-            disabled={syncing || syncingToInstance || repairingVisibility || deleting || loading || selectedIds.length === 0}
+            disabled={syncingToInstance || repairingVisibility || deleting || loading || selectedIds.length === 0}
           >
             <Copy size={14} className={syncingToInstance ? 'icon-spin' : undefined} />
             {t('codex.sessionManager.actions.copyToInstance', '复制到实例')} ({selectedIds.length})
@@ -595,7 +541,7 @@ export function CodexSessionManager() {
             className="btn btn-secondary codex-session-manager__action-button"
             type="button"
             onClick={() => void handleRepairVisibility()}
-            disabled={repairingVisibility || loading || deleting || syncing || syncingToInstance}
+            disabled={repairingVisibility || loading || deleting || syncingToInstance}
           >
             <Eye size={14} />
             {t('codex.sessionManager.actions.repairVisibility', '修复可见性')}
@@ -604,7 +550,7 @@ export function CodexSessionManager() {
             className="btn btn-secondary codex-session-manager__action-button"
             type="button"
             onClick={() => void handleOpenRestoreModal()}
-            disabled={loading || syncing || syncingToInstance || repairingVisibility || deleting || restoring}
+            disabled={loading || syncingToInstance || repairingVisibility || deleting || restoring}
           >
             <RotateCcw size={14} />
             {t('codex.sessionManager.actions.restoreSessions', '恢复会话')}
@@ -613,7 +559,7 @@ export function CodexSessionManager() {
             className="btn btn-secondary codex-session-manager__action-button"
             type="button"
             onClick={() => void handleRefresh()}
-            disabled={loading || deleting || syncing || syncingToInstance || repairingVisibility}
+            disabled={loading || deleting || syncingToInstance || repairingVisibility}
           >
             <RefreshCw size={14} className={loading ? 'icon-spin' : undefined} />
             {t('common.refresh', '刷新')}
@@ -622,7 +568,7 @@ export function CodexSessionManager() {
             className="btn btn-danger codex-session-manager__action-button"
             type="button"
             onClick={() => void handleMoveToTrash()}
-            disabled={deleting || loading || syncing || syncingToInstance || repairingVisibility || selectedIds.length === 0}
+            disabled={deleting || loading || syncingToInstance || repairingVisibility || selectedIds.length === 0}
           >
             <Trash2 size={14} />
             {t('codex.sessionManager.actions.moveToTrash', '移到废纸篓')} ({selectedIds.length})
