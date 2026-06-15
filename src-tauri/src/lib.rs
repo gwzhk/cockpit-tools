@@ -23,6 +23,53 @@ pub fn get_app_handle() -> Option<&'static tauri::AppHandle> {
     APP_HANDLE.get()
 }
 
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+fn raise_process_file_descriptor_limit() {
+    const TARGET_NOFILE_LIMIT: libc::rlim_t = 4096;
+
+    unsafe {
+        let mut limit = libc::rlimit {
+            rlim_cur: 0,
+            rlim_max: 0,
+        };
+        if libc::getrlimit(libc::RLIMIT_NOFILE, &mut limit) != 0 {
+            logger::log_warn(&format!(
+                "[Startup] 读取进程文件句柄上限失败: {}",
+                std::io::Error::last_os_error()
+            ));
+            return;
+        }
+
+        let target = if limit.rlim_max == libc::RLIM_INFINITY {
+            TARGET_NOFILE_LIMIT
+        } else {
+            TARGET_NOFILE_LIMIT.min(limit.rlim_max)
+        };
+        if target <= limit.rlim_cur || target == 0 {
+            return;
+        }
+
+        let previous = limit.rlim_cur;
+        limit.rlim_cur = target;
+        if libc::setrlimit(libc::RLIMIT_NOFILE, &limit) == 0 {
+            logger::log_info(&format!(
+                "[Startup] 已提升进程文件句柄软限制: {} -> {}",
+                previous, target
+            ));
+        } else {
+            logger::log_warn(&format!(
+                "[Startup] 提升进程文件句柄软限制失败: {} -> {}, error={}",
+                previous,
+                target,
+                std::io::Error::last_os_error()
+            ));
+        }
+    }
+}
+
+#[cfg(not(any(target_os = "macos", target_os = "linux")))]
+fn raise_process_file_descriptor_limit() {}
+
 #[cfg(target_os = "macos")]
 fn apply_macos_activation_policy(app: &tauri::AppHandle) {
     let config = modules::config::get_user_config();
@@ -54,6 +101,7 @@ fn apply_macos_activation_policy(app: &tauri::AppHandle) {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     logger::init_logger();
+    raise_process_file_descriptor_limit();
     // 启动时先加载一次配置，确保进程级代理环境与用户设置同步。
     let _ = modules::config::get_user_config();
 
@@ -331,8 +379,6 @@ pub fn run() {
             commands::account::switch_account,
             commands::account::load_antigravity_switch_history,
             commands::account::clear_antigravity_switch_history,
-            commands::account::bind_account_fingerprint,
-            commands::account::get_bound_accounts,
             commands::account::update_account_tags,
             commands::account::update_account_notes,
             commands::account::load_account_groups,
@@ -340,27 +386,6 @@ pub fn run() {
             commands::account::sync_current_from_client,
             commands::account::sync_from_extension,
             // Device Commands
-            commands::device::get_device_profiles,
-            commands::device::bind_device_profile,
-            commands::device::bind_device_profile_with_profile,
-            commands::device::list_device_versions,
-            commands::device::restore_device_version,
-            commands::device::delete_device_version,
-            commands::device::restore_original_device,
-            commands::device::open_device_folder,
-            commands::device::preview_generate_profile,
-            commands::device::preview_current_profile,
-            // Fingerprint Commands
-            commands::device::list_fingerprints,
-            commands::device::get_fingerprint,
-            commands::device::generate_new_fingerprint,
-            commands::device::capture_current_fingerprint,
-            commands::device::create_fingerprint_with_profile,
-            commands::device::apply_fingerprint,
-            commands::device::delete_fingerprint,
-            commands::device::delete_unbound_fingerprints,
-            commands::device::rename_fingerprint,
-            commands::device::get_current_fingerprint_id,
             // OAuth Commands
             commands::oauth::start_oauth_login,
             commands::oauth::prepare_oauth_url,
@@ -369,8 +394,6 @@ pub fn run() {
             commands::oauth::cancel_oauth_login,
             // Import/Export Commands
             commands::import::import_from_old_tools,
-            commands::import::import_fingerprints_from_old_tools,
-            commands::import::import_fingerprints_from_json,
             commands::import::import_from_local,
             commands::import::import_from_json,
             commands::import::import_from_files,
@@ -380,6 +403,44 @@ pub fn run() {
             commands::data_transfer::data_transfer_get_instance_store,
             commands::data_transfer::data_transfer_replace_instance_store,
             commands::provider_current::get_provider_current_account_id,
+            // Claude Commands
+            commands::claude::list_claude_accounts,
+            commands::claude::delete_claude_account,
+            commands::claude::delete_claude_accounts,
+            commands::claude::import_claude_from_json,
+            commands::claude::import_claude_api_key,
+            commands::claude::claude_oauth_login_prepare,
+            commands::claude::claude_oauth_login_start,
+            commands::claude::claude_oauth_login_complete,
+            commands::claude::claude_oauth_login_cancel,
+            commands::claude::import_claude_desktop_from_local,
+            commands::claude::import_claude_cli_from_local,
+            commands::claude::claude_desktop_login_start,
+            commands::claude::claude_desktop_login_complete,
+            commands::claude::claude_desktop_login_cancel,
+            commands::claude::export_claude_accounts,
+            commands::claude::refresh_claude_quota,
+            commands::claude::refresh_all_claude_quotas,
+            commands::claude::update_claude_account_tags,
+            commands::claude::update_claude_account_plan,
+            commands::claude::update_claude_account_note,
+            commands::claude::get_claude_accounts_index_path,
+            commands::claude::claude_get_cli_launch_command,
+            commands::claude::claude_execute_cli_launch_command,
+            commands::claude::claude_launch_cli,
+            commands::claude::switch_claude_account,
+            // Claude Instance Commands
+            commands::claude_instance::claude_get_instance_defaults,
+            commands::claude_instance::claude_list_instances,
+            commands::claude_instance::claude_create_instance,
+            commands::claude_instance::claude_update_instance,
+            commands::claude_instance::claude_delete_instance,
+            commands::claude_instance::claude_start_instance,
+            commands::claude_instance::claude_stop_instance,
+            commands::claude_instance::claude_open_instance_window,
+            commands::claude_instance::claude_close_all_instances,
+            commands::claude_instance::claude_get_instance_launch_command,
+            commands::claude_instance::claude_execute_instance_launch_command,
             // System Commands
             commands::system::open_data_folder,
             commands::system::save_text_file,
@@ -394,6 +455,13 @@ pub fn run() {
             commands::system::delete_auto_backup_file,
             commands::system::cleanup_auto_backup_files,
             commands::system::open_auto_backup_dir,
+            commands::system::get_webdav_sync_settings,
+            commands::system::save_webdav_sync_settings,
+            commands::system::test_webdav_sync_connection,
+            commands::system::upload_auto_backup_to_webdav,
+            commands::system::list_webdav_backup_files,
+            commands::system::read_webdav_backup_file,
+            commands::system::delete_webdav_backup_file,
             commands::system::get_network_config,
             commands::system::save_network_config,
             commands::system::get_general_config,
@@ -459,6 +527,10 @@ pub fn run() {
             commands::announcement::announcement_mark_all_as_read,
             commands::announcement::announcement_force_refresh,
             commands::announcement::announcement_get_top_right_ad,
+            commands::announcement::announcement_get_sponsor_module,
+            commands::announcement::announcement_force_refresh_sponsor_module,
+            commands::remote_config::remote_config_get_state,
+            commands::remote_config::remote_config_force_refresh,
             // Group Commands
             commands::group::get_group_settings,
             commands::group::save_group_settings,
@@ -488,6 +560,11 @@ pub fn run() {
             commands::codex::import_codex_from_json,
             commands::codex::export_codex_accounts,
             commands::codex::import_codex_from_files,
+            commands::codex::start_codex_batch_import_from_files,
+            commands::codex::cancel_codex_batch_import,
+            commands::codex::resume_codex_batch_import,
+            commands::codex::get_codex_batch_import_preview,
+            commands::codex::confirm_codex_batch_import,
             commands::codex::refresh_codex_quota,
             commands::codex::refresh_codex_subscription_info,
             commands::codex::refresh_all_codex_quotas,
@@ -521,6 +598,9 @@ pub fn run() {
             commands::codex::save_codex_account_groups,
             commands::codex::load_codex_model_providers,
             commands::codex::save_codex_model_providers,
+            commands::codex::codex_test_model_provider_connection,
+            commands::codex::codex_list_model_provider_models,
+            commands::codex::codex_query_model_provider_usage,
             commands::codex::codex_local_access_get_state,
             commands::codex::codex_local_access_save_accounts,
             commands::codex::codex_local_access_remove_account,

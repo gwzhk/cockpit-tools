@@ -4,6 +4,7 @@ import { TFunction } from 'i18next';
 import { PlatformId } from '../types/platform';
 import { RobotIcon } from '../components/icons/RobotIcon';
 import { CodexIcon } from '../components/icons/CodexIcon';
+import { ClaudeIcon } from '../components/icons/ClaudeIcon';
 import { WindsurfIcon } from '../components/icons/WindsurfIcon';
 import { KiroIcon } from '../components/icons/KiroIcon';
 import { CursorIcon } from '../components/icons/CursorIcon';
@@ -22,6 +23,10 @@ export function getPlatformLabel(platformId: PlatformId, _t: TFunction): string 
       return 'Antigravity IDE';
     case 'codex':
       return 'Codex';
+    case 'claude':
+      return 'Claude Desktop';
+    case 'claude_cli':
+      return 'Claude CLI';
     case 'zed':
       return 'Zed';
     case 'github-copilot':
@@ -56,6 +61,9 @@ export function renderPlatformIcon(platformId: PlatformId, size = 20): ReactNode
       return <RobotIcon style={{ width: size, height: size }} />;
     case 'codex':
       return <CodexIcon size={size} />;
+    case 'claude':
+    case 'claude_cli':
+      return <ClaudeIcon size={size} />;
     case 'zed':
       return <ZedIcon size={size} />;
     case 'github-copilot':

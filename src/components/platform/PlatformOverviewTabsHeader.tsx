@@ -2,6 +2,7 @@ import { ReactNode, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Bot, Clock3, FolderOpen, Github, Layers, Server } from 'lucide-react';
 import { CodexIcon } from '../icons/CodexIcon';
+import { ClaudeIcon } from '../icons/ClaudeIcon';
 import { WindsurfIcon } from '../icons/WindsurfIcon';
 import { KiroIcon } from '../icons/KiroIcon';
 import { CursorIcon } from '../icons/CursorIcon';
@@ -20,10 +21,13 @@ import {
 } from '../../stores/usePlatformLayoutStore';
 import { getPlatformLabel } from '../../utils/platformMeta';
 import { PlatformGroupSwitcher } from './PlatformGroupSwitcher';
+import { useRemoteConfigStore } from '../../stores/useRemoteConfigStore';
 
 export type PlatformOverviewTab = 'overview' | 'wakeup' | 'instances' | 'sessions' | 'providers';
 export type PlatformOverviewHeaderId =
   | 'codex'
+  | 'claude'
+  | 'claude_cli'
   | 'zed'
   | 'github-copilot'
   | 'windsurf'
@@ -58,6 +62,14 @@ const CONFIGS: Record<PlatformOverviewHeaderId, PlatformOverviewConfig> = {
   codex: {
     platformLabel: 'Codex',
     overviewIcon: <CodexIcon className="tab-icon" />,
+  },
+  claude: {
+    platformLabel: 'Claude',
+    overviewIcon: <ClaudeIcon className="tab-icon" />,
+  },
+  claude_cli: {
+    platformLabel: 'Claude CLI',
+    overviewIcon: <ClaudeIcon className="tab-icon" />,
   },
   zed: {
     platformLabel: 'Zed',
@@ -113,13 +125,27 @@ export function PlatformOverviewTabsHeader({
 }: PlatformOverviewTabsHeaderProps) {
   const { t } = useTranslation();
   const { platformGroups } = usePlatformLayoutStore();
+  const remoteHiddenPlatformIds = useRemoteConfigStore((state) => state.hiddenPlatformIds);
   const config = CONFIGS[platform];
   const currentPlatformId = platform as PlatformId;
+  const remoteHiddenPlatformSet = useMemo(
+    () => new Set(remoteHiddenPlatformIds),
+    [remoteHiddenPlatformIds],
+  );
   const currentGroup = useMemo(
     () => findGroupByPlatform(platformGroups, currentPlatformId),
     [platformGroups, currentPlatformId],
   );
-  const switchablePlatforms = currentGroup ? currentGroup.platformIds : [currentPlatformId];
+  const switchablePlatforms = useMemo(
+    () => {
+      const source = currentGroup ? currentGroup.platformIds : [currentPlatformId];
+      const visible = source.filter((platformId) =>
+        platformId === currentPlatformId || !remoteHiddenPlatformSet.has(platformId),
+      );
+      return visible.length > 0 ? visible : [currentPlatformId];
+    },
+    [currentGroup, currentPlatformId, remoteHiddenPlatformSet],
+  );
   const currentPlatformLabel = getPlatformLabel(currentPlatformId, t);
   const currentDisplayName = useMemo(
     () =>

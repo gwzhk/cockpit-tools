@@ -1,4 +1,5 @@
 pub mod account;
+pub mod claude;
 pub mod codebuddy;
 pub mod codex;
 pub mod codex_local_access;
@@ -15,9 +16,7 @@ pub mod windsurf;
 pub mod workbuddy;
 pub mod zed;
 
-pub use account::{
-    Account, AccountIndex, AccountSummary, DeviceProfile, DeviceProfileVersion, QuotaErrorInfo,
-};
+pub use account::{Account, AccountIndex, AccountSummary, QuotaErrorInfo};
 pub use instance::{
     DefaultInstanceSettings, InstanceLaunchMode, InstanceProfile, InstanceProfileView,
     InstanceStore,

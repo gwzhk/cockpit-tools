@@ -184,7 +184,7 @@
         "relativeHours": "{{hours}} ч",
         "relativeHoursMinutes": "{{hours}} ч {{minutes}} мин",
         "relativeMinutes": "{{minutes}} мин",
-        "relativeWithAbsolute": "{{relative}} ({{absolute}})"
+        "relativeWithAbsolute": "{{relative}} ({{absolute}})​"
       },
       "credits": {
         "leftInline": "осталось {{left}}",
@@ -197,7 +197,7 @@
         "planEndsInHours": "Сбрасывается через {{hours}}h"
       },
       "flowNotice": {
-        "alternative": "Альтернатива: использовать изоляцию мульти-инстансов (разные --user-data-dir). Войдите один раз для каждого инстанса, затем запускайте нужный инстанс для быстрого переключения на целевую среду аккаунта."
+        "alternative": "Изоляция мульти-инстансов: используйте отдельные управляемые профили и войдите один раз в каждый инстанс для быстрого переключения аккаунтов."
       },
       "injecting": "Внедрение...",
       "usage": {
@@ -218,7 +218,7 @@
       "desc": "Эта область фиксируется в правом верхнем углу на всех страницах и подходит для кампаний или брендовой рекламы.",
       "action": "Подробнее"
     },
-    "appName": "Cockpit Tools",
+    "appName": "Cockpit Tools​",
     "collapse": "Свернуть",
     "confirmDelete": "Подтвердить удаление",
     "confirmDeleteTag": "Подтвердить удаление тега",
@@ -228,14 +228,13 @@
     "selectAll": "Выбрать всё"
   },
   "nav": {
-    "overview": "Antigravity IDE",
+    "overview": "Antigravity IDE​",
     "accounts": "Аккаунты",
     "wakeup": "Задачи пробуждения",
-    "fingerprints": "Отпечатки",
     "settings": "Настройки",
-    "codex": "Codex",
-    "githubCopilot": "GitHub Copilot",
-    "windsurf": "Windsurf",
+    "codex": "Codex​",
+    "githubCopilot": "GitHub Copilot​",
+    "windsurf": "Windsurf​",
     "dashboard": "Панель",
     "morePlatforms": "Другие платформы",
     "instances": "Мульти-инстанс",
@@ -245,21 +244,35 @@
       "restart": "Перезапустить",
       "installing": "Установка"
     },
-    "gemini": "Gemini Cli",
-    "codebuddy": "CodeBuddy",
-    "qoder": "Qoder",
-    "trae": "Trae",
-    "codebuddyCn": "CodeBuddy CN",
+    "gemini": "Gemini Cli​",
+    "codebuddy": "CodeBuddy​",
+    "qoder": "Qoder​",
+    "trae": "Trae​",
+    "codebuddyCn": "CodeBuddy CN​",
     "zed": "Платформа Zed",
     "expandSidebar": "Развернуть боковую панель",
     "collapseSidebar": "Свернуть боковую панель",
     "logs": "Журналы",
+    "sponsors": "Спонсоры",
+    "sponsorAppreciation": "Поддержать",
     "switchClassicLayoutEntry": "Переключить на классический макет",
     "switchClassicLayoutTitle": "Переключить на классический макет боковой панели",
     "switchClassicLayoutDesc": "Классический макет показывает полную навигацию по платформам и поддерживает сворачивание боковой панели. Вы можете вернуться в любой момент: Настройки > Общие > Макет боковой панели.",
     "switchClassicLayoutDontAskAgain": "Больше не показывать это сообщение",
     "switchClassicLayoutConfirm": "Переключить сейчас",
-    "2faManager": "Управление 2FA"
+    "2faManager": "Управление 2FA",
+    "apiRelay": "Релей",
+    "claude": "Claude"
+  },
+  "sponsors": {
+    "pageTitle": "Спонсоры",
+    "pageDesc": "Спасибо этим спонсорам за поддержку Cockpit Tools.",
+    "loading": "Загрузка спонсоров...",
+    "emptyTitle": "Спонсоров пока нет",
+    "emptyDesc": "Удалённый модуль спонсоров сейчас отключён.",
+    "listAriaLabel": "Список спонсоров",
+    "defaultDescription": "Спасибо за поддержку Cockpit Tools.",
+    "openSponsor": "Открыть"
   },
   "platformLayout": {
     "title": "Макет платформ",
@@ -269,10 +282,11 @@
     "sidebarToggle": "Показывать в боковой панели",
     "dashboardToggle": "Показывать на панели",
     "trayToggle": "Показывать в трее",
+    "apiRelayTrayDisabled": "Relay пока нельзя показывать в трее",
     "hiddenBadge": "Скрыто",
     "openFromMore": "Управление макетом платформ",
     "dragHandleLabel": "Перетащите для изменения порядка",
-    "tipWithGroups": "Перетаскивайте для сортировки. В боковой панели можно показывать не более трех пунктов. Дочерние платформы группы не имеют переключателей боковой панели/дашборда и используются только для меню в строке и смены платформы по умолчанию.",
+    "tipWithGroups": "Перетаскивайте, чтобы изменить порядок. В боковой панели можно показать не более {{max}} пунктов. Дочерние элементы групп не имеют переключателей боковой панели/панели обзора и используются только для строки меню и выбора платформы по умолчанию.",
     "addGroup": "Добавить группу",
     "editGroup": "Редактировать группу",
     "deleteGroup": "Удалить группу",
@@ -509,7 +523,7 @@
       "force": {
         "title": "Принудительный перезапуск",
         "principle": "Идентифицирует процессы по --user-data-dir и принудительно завершает их (SIGKILL / taskkill /F), затем запускает целевой инстанс.",
-        "commandMac": "macOS/Linux: pkill -9 -f \"--user-data-dir <dir>\"",
+        "commandMac": "macOS/Linux: pkill -9 -f \"--user-data-dir <dir>\"​",
         "commandWin": "Windows: taskkill /F /PID <pid> (совпадение по --user-data-dir)",
         "pros": "Может точно перезапустить один конкретный инстанс.",
         "cons": "Может вызвать предупреждение о «неожиданном завершении», риск потери несохраненных данных."
@@ -549,7 +563,8 @@
     "tabs": {
       "general": "Общие",
       "network": "Сеть",
-      "about": "О приложении"
+      "about": "О приложении",
+      "data": "Управление данными"
     },
     "general": {
       "appearance": "Внешний вид",
@@ -603,8 +618,8 @@
       "floatingCardShowNowAction": "Показать плавающую карточку",
       "dataDir": "Каталог данных",
       "dataDirDesc": "Место хранения аккаунтов и конфигурационных файлов.",
-      "fpDir": "Хранилище Antigravity IDE",
-      "fpDirDesc": "Место хранения файлов данных Antigravity IDE.",
+      "topRightAdVisible": "Показывать верхнее промо",
+      "topRightAdVisibleDesc": "Скрывает верхний промо-блок в приложении. Страница спонсоров не меняется.",
       "opencodeTitle": "Интеграция OpenCode",
       "opencodeRestart": "Перезапускать OpenCode при переключении Codex",
       "opencodeRestartDesc": "Синхронизировать данные аккаунта Codex в OpenCode",
@@ -619,6 +634,11 @@
       "codexAppPathPlaceholder": "Путь по умолчанию",
       "codexPathSelect": "Выбрать",
       "codexPathReset": "Сбросить по умолчанию",
+      "codexSyncWsl": "Синхронизировать Codex с WSL",
+      "codexSyncWslDesc": "После переключения учетной записи Codex по умолчанию auth.json и config.toml также записываются в каталог Codex в WSL.",
+      "codexWslConfigDir": "Каталог Codex в WSL",
+      "codexWslConfigDirDesc": "Укажите каталог .codex внутри WSL. Поддерживаются пути \\\\wsl.localhost\\.",
+      "codexWslConfigDirPlaceholder": "Пример: \\\\wsl.localhost\\Ubuntu-24.04\\home\\user\\.codex",
       "vscodeTitle": "Запуск VS Code",
       "vscodeAppPath": "Путь к приложению VS Code",
       "vscodeAppPathDesc": "Оставьте пустым, чтобы использовать путь по умолчанию",
@@ -759,7 +779,10 @@
       "codexAppSpeedFast": "Быстро",
       "codexAppSpeedLaunch": "Перезапустить Codex",
       "codexAppSpeedSaveFailed": "Не удалось сохранить скорость Codex: {{error}}",
-      "codexAppSpeedLaunchFailed": "Не удалось перезапустить Codex: {{error}}"
+      "codexAppSpeedLaunchFailed": "Не удалось перезапустить Codex: {{error}}",
+      "claudeSettingsTitle": "Настройки Claude Desktop",
+      "claudeAutoRefresh": "Автообновление квоты Claude Desktop",
+      "claudeAutoRefreshDesc": "Автоматически обновляет кэш квоты аккаунтов Claude Desktop в фоне."
     },
     "network": {
       "apiTitle": "API антигравитационной кабины",
@@ -801,13 +824,13 @@
       "proxyUrlRequired": "URL прокси не может быть пустым, когда глобальный прокси включён."
     },
     "about": {
-      "appName": "Cockpit Tools",
+      "appName": "Cockpit Tools​",
       "slogan": "Профессиональное решение для управления аккаунтами",
       "author": "Автор",
       "wechat": "Вичат",
       "github": "Репозиторий GitHub",
       "alipay": "Алипей",
-      "wechatpay": "WeChat Pay",
+      "wechatpay": "WeChat Pay​",
       "sponsor": "Поддержать",
       "sponsorDesc": "Поддержка развития",
       "feedback": "Обратная связь",
@@ -928,6 +951,66 @@
         "unsupportedLegacyFile": "Этот старый формат резервной копии аккаунтов не распознан",
         "unsupportedVersion": "Эта версия приложения не поддерживает такую версию пакета"
       }
+    },
+    "webdav": {
+      "groupTitle": "Синхронизация WebDAV",
+      "enabledTitle": "Синхронизация резервных копий WebDAV",
+      "enabledDesc": "По умолчанию Jianguoyun, можно изменить на любую службу WebDAV.",
+      "urlTitle": "Адрес службы",
+      "urlDesc": "Адрес по умолчанию Jianguoyun: https://dav.jianguoyun.com/dav/",
+      "usernameTitle": "Имя пользователя",
+      "usernameDesc": "Jianguoyun использует вашу электронную почту.",
+      "usernamePlaceholder": "Email или имя пользователя",
+      "passwordTitle": "Пароль приложения",
+      "passwordDesc": "Сохраняется локально; оставьте пустым для сохранения текущего пароля.",
+      "passwordPlaceholder": "Пароль стороннего приложения Jianguoyun",
+      "passwordSavedPlaceholder": "Сохранено; оставьте пустым, чтобы сохранить",
+      "clearPassword": "Очистить",
+      "remoteDirTitle": "Удаленная папка",
+      "remoteDirDesc": "Управляются только файлы резервных копий Cockpit в этой папке.",
+      "statusTitle": "Статус синхронизации",
+      "statusDesc": "Для восстановления из облака требуется ручной выбор, локальные данные никогда не перезаписываются автоматически.",
+      "lastUpload": "Последняя загрузка: {{time}}",
+      "lastDownload": "Последнее восстановление: {{time}}",
+      "never": "Еще не синхронизировано",
+      "testAction": "Проверить/Сохранить настройки",
+      "uploadAction": "Создать и загрузить",
+      "syncAction": "Синхронизировать настройки",
+      "syncLatestConfirm": "Вы действительно хотите скачать последнюю резервную копию {{name}} и перезаписать локальные данные? Это заменит все текущие данные.",
+      "remoteListTitle": "Удаленные бэкапы",
+      "remoteListDesc": "Показываются только файлы JSON и ZIP, соответствующие именам автоматических/ручных бэкапов Cockpit.",
+      "emptyTitle": "Нет удаленных резервных копий",
+      "emptyDesc": "Сохраните настройки, затем создайте и загрузите резервную копию.",
+      "unknownTime": "Неизвестно",
+      "restoreAction": "Восстановить",
+      "restoreConfirm": "Восстановить данные из резервной копии {{name}}?",
+      "deleteConfirm": "Удалить удаленную резервную копию {{name}}?",
+      "feedback": {
+        "testingAndSaving": "Сохранение и тестирование подключения WebDAV...",
+        "saveAndTestSuccess": "Настройки сохранены, тест подключения пройден успешно!",
+        "saveSuccessTestFailed": "Настройки сохранены, но тест подключения не удался: {{message}}",
+        "saveAndTestFailed": "Не удалось сохранить и протестировать подключение: {{error}}",
+        "uploading": "Создание и отправка резервной копии...",
+        "uploadSuccess": "Загружено файлов: {{count}}, очищено устаревших удаленных бэкапов: {{deleted}}",
+        "uploadFailed": "Загрузка на WebDAV не удалась: {{error}}",
+        "listFailed": "Не удалось загрузить список удаленных бэкапов: {{error}}",
+        "loadSettingsFailed": "Не удалось загрузить настройки WebDAV: {{error}}",
+        "restoring": "Чтение удаленной резервной копии и импорт...",
+        "restoreEmpty": "Данные из резервной копии не были восстановлены",
+        "deleteSuccess": "Удаленная резервная копия удалена",
+        "deleteFailed": "Не удалось удалить удаленную резервную копию: {{error}}",
+        "syncingLatest": "Синхронизация последних удаленных настроек...",
+        "syncFailed": "Не удалось синхронизировать последние настройки: {{error}}",
+        "noRemoteBackup": "На удаленном сервере не найдено файлов резервных копий для восстановления"
+      },
+      "errors": {
+        "notEnabled": "Сначала включите синхронизацию WebDAV"
+      },
+      "retentionTitle": "Remote Retention Days",
+      "retentionDesc": "Backups older than this on the cloud will be removed during the next sync.",
+      "retentionUnit": "days",
+      "collapseAll": "Collapse remote backups",
+      "expandAll": "Expand all remote backups ({{count}} more)"
     }
   },
   "appPath": {
@@ -959,7 +1042,6 @@
       "email": "Электронная почта",
       "subscription": "Подписка",
       "quota": "Статус квоты",
-      "fingerprint": "Отпечаток",
       "lastUsed": "Исп. последним",
       "actions": "Действия"
     },
@@ -969,13 +1051,13 @@
       "authInvalid": "Неверные учетные данные",
       "refreshFailed": "Обновить не удалось",
       "normal": "Нормальный",
-      "forbidden": "403",
+      "forbidden": "403​",
       "forbidden_tooltip": "API вернул 403 Forbidden, аккаунт не имеет доступа к Gemini Code Assist",
       "forbidden_msg": "Аккаунт запрещён, автообновление пропущено"
     },
     "tier": {
-      "pro": "PRO",
-      "ultra": "ULTRA"
+      "pro": "PRO​",
+      "ultra": "ULTRA​"
     },
     "credits": {
       "label": "Кредиты ИИ"
@@ -1045,10 +1127,8 @@
     "actions": {
       "viewDetails": "Подробнее",
       "viewError": "Просмотреть ошибку",
-      "fingerprint": "Отпечаток",
       "switch": "Переключить аккаунт",
       "switchTo": "Переключиться на этот аккаунт",
-      "selectFingerprint": "Выбрать отпечаток",
       "delete": "Удалить",
       "deleteSelected": "Удалить выбранные",
       "export": "Экспорт",
@@ -1186,7 +1266,10 @@
     "switchSuccess": "Переключение выполнено",
     "switched": "Переключено на {{email}}",
     "tagButton": "Редактировать теги",
-    "tagUpdated": "Тег обновлён"
+    "tagUpdated": "Тег обновлён",
+    "plan": {
+      "personal": "Личный"
+    }
   },
   "overview": {
     "title": "Обзор аккаунтов",
@@ -1197,106 +1280,8 @@
     "currentAccount": "Используется сейчас",
     "switchTo": "Переключиться на этот аккаунт",
     "switching": "Переключение...",
-    "fingerprint": "Отпечаток",
     "bound": "Привязан",
     "brandTitle": "Управление аккаунтом Antigravity IDE"
-  },
-  "fingerprints": {
-    "title": "Отпечатки устройства",
-    "subtitle": "Управляйте отпечатками устройств, привязанными к аккаунтам.",
-    "toolbar": {
-      "generate": "Создать новый",
-      "capture": "Захватить текущий",
-      "import": "Импорт",
-      "folder": "Папка",
-      "delete": "Удалить",
-      "deleteUnbound": "Удалить непривязанные"
-    },
-    "table": {
-      "name": "Название отпечатка",
-      "machineId": "ID машины",
-      "accounts": "Привязанные аккаунты",
-      "actions": "Действия",
-      "accountCount": "{{count}} аккаунтов",
-      "apply": "Применить",
-      "noData": "Нет данных отпечатков",
-      "preview": "Предпросмотр",
-      "rename": "Переименовать"
-    },
-    "modals": {
-      "generate": {
-        "title": "Создать отпечаток",
-        "btn": "Создать"
-      },
-      "capture": {
-        "title": "Захватить отпечаток",
-        "btn": "Захватить"
-      },
-      "rename": {
-        "title": "Переименовать отпечаток",
-        "label": "Название отпечатка"
-      },
-      "import": {
-        "title": "Импорт отпечатков",
-        "fromTools": "Импорт из Antigravity Tools",
-        "desc": "Импорт из директории ~/.antigravity_tools/",
-        "fromJsonBtn": "Импорт из JSON",
-        "jsonExample": "Пример формата:",
-        "jsonPlaceholder": "Рабочий отпечаток",
-        "orPasteJson": "Или вставьте JSON"
-      },
-      "bound": {
-        "title": "Привязанные аккаунты",
-        "add": "Добавить аккаунты",
-        "empty": "Нет привязанных аккаунтов",
-        "emptyAll": "Все аккаунты привязаны",
-        "select": "Выберите аккаунты для добавления",
-        "from": "Из: {{name}}",
-        "back": "Назад"
-      },
-      "detail": {
-        "title": "Детали отпечатка",
-        "created": "Создан {{time}}"
-      }
-    },
-    "messages": {
-      "deleteConfirm": "Удалить этот отпечаток? Аккаунты, привязанные к нему, вернутся к исходному.",
-      "batchDeleteConfirm": "Удалить {{count}} отпечатков? Аккаунты, привязанные к ним, вернутся к исходному.",
-      "generated": "Новый отпечаток создан",
-      "captured": "Текущий отпечаток захвачен",
-      "renamed": "Переименовано",
-      "deleted": "Отпечаток удален",
-      "imported": "Импортировано {{count}} отпечатков",
-      "addedAccounts": "Добавлено аккаунтов: {{count}}",
-      "enterName": "Введите название отпечатка",
-      "previewNotReady": "Предпросмотр не готов, пожалуйста, подождите",
-      "duplicate": "Такой отпечаток уже существует: {{name}}",
-      "autoGeneratedSuffix": "(Не найдено, создано автоматически)",
-      "readOnly": "Только для чтения",
-      "current": "Текущий",
-      "addCount": "Добавлено {{count}} аккаунтов",
-      "addFailed": "Не удалось добавить",
-      "adding": "Добавление...",
-      "applyFailed": "Не удалось применить",
-      "boundCount": "Привязано {{count}} аккаунтов",
-      "captureFailed": "Не удалось захватить",
-      "count": "{{count}}",
-      "deleteFailed": "Не удалось удалить",
-      "fpLabel": "Отпечаток:",
-      "generateFailed": "Не удалось создать",
-      "importFailed": "Не удалось импортировать",
-      "importPartialFailed": "{{failCount}} не удалось: {{failList}}",
-      "refreshingQuota": "Обновление квоты {{done}}/{{total}} (вы можете закрыть это диалоговое окно)",
-      "quotaRefreshDone": "Обновление квоты завершено",
-      "importing": "Импорт...",
-      "loadFailed": "Не удалось загрузить список отпечатков",
-      "processing": "Обработка...",
-      "renameFailed": "Не удалось переименовать",
-      "serviceMachineIdEmpty": "Пусто",
-      "deleteUnboundConfirm": "Удалить {{count}} отпечатков без привязанных аккаунтов?",
-      "deletedUnbound": "Удалено непривязанных отпечатков: {{count}}",
-      "noUnboundToDelete": "Нет непривязанных отпечатков для удаления"
-    }
   },
   "modals": {
     "addAccount": {
@@ -1332,15 +1317,6 @@
       "fromFilesDesc": "Выберите JSON-файлы для импорта аккаунтов (поддерживаются различные форматы)",
       "importingFiles": "Импорт {{count}} файл(ов)..."
     },
-    "fingerprint": {
-      "title": "Выбрать отпечаток",
-      "desc": "Выберите отпечаток для аккаунта <1>{{email}}</1>",
-      "original": "Исходный отпечаток",
-      "new": "Добавить новый отпечаток",
-      "bind": "Подтвердить привязку",
-      "selectLabel": "Выбрать отпечаток",
-      "boundCount": "аккаунтов"
-    },
     "quota": {
       "title": "Детали квоты",
       "noData": "Нет данных о квотах",
@@ -1365,6 +1341,12 @@
   "messages": {
     "deleteConfirm": "Вы уверены, что хотите удалить этот аккаунт?",
     "batchDeleteConfirm": "Вы уверены, что хотите удалить {{count}} выбранных аккаунтов?",
+    "cleanErrorAccountsAction": "Очистить аккаунты ERROR",
+    "cleanErrorAccountsConfirm": "Удалить аккаунты ERROR в текущей области: {{count}}?",
+    "selectAllFilteredAccounts": "Выбрать все совпадения: {{count}}",
+    "selectedAllFilteredAccounts": "Выбраны все совпадения: {{count}}",
+    "deleteFilteredAccountsConfirm": "Будут удалены аккаунты Codex, соответствующие текущим фильтрам: {{count}}. Это не только текущая страница. Продолжить?",
+    "clearSelection": "Снять выбор",
     "switched": "Переключено на {{email}}",
     "switchFailed": "Ошибка переключения: {{error}}",
     "antigravityLegacyUnsupported": "Antigravity 2.0.0 и новее здесь не поддерживаются. Выберите версию Antigravity ниже 2.0.0 или используйте Antigravity IDE.",
@@ -1378,7 +1360,7 @@
     "bindFailed": "Ошибка привязки: {{error}}",
     "jsonRequired": "Пожалуйста, введите или вставьте JSON-содержимое",
     "example": "Пример",
-    "actionRunning": "{{action}}...",
+    "actionRunning": "{{action}}...​",
     "actionSuccess": "{{action}} успешно",
     "actionFailed": "{{action}} не удалось: {{error}}"
   },
@@ -1453,14 +1435,14 @@
       "durationMs": "{{ms}}мс",
       "tokens": "токены={{prompt}}+{{completion}}={{total}}",
       "traceId": "TraceId={{traceId}}",
-      "detailJoiner": ", ",
-      "message": "[[{{model}}]]: {{reply}}{{suffix}}",
-      "none": "--",
+      "detailJoiner": ", ​",
+      "message": "[[{{model}}]]: {{reply}}{{suffix}}​",
+      "none": "--​",
       "today": "Сегодня {{time}}",
       "tomorrow": "Завтра {{time}}",
-      "weekdayWithTime": "{{day}} {{time}}",
+      "weekdayWithTime": "{{day}} {{time}}​",
       "notSelected": "Не выбрано",
-      "joiner": ", ",
+      "joiner": ", ​",
       "moreItems": "{{items}} ({{total}} шт.)",
       "quotaReset": "Автопробуждение при сбросе квоты",
       "crontab": "Кронтаб: {{expr}}",
@@ -1577,7 +1559,11 @@
       "timeWindowFrom": "С",
       "timeWindowTo": "По",
       "fallbackTimes": "Времена по умолчанию",
-      "saveTask": "Сохранить задачу"
+      "saveTask": "Сохранить задачу",
+      "executionMode": "Режим выполнения",
+      "executionModeAuto": "Выполнить сразу",
+      "executionModeConfirm": "Требовать подтверждение",
+      "confirmTimeout": "Тайм-аут подтверждения"
     },
     "test": {
       "modelsLabel": "Модели для запуска",
@@ -1652,7 +1638,8 @@
       "comingSoon": "Мульти-инстанс скоро",
       "comingSoonDesc": "Запускайте несколько экземпляров Codex.app с разными аккаунтами одновременно.",
       "unsupported": {
-        "desc": "Мульти-инстанс Codex в настоящее время доступен только на macOS."
+        "desc": "Мульти-инстанс Codex в настоящее время доступен только на macOS.",
+        "title": "Не поддерживается на этой системе"
       },
       "quota": {
         "hourly": "5ч",
@@ -1682,7 +1669,7 @@
         },
         "force": {
           "principle": "Идентифицирует процессы по CODEX_HOME и принудительно завершает их (SIGKILL / taskkill /F), затем запускает целевой инстанс.",
-          "commandMac": "macOS: pkill -9 -f \"CODEX_HOME=<dir>\"",
+          "commandMac": "macOS: pkill -9 -f \"CODEX_HOME=<dir>\"​",
           "commandWin": "Windows: taskkill /F /PID <pid> (совпадение по CODEX_HOME)"
         }
       }
@@ -1743,7 +1730,7 @@
     },
     "exportFormat": {
       "label": "Формат экспорта",
-      "cockpitTools": "Cockpit Tools",
+      "cockpitTools": "Cockpit Tools​",
       "sub2api": "Формат sub2api",
       "cpa": "Формат cpa",
       "downloadAll": "Скачать все",
@@ -1795,6 +1782,7 @@
         "freeNotice": "Бесплатные аккаунты пока не поддерживаются. Бесплатные аккаунты выбрать нельзя.",
         "freeUnsupported": "Бесплатные аккаунты пока не поддерживаются.",
         "restrictFreeToggle": "Ограничить Free-аккаунты",
+        "chatApiKeyUnsupported": "Chat Completions не поддерживается",
         "freeNoticeRestricted": "Free-аккаунты ограничены. Отключите это, чтобы их выбирать.",
         "freeNoticeUnstable": "Прокси Free-аккаунтов может быть нестабильным. Используйте с осторожностью.",
         "restrictFreeDisableConfirmTitle": "Разрешить Free-аккаунты",
@@ -1853,7 +1841,7 @@
         "accountRequests": "{{count}} запросов",
         "accountTokens": "{{count}} токенов",
         "accountResult": "Успех {{success}} / Ошибка {{failed}}",
-        "accountTokensCompact": "{{value}}",
+        "accountTokensCompact": "{{value}}​",
         "images": "Запросы изображений",
         "imagesDetail": "Создание {{generate}} / Правка {{edit}} / Доступ {{blocked}}",
         "estimatedCost": "Оценка стоимости",
@@ -1918,7 +1906,7 @@
       "modelIdViewOnly": "Только просмотр",
       "quotaPool": {
         "title": "Пул квот",
-        "hourlyShort": "5h",
+        "hourlyShort": "5h​",
         "weeklyShort": "Неделя",
         "viewFull": "Показать полную статистику",
         "modalTitle": "Пул квот сервиса API",
@@ -2055,11 +2043,11 @@
       "requestFailedManualRetry": "Проверьте сеть. Не удалось получить актуальную квоту. Обновите, чтобы повторить попытку."
     },
     "plan": {
-      "free": "FREE",
-      "plus": "PLUS",
-      "pro": "PRO",
-      "team": "TEAM",
-      "enterprise": "ENTERPRISE"
+      "free": "FREE​",
+      "plus": "PLUS​",
+      "pro": "PRO​",
+      "team": "TEAM​",
+      "enterprise": "ENTERPRISE​"
     },
     "list": {
       "showCodeReviewQuota": "Показать квоту Code Review"
@@ -2067,7 +2055,7 @@
     "time": {
       "today": "Сегодня {{time}}",
       "tomorrow": "Завтра {{time}}",
-      "dateTime": "{{date}} {{time}}"
+      "dateTime": "{{date}} {{time}}​"
     },
     "view": {
       "compact": "Компактный"
@@ -2305,6 +2293,8 @@
         "repairVisibility": "Исправить видимость",
         "restoreSessions": "Восстановить сессии",
         "copySessionId": "Копировать ID сессии",
+        "selectAllSessions": "Выбрать все",
+        "clearSelectedSessions": "Снять выбор",
         "copyToInstance": "Копировать в экземпляр"
       },
       "confirm": {
@@ -2376,67 +2366,67 @@
       },
       "providers": {
         "openai_official": {
-          "name": "OpenAI Official"
+          "name": "OpenAI Official​"
         },
         "azure_openai": {
-          "name": "Azure OpenAI"
+          "name": "Azure OpenAI​"
         },
         "packycode": {
-          "name": "PackyCode"
+          "name": "PackyCode​"
         },
         "cubence": {
-          "name": "Cubence"
+          "name": "Cubence​"
         },
         "aigocode": {
-          "name": "AIGoCode"
+          "name": "AIGoCode​"
         },
         "rightcode": {
-          "name": "RightCode"
+          "name": "RightCode​"
         },
         "sssaicode": {
-          "name": "SSSAiCode"
+          "name": "SSSAiCode​"
         },
         "micu": {
-          "name": "Micu"
+          "name": "Micu​"
         },
         "x_code_api": {
-          "name": "X-Code API"
+          "name": "X-Code API​"
         },
         "ctok_ai": {
-          "name": "CTok.ai"
+          "name": "CTok.ai​"
         },
         "aihubmix": {
-          "name": "AiHubMix"
+          "name": "AiHubMix​"
         },
         "dmxapi": {
-          "name": "DMXAPI"
+          "name": "DMXAPI​"
         },
         "compshare": {
-          "name": "Compshare"
+          "name": "Compshare​"
         },
         "openrouter": {
-          "name": "OpenRouter"
+          "name": "OpenRouter​"
         },
         "aicodemirror": {
-          "name": "AICodeMirror"
+          "name": "AICodeMirror​"
         },
         "aicoding": {
-          "name": "AICoding"
+          "name": "AICoding​"
         },
         "crazyrouter": {
-          "name": "CrazyRouter"
+          "name": "CrazyRouter​"
         },
         "deepseek": {
-          "name": "DeepSeek"
+          "name": "DeepSeek​"
         },
         "moonshot": {
-          "name": "Moonshot"
+          "name": "Moonshot​"
         },
         "siliconflow": {
-          "name": "SiliconFlow"
+          "name": "SiliconFlow​"
         },
         "cockpit_api": {
-          "name": "Cockpit Api"
+          "name": "Cockpit Api​"
         }
       },
       "oauthBinding": {
@@ -2482,7 +2472,13 @@
         "website": "Сайт (необязательно)",
         "apiKeyUrl": "Страница ключа API (необязательно)",
         "newApiKeyName": "Имя нового ключа (необязательно)",
-        "newApiKey": "Новый ключ API"
+        "newApiKey": "Новый ключ API",
+        "wireApi": "Протокол",
+        "enableMode": "Режим",
+        "modelCatalog": "Каталог моделей",
+        "visionCapability": "Ввод изображений",
+        "visionModels": "Модели с vision",
+        "visionRoutingModel": "Модель для изображений"
       },
       "validation": {
         "nameRequired": "Укажите название провайдера.",
@@ -2497,6 +2493,19 @@
       "confirmDelete": "Удалить провайдера «{{name}}»?",
       "deleteFailed": "Не удалось удалить провайдера: {{error}}",
       "deleteApiKeyFailed": "Не удалось удалить ключ API: {{error}}",
+      "enableAsBackend": "Использовать как backend Codex",
+      "enabling": "Включение...",
+      "enableSuccess": "{{name}} включён, {{instance}} запущен.",
+      "enableFailed": "Не удалось включить провайдера: {{error}}",
+      "status": {
+        "active": "Текущий backend",
+        "available": "Готово"
+      },
+      "enableMode": {
+        "label": "Режим подключения",
+        "gatewayMode": "Режим шлюза",
+        "directMode": "Прямой режим"
+      },
       "selectSavedProvider": "Сохранённые провайдеры",
       "selectSavedApiKey": "Сохранённые ключи API",
       "noSavedProviders": "Пока нет сохранённых провайдеров. Можно заполнить поля напрямую, и запись сохранится автоматически.",
@@ -2555,7 +2564,108 @@
         "partialDetected": "В настоящее время установлено только одно управляемое поле: model_context_window={{context}}, model_auto_compact_token_limit={{compact}}. При сохранении оба поля перезапишутся по текущей схеме.",
         "notSet": "Не установлено"
       },
-      "managePresets": "Пресеты моделей"
+      "managePresets": "Пресеты моделей",
+      "wireApi": {
+        "responses": "Responses native",
+        "chatCompletions": "Протокол Chat Completions",
+        "help": "Для большинства провайдеров выбирайте Responses. Переключайтесь на Chat Completions только если провайдер явно поддерживает только этот протокол. Если сомневаетесь, сначала выберите Responses.",
+        "helpAria": "Справка по протоколу"
+      },
+      "testing": "Проверка...",
+      "testSuccess": "Подключение провайдера исправно: {{protocol}}, {{model}}, {{latency}}.",
+      "testFailed": "Не удалось проверить провайдера: {{error}}",
+      "testFailure": {
+        "credential": "API Key недоступен",
+        "url": "Неверный Base URL",
+        "network": "Сбой сетевого подключения",
+        "models": "Ошибка endpoint моделей",
+        "parse": "Сбой разбора ответа",
+        "httpStatus": "Статус {{status}}",
+        "message": "{{title}}: {{detail}}. {{suggestion}}​"
+      },
+      "testSuggestion": {
+        "addApiKey": "Добавьте API Key для этого провайдера перед проверкой.",
+        "checkBaseUrl": "Проверьте, что Base URL содержит правильный путь версии, например /v1.",
+        "checkNetwork": "Проверьте адрес провайдера, прокси, файрвол или состояние upstream-сервиса.",
+        "checkApiKey": "Проверьте, действителен ли API Key и есть ли доступ к endpoint моделей.",
+        "checkProviderStatus": "Проверьте состояние сервиса провайдера, прокси или совместимость API.",
+        "checkModelsApi": "Убедитесь, что провайдер возвращает список моделей в формате OpenAI."
+      },
+      "enableAndStart": "Запуск",
+      "instance": {
+        "label": "Экземпляр",
+        "default": "Экземпляр по умолчанию",
+        "running": "Запущен",
+        "targetHint": "Цель: {{instance}}",
+        "uninitializedHint": "Целевой экземпляр не инициализирован. Сначала запустите его один раз на странице мультиэкземпляров.",
+        "shortLabel": "Инстанс",
+        "saveFailed": "Не удалось сохранить привязку экземпляра: {{error}}"
+      },
+      "modelCatalog": "Модели",
+      "modelCatalogEmpty": "Нет каталога моделей",
+      "gatewayHint": "Сторонние поставщики запускаются через локальный шлюз для изоляции экземпляра и преобразования протокола. Официальные поставщики OpenAI остаются прямыми.",
+      "vision": {
+        "providerDefault": "Этот провайдер по умолчанию поддерживает изображения",
+        "providerDefaultHint": "Если выключено, изображения примут только модели из списка ниже; остальные отклонит локальный шлюз.",
+        "modelsHint": "Одна модель на строку. Используйте, если изображения поддерживают только некоторые модели провайдера.",
+        "routingModelHint": "Если текущая модель не читает изображения, запрос использует эту модель; пустое поле автоматически выберет единственную vision-модель.",
+        "allModels": "Изображения",
+        "partialModels": "Часть изображений",
+        "textOnly": "Только текст"
+      },
+      "sponsorRecommended": "Рекомендация релея",
+      "builtinProviders": "Встроенные провайдеры",
+      "sponsorHint": "URL эксклюзивного релей-сервиса заполнен автоматически. После ввода API Key карточка автоматически запросит баланс и расход.",
+      "integration": {
+        "sub2api": "Совместимо с Sub2API",
+        "newApi": "Совместимо с New API"
+      },
+      "usage": {
+        "title": "Обзор квоты",
+        "remaining": "Остаток",
+        "today": "Сегодня",
+        "total": "Всего",
+        "requests": "Запросы сегодня",
+        "loading": "Запрос квоты...",
+        "failed": "Не удалось запросить квоту: {{error}}",
+        "pending": "Ожидание запроса квоты",
+        "noKey": "Нет доступной квоты",
+        "used": "Использовано",
+        "limit": "Лимит",
+        "viewDetail": "Детали",
+        "detailTitle": "Панель сервиса",
+        "rawFields": "Данные сервиса",
+        "fields": {
+          "status": "Статус",
+          "planName": "План",
+          "remaining": "Остаток",
+          "balance": "Баланс",
+          "todayRequests": "Запросы сегодня",
+          "todayTokens": "Token сегодня",
+          "todayCost": "Расход сегодня",
+          "totalRequests": "Всего запросов",
+          "totalTokens": "Всего Token",
+          "totalCost": "Общий расход",
+          "hardLimitUsd": "Жесткий лимит",
+          "softLimitUsd": "Мягкий лимит",
+          "systemHardLimitUsd": "Системный лимит",
+          "accessUntil": "Доступ до",
+          "totalUsage": "Общее использование",
+          "quotaUnlimited": "Безлимитно",
+          "expiresAt": "Истекает",
+          "totalGranted": "Выдано",
+          "totalAvailable": "Доступно",
+          "modelLimitsEnabled": "Лимиты моделей"
+        },
+        "accountBalance": "Баланс аккаунта",
+        "unlimitedQuota": "Безлимитно",
+        "booleanTrue": "Да",
+        "booleanFalse": "Нет"
+      },
+      "oauthBinding": {
+        "desc": "Необязательно. Можно привязать любой OAuth-аккаунт с refresh_token. Без привязки провайдер продолжит использовать исходный поток API Key.",
+        "currentProvider": "Провайдер: {{name}}"
+      }
     },
     "quickSwitch": {
       "action": "Быстрое переключение провайдера",
@@ -2657,6 +2767,21 @@
         "logs": "Статистика и журналы"
       },
       "healthTitle": "Состояние сервиса",
+      "compat": {
+        "title": "Совм. протоколов",
+        "desc": "Один URL API-сервиса поддерживает входы OpenAI Chat, Responses, Anthropic Messages, Gemini и Ollama.",
+        "openaiTitle": "Совместимо с OpenAI",
+        "openaiNote": "Base URL использует /v1.",
+        "responsesTitle": "Вход Responses",
+        "responsesNote": "Нативный вход Codex Responses.",
+        "anthropicTitle": "Сообщения Anthropic",
+        "anthropicNote": "Используйте тот же ключ сервиса.",
+        "geminiTitle": "Вход Gemini",
+        "geminiNote": "Base URL использует /v1beta.",
+        "ollamaTitle": "Мост Ollama",
+        "ollamaNote": "Используйте Authorization: Bearer.",
+        "modelCatalogLabel": "Каталог моделей"
+      },
       "health": {
         "availableAccounts": "Доступные аккаунты",
         "cooldowns": "Ожидания",
@@ -2801,6 +2926,46 @@
         "saveSuccess": "Блокировки моделей сохранены",
         "cardCount": "{{count}} заблок."
       }
+    },
+    "apiKey": {
+      "renameSuccess": "Переименовано",
+      "renameFailed": "Не удалось переименовать"
+    },
+    "batchImport": {
+      "title": "Пакетный импорт Codex",
+      "resultSubtitle": "Результат импорта",
+      "previewSubtitle": "Выберите аккаунты для сохранения",
+      "scanSubtitle": "Поочередный разбор и проверка аккаунтов",
+      "parseSubtitle": "Разбор файлов аккаунтов",
+      "cancelling": "Отмена...",
+      "scanDone": "Сканирование завершено",
+      "parseDone": "Разбор завершен",
+      "scanning": "Сканирование",
+      "parsing": "Разбор",
+      "current": "Текущий",
+      "imported": "Импортировано",
+      "failed": "Ошибки",
+      "quotaOk": "Аккаунт OK",
+      "quotaFailed": "Ошибка",
+      "checkQuotaToggle": "Проверять аккаунты",
+      "preparing": "Подготовка импорта...",
+      "importSelected": "Импортировать выбранные",
+      "noSelection": "Сначала выберите аккаунты",
+      "groups": {
+        "ready": "Готовы",
+        "quotaFailed": "Ошибка",
+        "existing": "Уже есть",
+        "invalid": "Недействительные"
+      },
+      "cancelScan": "Отменить сканирование",
+      "cancelParse": "Отменить разбор",
+      "cancelled": "Отменено",
+      "resumeScan": "Продолжить сканирование",
+      "resumeParse": "Продолжить разбор",
+      "selectedCount": "Выбрано {{count}}/{{total}}",
+      "selectAllAccounts": "Выбрать все",
+      "selectReady": "Выбрать исправные",
+      "clearSelection": "Снять выбор"
     }
   },
   "githubCopilot": {
@@ -2863,6 +3028,13 @@
   },
   "dashboard": {
     "title": "Панель аккаунтов",
+    "apiRelay": {
+      "localConfig": "Локальная настройка",
+      "localConfigDesc": "Управляйте локальным relay, проверкой API Key и быстрой настройкой клиента.",
+      "status": "Статус настройки",
+      "enabledByConfig": "Включено удалённой конфигурацией",
+      "openLocalConfig": "Открыть локальную настройку"
+    },
     "summary": {
       "label": "Обзор",
       "title": "Сводка аккаунтов",
@@ -2877,9 +3049,9 @@
       "totalAccounts": "Всего аккаунтов"
     },
     "panels": {
-      "antigravity": "Antigravity IDE",
-      "codex": "Codex",
-      "githubCopilot": "GitHub Copilot",
+      "antigravity": "Antigravity IDE​",
+      "codex": "Codex​",
+      "githubCopilot": "GitHub Copilot​",
       "planDistribution": "Распределение планов",
       "current": "Текущий аккаунт",
       "recommended": "Рекомендуемый аккаунт",
@@ -3065,6 +3237,10 @@
       "title": "Память фильтров",
       "enable": "Запоминать фильтры обзора аккаунтов (кроме поиска)",
       "hint": "По умолчанию выключено. При включении для каждой платформы сохраняются фильтры, теги и сортировка."
+    },
+    "claudeRefreshInterval": "Автообновление квоты",
+    "claude": {
+      "appPath": "Путь Claude Desktop"
     }
   },
   "quotaAlert": {
@@ -3125,7 +3301,7 @@
       "batchDelimiterSpace": "Пробел",
       "batchDelimiterComma": "Запятая",
       "batchDelimiterPipe": "Вертикальная черта",
-      "batchDelimiterDash": "----",
+      "batchDelimiterDash": "----​",
       "batchDelimiterCustom": "Свой",
       "batchJsonDesc": "Вставьте JSON-массив, где каждый элемент содержит email и password.",
       "batchTextDesc": "Укажите одну учетную запись в строке; разбор идет строго по выбранному разделителю.",
@@ -3148,7 +3324,7 @@
       "batchPartial": "Успешно {{success}}, ошибок {{failed}}",
       "batchFailed": "Пакетный импорт не удался для {{failed}} аккаунт(ов)",
       "batchFailureEntryWithLine": "Элемент {{line}} ({{email}}): {{error}}",
-      "batchFailureEntry": "{{email}}: {{error}}",
+      "batchFailureEntry": "{{email}}: {{error}}​",
       "batchFailureMore": "Еще {{count}} с ошибкой"
     },
     "oauth": {
@@ -3205,7 +3381,7 @@
       "bonusUsageLine": "{{used}} использовано / всего {{total}}",
       "planUsageCoveredLine": "{{used}} использовано / {{total}} включено в план",
       "expiryDays": "{{days}} дней",
-      "expiryUnknown": "—",
+      "expiryUnknown": "—​",
       "resetNow": "Скоро сброс",
       "resetInHours": "Сбрасывается через {{hours}}h",
       "resetInMinutes": "Сброс через {{minutes}}м."
@@ -3217,11 +3393,11 @@
       "estUsage": "Стандартное восточное время. Использование"
     },
     "plan": {
-      "free": "Kiro Free",
-      "individual": "Kiro Individual",
-      "pro": "Kiro Pro",
-      "business": "Kiro Business",
-      "enterprise": "Kiro Enterprise",
+      "free": "Kiro Free​",
+      "individual": "Kiro Individual​",
+      "pro": "Kiro Pro​",
+      "business": "Kiro Business​",
+      "enterprise": "Kiro Enterprise​",
       "unknown": "Неизвестный"
     },
     "flowNotice": {
@@ -3300,7 +3476,7 @@
     "startHint": "Нажмите старт или пробел",
     "rankTitle": "Исторический локальный рейтинг",
     "rankCurrent": "Текущий",
-    "rankNoData": "--",
+    "rankNoData": "--​",
     "restart": "Перезапуск",
     "pause": "Пауза",
     "resume": "Продолжить",
@@ -3323,7 +3499,7 @@
     "rankingShort": "Локально",
     "rankingEmpty": "Локальных записей пока нет",
     "rankingClear": "Очистить локальный рейтинг",
-    "rankingRankShort": "#{{rank}}",
+    "rankingRankShort": "#{{rank}}​",
     "minimize": "Свернуть",
     "resumeGameNav": "Продолжить игру",
     "closeConfirmTitle": "Завершить эту попытку?",
@@ -3363,7 +3539,6 @@
       "goAntigravity": "Перейти в Antigravity IDE",
       "goCodex": "Перейти в Codex",
       "goDashboard": "Перейти в панель",
-      "goFingerprints": "Перейти к отпечаткам устройства",
       "goGitHubCopilot": "Перейти в GitHub Copilot",
       "goInstances": "Перейти к инстансам",
       "goKiro": "Перейти в Kiro",
@@ -3458,28 +3633,6 @@
     "empty": {
       "desc": "Попробуйте ключевые слова: инстанс, переключение, настройки, экспорт.",
       "title": "Ничего не найдено"
-    },
-    "fingerprints": {
-      "cautions": {
-        "0": "Перед рискованными или массовыми действиями в Отпечатки устройства сделайте резервную копию."
-      },
-      "keywords": {
-        "0": "Отпечатки устройства",
-        "1": "гайд",
-        "2": "поток",
-        "3": "аккаунт"
-      },
-      "outcomes": {
-        "0": "Поймите, какие задачи решает Отпечатки устройства.",
-        "1": "Используйте рекомендованный поток в Отпечатки устройства, чтобы снизить ошибки."
-      },
-      "steps": {
-        "0": "Откройте страницу Отпечатки устройства.",
-        "1": "Завершите базовую настройку и необходимые привязки в Отпечатки устройства.",
-        "2": "Выполните одно ручное действие в Отпечатки устройства и проверьте результат."
-      },
-      "summary": "Этот раздел объясняет использование Отпечатки устройства в повседневном процессе.",
-      "title": "Отпечатки устройства"
     },
     "instances": {
       "cautions": {
@@ -3653,7 +3806,11 @@
       "resetsIn": "Сбрасывается в {{relative}}",
       "resetsSoon": "Скоро сброс",
       "resetsUnknown": "Время сброса неизвестно",
-      "onDemand": "По требованию"
+      "onDemand": "По требованию",
+      "gemini5h": "5h",
+      "geminiWeekly": "Weekly",
+      "claude5h": "5h",
+      "claudeWeekly": "Weekly"
     },
     "instances": {
       "unsupported": "Управление несколькими экземплярами Gemini Cli пока не поддерживается.",
@@ -3693,9 +3850,9 @@
       "leftOfTotal": "Осталось / Всего",
       "usage": "Использовано",
       "usageResets": "Сброс использования",
-      "usedPercent": "{{value}}%",
-      "remainingOfTotal": "{{remaining}} / {{total}}",
-      "resetAtWithRelative": "{{absolute}} ({{relative}})"
+      "usedPercent": "{{value}}%​",
+      "remainingOfTotal": "{{remaining}} / {{total}}​",
+      "resetAtWithRelative": "{{absolute}} ({{relative}})​"
     },
     "tierText": {
       "pro": "Gemini Code Assist в Google One AI Pro",
@@ -3800,7 +3957,7 @@
       }
     },
     "quota": {
-      "usedOfTotal": "{{used}} / {{total}}"
+      "usedOfTotal": "{{used}} / {{total}}​"
     }
   },
   "qoder": {
@@ -3822,8 +3979,8 @@
       "title": "Обзор использования",
       "viewDetails": "Подробнее",
       "includedCredits": "Кредиты в рамках тарифа",
-      "usedOfTotal": "{{used}} / {{total}}",
-      "usedEmpty": "-- / --",
+      "usedOfTotal": "{{used}} / {{total}}​",
+      "usedEmpty": "-- / --​",
       "upgradeHint": "Обновите тариф, чтобы увеличить месячный лимит",
       "upgradeAction": "Обновить"
     },
@@ -4014,7 +4171,7 @@
       }
     },
     "quota": {
-      "usedOfTotal": "{{used}} / {{total}}"
+      "usedOfTotal": "{{used}} / {{total}}​"
     },
     "checkin": {
       "title": "Ежедневный check-in",
@@ -4121,7 +4278,7 @@
     "plan": "План",
     "cycle": "Период",
     "status": "Статус",
-    "pager": "{{current}} / {{total}}",
+    "pager": "{{current}} / {{total}}​",
     "badges": {
       "recommended": "Рекомендуется"
     },
@@ -4255,5 +4412,333 @@
     "copyCode": "Копировать код",
     "copied": "Скопировано",
     "refreshIn": "{{time}} с"
+  },
+  "relay": {
+    "pageTitle": "Эксклюзивный релей",
+    "pageDesc": "Партнёрский API-сервис для пользователей Cockpit Tools, доступный для аккаунтов Codex API Key.",
+    "loading": "Загрузка релея...",
+    "emptyTitle": "Релей отключён",
+    "emptyDesc": "Удалённая конфигурация не включила эксклюзивный релей.",
+    "defaultDescription": "Партнёрский API-релей.",
+    "getApiKey": "Получить API Key",
+    "configTitle": "Включить в Codex",
+    "apiKeyLabel": "Ключ API",
+    "apiKeyPlaceholder": "Вставьте API Key из релея",
+    "apiKeyRequired": "Введите API Key.",
+    "baseUrl": "URL API",
+    "protocol": "Протокол",
+    "vision": "Изображения",
+    "testConnection": "Проверить",
+    "saveAndEnable": "Сохранить и включить",
+    "goCodex": "К Codex",
+    "statusUnavailable": "Конфигурация релея недоступна.",
+    "testing": "Проверка соединения...",
+    "testSuccess": "Проверка соединения пройдена. Этот API Key можно использовать с релеем.",
+    "testFailed": "Проверка соединения не пройдена.",
+    "saving": "Сохранение и включение в Codex...",
+    "saveSuccess": "Конфигурация релея сохранена. Её можно использовать на странице аккаунтов Codex.",
+    "saveFailed": "Не удалось сохранить конфигурацию релея.",
+    "savedProvider": "Сохранённый провайдер: {{name}}",
+    "modelsTitle": "Поддерживаемые модели",
+    "modelsEmpty": "Фиксированный список моделей не настроен удалённо. После сохранения Codex будет использовать возможности сервиса."
+  },
+  "apiKeyFun": {
+    "eyebrow": "Шлюз",
+    "title": "Relay APIKEY.FUN",
+    "description": "Официальный партнерский relay Cockpit предоставляет стабильный, открытый и выгодный API-доступ к большим моделям. Поддерживаются Claude, OpenAI, Gemini и другие основные модели; сервис подходит для единой настройки в Codex, Gemini CLI, Claude Code и других инструментах разработки. При регистрации по эксклюзивной ссылке Cockpit можно получить постоянную скидку до 5% на пополнения.",
+    "register": "Эксклюзивная ссылка",
+    "docs": "Официальная документация",
+    "viewNow": "Смотреть",
+    "queryTitle": "Лимит ключа",
+    "queryDesc": "Введите API Key APIKEY.FUN, чтобы автоматически проверить лимит.",
+    "keyNotSet": "Ключ не введён",
+    "apiKeyLabel": "API-ключ",
+    "apiKeyPlaceholder": "Вставьте API Key из консоли APIKEY.FUN",
+    "hideKey": "Скрыть",
+    "showKey": "Показать",
+    "endpointLabel": "Точка доступа",
+    "protocolLabel": "Протокол Codex",
+    "queryUsage": "Проверить квоту",
+    "querying": "Проверка",
+    "saveToCodex": "Записать в Codex",
+    "saving": "Запись",
+    "saveSuccess": "Записано в Codex Provider: {{name}}",
+    "toolsTitle": "Записать конфиг клиента",
+    "toolsDesc": "Напрямую записывает локальные файлы конфигурации по документации APIKEY.FUN и структуре CC Switch.",
+    "endpoint": {
+      "global": "Глобальная сеть",
+      "globalDesc": "Официальный API Base по умолчанию для большинства сетей.",
+      "direct": "Прямая линия",
+      "directDesc": "Для сценариев, чувствительных к задержке."
+    },
+    "wireApi": {
+      "responses": "Протокол Responses",
+      "responsesDesc": "Предпочтительно для Codex, прямой протокол OpenAI Responses.",
+      "chatCompletions": "Протокол Chat Completions",
+      "chatCompletionsDesc": "Совместимость через локальный шлюз."
+    },
+    "usage": {
+      "remaining": "Остаток",
+      "used": "Использовано",
+      "todayRequests": "Сегодня",
+      "todayTokens": "Токены сегодня",
+      "totalRequests": "Всего запросов",
+      "totalTokens": "Всего токенов"
+    },
+    "tool": {
+      "codexTitle": "Провайдер Codex",
+      "codexDesc": "Записывает Provider с /v1 Base URL текущего endpoint.",
+      "envTitle": "Окружение",
+      "envDesc": "Справка для Claude Code, Gemini CLI, Hermes и других OpenAI-совместимых входов.",
+      "curlTitle": "API-скрипт",
+      "curlDesc": "Быстрая проверка запроса, совместимого с Chat Completions."
+    },
+    "docTool": {
+      "codex": "Можно напрямую записать в Codex Provider.",
+      "claudeCode": "Скопировать параметры Anthropic Messages.",
+      "geminiCli": "Скопировать OpenAI-совместимые Base URL и API Key.",
+      "traeSolo": "Скопировать relay-параметры из официальной документации.",
+      "openClaw": "Скопировать OpenAI-совместимые параметры подключения.",
+      "hermes": "Скопировать параметры для страницы моделей Hermes.",
+      "apiScript": "Скопировать базовые параметры для скрипта."
+    },
+    "apply": {
+      "codexTitle": "Codex​",
+      "codexDesc": "Записывает ~/.codex/config.toml и auth.json с протоколом Responses и текущим API Key.",
+      "geminiTitle": "Конфиг Gemini CLI",
+      "geminiDesc": "Записывает ~/.gemini/.env и задаёт режим auth в settings.json как gemini-api-key.",
+      "openclawTitle": "Конфиг OpenClaw",
+      "openclawDesc": "Записывает models.providers.apikeyfun в ~/.openclaw/openclaw.json.",
+      "hermesTitle": "Конфиг Hermes",
+      "hermesDesc": "Записывает custom_providers в ~/.hermes/config.yaml и переключает на модель apikeyfun по умолчанию.",
+      "button": "Записать конфиг",
+      "applying": "Запись",
+      "success": "Файлы конфигурации записаны: {{paths}}",
+      "failed": "Не удалось записать конфигурацию: {{error}}"
+    },
+    "error": {
+      "missingApiKey": "Введите API Key.",
+      "queryFailed": "Не удалось проверить квоту: {{error}}",
+      "saveFailed": "Не удалось записать: {{error}}"
+    },
+    "models": {
+      "title": "Доступные модели",
+      "desc": "Загружаются из endpoint моделей текущего API Key и передаются в Codex или Claude CLI.",
+      "count": "{{count}} моделей",
+      "loading": "Загрузка",
+      "loadingDesc": "Загрузка списка моделей с текущим API Key...",
+      "empty": "Введите API Key, чтобы загрузить доступные модели.",
+      "emptyFromKey": "Текущий API Key не вернул моделей.",
+      "queryFailed": "Не удалось загрузить список моделей: {{error}}"
+    },
+    "keyManager": {
+      "title": "Управление ключами",
+      "desc": "Сохраняйте API Keys для быстрого переключения и автоматической проверки лимита.",
+      "saveButton": "Сохранить ключ",
+      "savedButton": "Сохранён",
+      "empty": "Сохранённых ключей нет.",
+      "lastRemaining": "Прошлый баланс {{value}}",
+      "notQueried": "Не проверялся",
+      "deleteButton": "Удалить",
+      "editAlias": "Edit alias​",
+      "renamePlaceholder": "Enter alias...​",
+      "createdAt": "Добавлено {{time}}",
+      "saveFlash": "Сохранено",
+      "addingToCodex": "Добавление в Codex...",
+      "addedToCodex": "Добавлено в Codex",
+      "addToCodexFailed": "Не удалось добавить в Codex: {{error}}",
+      "addingToClaude": "Добавление в Claude CLI...",
+      "addedToClaude": "Добавлено в Claude CLI",
+      "addToClaudeFailed": "Не удалось добавить в Claude CLI: {{error}}",
+      "codexAdded": "Codex добавлен",
+      "claudeAdded": "Claude добавлен",
+      "addToCodex": "В Codex",
+      "addToClaude": "В Claude CLI",
+      "codexShort": "Codex",
+      "claudeShort": "Claude CLI"
+    },
+    "copyKey": "Copy Key​",
+    "clearKey": "Clear input​"
+  },
+  "claude": {
+    "import": {
+      "localSuccess": "Импортировано локальных входов Claude Desktop: {{count}}",
+      "localClient": "Импорт текущего Desktop",
+      "jsonLabel": "Данные JSON",
+      "jsonPlaceholder": "Вставьте экспортированный JSON аккаунта Claude",
+      "localDesc": "Читает текущий вход в официальном Claude Desktop и копирует его в этот инструмент как локальный снимок аккаунта.",
+      "desktopJsonPlaceholder": "Вставьте экспортированный JSON аккаунта Claude Desktop",
+      "cliJsonPlaceholder": "Вставьте экспортированный JSON аккаунта Claude CLI"
+    },
+    "deleteCurrentDisabled": "Текущий аккаунт нельзя удалить",
+    "flowNotice": {
+      "title": "Аккаунты Claude",
+      "desc": "Этот инструмент управляет состоянием входа Claude Desktop и Anthropic API Key. Вход Desktop выполняется в окне авторизации этой платформы и сначала сохраняется локально; в официальный Claude Desktop он записывается только при переключении аккаунта.",
+      "permission": "Права доступа: чтение и запись каталога данных официального Claude Desktop. API Key и снимки Desktop сохраняются в локальных данных аккаунтов этого инструмента.",
+      "network": "Сеть: окно входа Desktop открывает claude.ai; обновление аккаунта может обращаться к интерфейсам Claude Web. Импорт API Key сам по себе не использует сеть.",
+      "desktopDesc": "Этот инструмент управляет состоянием входа Claude Desktop. Вход сначала сохраняется локально и записывается в официальный Claude Desktop только при переключении аккаунта.",
+      "cliDesc": "Инструмент управляет Claude Code OAuth и API Key разных провайдеров. Переключение OAuth записывает локальную конфигурацию Claude Code; API Key записывает env провайдера в Claude Code settings.json.",
+      "desktopPermission": "Область разрешений: чтение/запись каталога данных официального приложения Claude Desktop. Снимки Desktop сохраняются в локальных данных аккаунтов этого инструмента.",
+      "cliPermission": "Права: чтение/запись локальной конфигурации Claude Code и учетных данных Claude Code в macOS Keychain; аккаунты API Key хранятся локально в этом инструменте и при переключении или запуске CLI записываются открытым текстом в env файла settings.json.",
+      "desktopNetwork": "Сеть: окно входа Desktop открывает claude.ai; обновление аккаунта может обращаться к endpoint Claude Web.",
+      "cliNetwork": "Сеть: OAuth обращается к официальной авторизации Claude и endpoint token/profile/usage; импорт API Key не использует сеть, после запуска Claude CLI обращается к выбранному провайдеру."
+    },
+    "search": "Поиск аккаунтов Claude...",
+    "noAccounts": "Нет аккаунтов Claude",
+    "addAccount": {
+      "title": "Добавить аккаунт Claude",
+      "desktopTitle": "Добавить аккаунт Claude Desktop",
+      "cliTitle": "Добавить аккаунт Claude CLI"
+    },
+    "deleteConfirm": "Удалить аккаунт Claude {{email}}?",
+    "switch": {
+      "success": "Переключено успешно"
+    },
+    "instances": {
+      "unsupportedDescPlatform": "Несколько экземпляров Claude Desktop поддерживаются только на macOS, Windows и Linux.",
+      "launchDialogTitle": "Запустить экземпляр",
+      "launchCommand": "Команда запуска",
+      "executeInTerminal": "Запустить в терминале",
+      "startSuccess": "Claude Desktop запущен"
+    },
+    "quota": {
+      "title": "Лимит",
+      "fiveHour": "Текущая сессия",
+      "sevenDay": "Текущая неделя (все модели)",
+      "sonnet": "Sonnet 7 дн.",
+      "extra": "Доп. использование",
+      "empty": "Нет лимита",
+      "unsupported": "Не обновляется",
+      "updatedAt": "Обновлено: {{time}}",
+      "resetAt": "{{label}} сброс: {{time}}",
+      "refreshSuccess": "Лимит обновлён",
+      "refreshAllDone": "Обновление лимита завершено",
+      "refreshFailed": "Не удалось обновить лимит: {{error}}",
+      "refreshWithWarning": "Не удалось обновить лимит: {{error}}",
+      "notUpdated": "Лимит не обновлен",
+      "updated": "Обновлено",
+      "notUpdatedShort": "Не обновлено"
+    },
+    "addTabs": {
+      "desktop": "Рабочий",
+      "oauth": "OAuth",
+      "apiKey": "API-ключ",
+      "import": "Локально/JSON"
+    },
+    "authMode": {
+      "oauth": "Режим OAuth",
+      "setup_token": "Токен настройки",
+      "api_key": "API-ключ",
+      "desktop_oauth": "Вход Desktop"
+    },
+    "apiKey": {
+      "desc": "Сохраняет API Key Claude CLI как отдельные учетные данные. При переключении или запуске CLI env провайдера записывается в Claude Code settings.json, без записи состояния входа Claude Desktop.",
+      "nameLabel": "Имя аккаунта",
+      "namePlaceholder": "Необязательно, напр. APIKEY.FUN",
+      "keyLabel": "Ключ API",
+      "placeholder": "Вставьте API Key провайдера",
+      "hide": "Скрыть API Key",
+      "show": "Показать API Key",
+      "hint": "Аккаунты API Key предназначены только для Claude CLI. Они записываются открытым текстом в env файла Claude Code settings.json, не влияют на Claude Desktop и не поддерживают обновление квоты подписки.",
+      "importAction": "Импорт API Key",
+      "required": "Введите API Key",
+      "importSuccess": "Аккаунт Claude API Key импортирован: {{name}}",
+      "quotaUnsupported": "Аккаунты API Key не обновляются",
+      "switchDisabled": "Аккаунт API Key нельзя переключить в Claude Desktop",
+      "cliUnsupported": "Аккаунт API Key не может запускать Claude CLI",
+      "providerLabel": "Провайдер",
+      "customProvider": "Свой",
+      "endpointLabel": "Endpoint провайдера",
+      "officialEndpoint": "Офиц. по умолч.",
+      "baseUrlLabel": "Базовый URL",
+      "baseUrlPlaceholder": "Пусто: официальный Anthropic",
+      "keyFieldLabel": "Поле auth",
+      "baseUrlInvalid": "Base URL не является URL"
+    },
+    "desktopOAuth": {
+      "title": "Вход Claude Desktop",
+      "desc": "Вход Claude внутри инструмента; Google, Apple, почта и free поддерживаются.",
+      "start": "Открыть вход",
+      "hint": "Сначала локально; запись в Claude Desktop только при переключении.",
+      "nameLabel": "Имя аккаунта",
+      "namePlaceholder": "Необязательно, например Claude Free",
+      "waiting": "Войдите в окне Claude, затем завершите импорт здесь.",
+      "profileDir": "Изолированный каталог profile",
+      "complete": "Завершить",
+      "localTitle": "Импорт текущего Desktop",
+      "localDesc": "Копирует текущую сессию Claude Desktop как локальный снимок.",
+      "localAction": "Импорт",
+      "localSuccess": "Локальный вход Claude Desktop импортирован: {{name}}",
+      "importSuccess": "Вход Claude Desktop импортирован: {{name}}",
+      "switchHint": "Переключить официальный Claude Desktop",
+      "planUnknown": "План неизвестен"
+    },
+    "oauth": {
+      "title": "Авторизация Claude OAuth",
+      "desc": "Откройте официальную страницу авторизации Claude OAuth, затем вставьте callback-ссылку или code для импорта аккаунта.",
+      "start": "Авторизовать OAuth",
+      "proRequiredHint": "Официальный OAuth Claude обычно используется для Claude Code. Если страница останавливается на обновлении тарифа или отказе в доступе, используйте вход Claude Desktop.",
+      "openInstruction": "Нажмите кнопку ниже и завершите авторизацию Claude OAuth в браузере.",
+      "waiting": "После завершения вставьте ниже финальный адрес страницы или показанный code.",
+      "authUrl": "Ссылка авторизации",
+      "preparing": "Создание ссылки авторизации...",
+      "openInBrowser": "Открыть в браузере",
+      "openFailed": "Не удалось открыть ссылку авторизации: {{error}}",
+      "callbackPlaceholder": "Вставьте callback-ссылку или code авторизации",
+      "callbackRequired": "Вставьте callback-ссылку или code после завершения авторизации",
+      "authorizeUrlNotCallback": "Это стартовая ссылка авторизации выше, а не code после завершения. Сначала завершите авторизацию в браузере, затем скопируйте финальный адрес страницы или показанный code.",
+      "complete": "Завершить импорт",
+      "emailPlaceholder": "Почта (заполните, если не определена)",
+      "importSuccess": "Авторизация Claude OAuth импортирована: {{name}}"
+    },
+    "plan": {
+      "label": "Метка тарифа",
+      "selectPlaceholder": "Выбрать",
+      "updateFailed": "Не удалось обновить метку тарифа: {{error}}"
+    },
+    "legacyOAuth": {
+      "switchDisabled": "Старые OAuth-аккаунты нельзя переключить в Claude Desktop",
+      "quotaUnsupported": "Старые OAuth-аккаунты больше не поддерживают обновление",
+      "cliUnsupported": "Старые OAuth-аккаунты не могут запускать Claude CLI"
+    },
+    "cli": {
+      "quickLaunch": "Запуск CLI",
+      "selectWorkingDir": "Выберите рабочую папку Claude CLI",
+      "launchSuccess": "Claude CLI запущен",
+      "prepared": "Claude CLI готов",
+      "launchFailed": "Не удалось запустить Claude CLI: {{error}}",
+      "localTitle": "Импортировать текущий Claude Code",
+      "localDesc": "Считывает текущее локальное состояние входа OAuth Claude Code и копирует его как локальный снимок аккаунта.",
+      "localSuccess": "Локальный вход Claude Code импортирован: {{name}}"
+    },
+    "accountNote": {
+      "title": "Заметка аккаунта",
+      "desc": "Добавьте локальную заметку для {{email}}, чтобы легче узнавать аккаунт при переключении.",
+      "label": "Заметка аккаунта",
+      "placeholder": "Например: Free основной, Max 20x, командный аккаунт",
+      "saved": "Заметка аккаунта сохранена",
+      "saveFailed": "Не удалось сохранить заметку: {{error}}",
+      "emptyTitle": "Добавить заметку аккаунта",
+      "short": "Заметка",
+      "addShort": "Заметка"
+    },
+    "account": {
+      "signedInWith": "Вход через {{provider}}",
+      "userId": "ID пользователя",
+      "nickname": "Никнейм"
+    },
+    "selection": {
+      "selected": "Выбрано: {{count}}"
+    },
+    "deleteSelectedLabel": "{{count}} аккаунтов",
+    "subPlatform": {
+      "label": "Подплатформа Claude",
+      "desktop": "Claude Desktop приложение",
+      "cli": "Claude командная строка"
+    },
+    "searchDesktop": "Поиск аккаунтов Claude Desktop...",
+    "searchCli": "Поиск аккаунтов Claude CLI...",
+    "noDesktopAccounts": "Аккаунтов Claude Desktop пока нет",
+    "noCliAccounts": "Аккаунтов Claude CLI пока нет"
   }
 }

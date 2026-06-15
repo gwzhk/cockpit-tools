@@ -30,6 +30,8 @@ import { confirm as confirmDialog, open } from "@tauri-apps/plugin-dialog";
 import md5 from "blueimp-md5";
 import {
   CODEX_API_SERVICE_BIND_ID,
+  CODEX_PROVIDER_GATEWAY_BIND_PREFIX,
+  buildCodexProviderGatewayBindId,
   InstanceInitMode,
   InstanceLaunchMode,
   InstanceProfile,
@@ -58,7 +60,14 @@ import { CodexSpeedSelect } from "./codex/CodexSpeedSelect";
 import type { CodexAppSpeed } from "../types/codex";
 
 type MessageState = { text: string; tone?: "error" };
-type AccountLike = { id: string; email: string; tags?: string[] | null };
+type AccountLike = {
+  id: string;
+  email: string;
+  tags?: string[] | null;
+  auth_mode?: string;
+  api_wire_api?: string | null;
+  api_base_url?: string | null;
+};
 type InstanceSortField = "createdAt" | "lastLaunchedAt";
 type SortDirection = "asc" | "desc";
 type StartInstanceOutcome =
@@ -84,6 +93,7 @@ interface InstancesManagerProps<TAccount extends AccountLike> {
   appType?:
     | "antigravity"
     | "codex"
+    | "claude"
     | "vscode"
     | "windsurf"
     | "kiro"
@@ -96,6 +106,10 @@ interface InstancesManagerProps<TAccount extends AccountLike> {
     | "workbuddy";
   onInstanceStarted?: (instance: InstanceProfile) => void | Promise<void>;
   resolveStartSuccessMessage?: (instance: InstanceProfile) => string;
+  isAccountAllowedForLaunchMode?: (
+    account: TAccount,
+    launchMode: InstanceLaunchMode,
+  ) => boolean;
   toolbarExtraActions?: ReactNode;
 }
 
@@ -284,6 +298,7 @@ export function InstancesManager<TAccount extends AccountLike>({
   appType = "antigravity",
   onInstanceStarted,
   resolveStartSuccessMessage,
+  isAccountAllowedForLaunchMode,
   toolbarExtraActions,
 }: InstancesManagerProps<TAccount>) {
   const { t } = useTranslation();
@@ -378,21 +393,22 @@ export function InstancesManager<TAccount extends AccountLike>({
   );
   const isGeminiApp = appType === "gemini";
   const isCodexApp = appType === "codex";
-  const supportsLaunchModeSelect = isCodexApp;
+  const isClaudeApp = appType === "claude";
+  const supportsLaunchModeSelect = isCodexApp || isClaudeApp;
   const resolveInstanceLaunchMode = (
     instance?: InstanceProfile | null,
   ): InstanceLaunchMode => {
     if (isGeminiApp) {
       return "cli";
     }
-    if (isCodexApp) {
+    if (isCodexApp || isClaudeApp) {
       return instance?.launchMode ?? "app";
     }
     return "app";
   };
   const usesTerminalLaunch = (instance: InstanceProfile) =>
     isGeminiApp ||
-    (isCodexApp && resolveInstanceLaunchMode(instance) === "cli");
+    ((isCodexApp || isClaudeApp) && resolveInstanceLaunchMode(instance) === "cli");
   const supportsStopControl =
     !isGeminiApp && instances.some((item) => !usesTerminalLaunch(item));
   const hidePathFieldInEditModal = isGeminiApp && Boolean(editing?.isDefault);
@@ -411,19 +427,83 @@ export function InstancesManager<TAccount extends AccountLike>({
       isCodexApp && value === CODEX_API_SERVICE_BIND_ID,
     [isCodexApp],
   );
+  const parseProviderGatewayBindAccountId = useCallback(
+    (value?: string | null) => {
+      if (!isCodexApp) return null;
+      const trimmed = value?.trim() || "";
+      if (!trimmed.startsWith(CODEX_PROVIDER_GATEWAY_BIND_PREFIX)) return null;
+      const accountId = trimmed.slice(CODEX_PROVIDER_GATEWAY_BIND_PREFIX.length).trim();
+      return accountId || null;
+    },
+    [isCodexApp],
+  );
+  const shouldBindAccountViaProviderGateway = useCallback(
+    (account?: TAccount | null) =>
+      isCodexApp &&
+      account?.auth_mode === "apikey" &&
+      account.api_wire_api === "chat_completions",
+    [isCodexApp],
+  );
+  const resolveBindAccountValue = useCallback(
+    (accountId?: string | null) => {
+      if (!accountId) return null;
+      if (isApiServiceBindId(accountId)) return accountId;
+      if (parseProviderGatewayBindAccountId(accountId)) return accountId;
+      const account = accounts.find((item) => item.id === accountId) || null;
+      if (account && shouldBindAccountViaProviderGateway(account)) {
+        return buildCodexProviderGatewayBindId(account.id);
+      }
+      return accountId;
+    },
+    [
+      accounts,
+      isApiServiceBindId,
+      parseProviderGatewayBindAccountId,
+      shouldBindAccountViaProviderGateway,
+    ],
+  );
   const resolveBoundAccount = useCallback(
     (bindAccountId?: string | null) => {
       if (!bindAccountId) {
-        return { account: null, missing: false, isApiService: false };
+        return {
+          account: null,
+          accountId: null,
+          missing: false,
+          isApiService: false,
+          isProviderGateway: false,
+        };
       }
       if (isApiServiceBindId(bindAccountId)) {
-        return { account: null, missing: false, isApiService: true };
+        return {
+          account: null,
+          accountId: null,
+          missing: false,
+          isApiService: true,
+          isProviderGateway: false,
+        };
       }
+      const providerGatewayAccountId = parseProviderGatewayBindAccountId(bindAccountId);
+      const targetAccountId = providerGatewayAccountId || bindAccountId;
       const account =
-        accounts.find((item) => item.id === bindAccountId) || null;
-      return { account, missing: !account, isApiService: false };
+        accounts.find((item) => item.id === targetAccountId) || null;
+      return {
+        account,
+        accountId: targetAccountId,
+        missing: !account,
+        isApiService: false,
+        isProviderGateway: Boolean(providerGatewayAccountId),
+      };
     },
-    [accounts, isApiServiceBindId],
+    [accounts, isApiServiceBindId, parseProviderGatewayBindAccountId],
+  );
+  const filterAccountsForLaunchMode = useCallback(
+    (source: TAccount[], launchMode: InstanceLaunchMode) =>
+      isAccountAllowedForLaunchMode
+        ? source.filter((account) =>
+            isAccountAllowedForLaunchMode(account, launchMode),
+          )
+        : source,
+    [isAccountAllowedForLaunchMode],
   );
 
   const markInstanceStarting = useCallback((instanceId: string) => {
@@ -637,6 +717,19 @@ export function InstancesManager<TAccount extends AccountLike>({
     }
   }, [defaultInstanceId, editing, formCopySourceInstanceId, formInitMode]);
 
+  useEffect(() => {
+    if (!isAccountAllowedForLaunchMode || !formBindAccountId) return;
+    const selected = resolveBoundAccount(formBindAccountId).account;
+    if (!selected) return;
+    if (isAccountAllowedForLaunchMode(selected, formLaunchMode)) return;
+    setFormBindAccountId("");
+  }, [
+    formBindAccountId,
+    formLaunchMode,
+    isAccountAllowedForLaunchMode,
+    resolveBoundAccount,
+  ]);
+
   const openEditModal = (instance: InstanceProfile) => {
     setOpenInlineMenuId(null);
     setEditing(instance);
@@ -798,7 +891,7 @@ export function InstancesManager<TAccount extends AccountLike>({
           editing.initialized === false && !isEditingDefault
         );
         if (canEditBind) {
-          const nextBindId = formBindAccountId;
+          const nextBindId = resolveBindAccountValue(formBindAccountId);
           updatePayload.bindAccountId = nextBindId;
         }
         if (isEditingDefault) {
@@ -824,7 +917,9 @@ export function InstancesManager<TAccount extends AccountLike>({
           initMode: formInitMode,
           launchMode: nextLaunchMode,
           appSpeed: isCodexApp ? formAppSpeed : undefined,
-          bindAccountId: isCreateEmpty ? null : formBindAccountId,
+          bindAccountId: isCreateEmpty
+            ? null
+            : resolveBindAccountValue(formBindAccountId),
           copySourceInstanceId: formCopySourceInstanceId || defaultInstanceId,
         });
         setMessage({
@@ -871,6 +966,7 @@ export function InstancesManager<TAccount extends AccountLike>({
     const rawApp = message.slice("APP_PATH_NOT_FOUND:".length);
     const app =
       rawApp === "codex" ||
+      rawApp === "claude" ||
       rawApp === "antigravity" ||
       rawApp === "vscode" ||
       rawApp === "windsurf" ||
@@ -1027,8 +1123,8 @@ export function InstancesManager<TAccount extends AccountLike>({
   };
 
   const handleShowFloatingCard = async (instance: InstanceProfile) => {
-    const { account, missing } = resolveAccount(instance);
-    if (!instance.bindAccountId || !account || missing) {
+    const { accountId, missing } = resolveAccount(instance);
+    if (!instance.bindAccountId || !accountId || missing) {
       return;
     }
     try {
@@ -1038,7 +1134,7 @@ export function InstancesManager<TAccount extends AccountLike>({
         instanceName: instance.isDefault
           ? t("instances.defaultName", "默认实例")
           : instance.name || t("instances.defaultName", "默认实例"),
-        boundAccountId: instance.bindAccountId,
+        boundAccountId: accountId,
       });
     } catch (e) {
       setMessage({ text: String(e), tone: "error" });
@@ -1179,6 +1275,35 @@ export function InstancesManager<TAccount extends AccountLike>({
       instances.find((item) => item.id === formCopySourceInstanceId) || null
     );
   }, [defaultInstanceId, formCopySourceInstanceId, instances]);
+  const availableCopySourceInstances = useMemo(
+    () =>
+      sortedInstances.filter(
+        (instance) =>
+          instance.isDefault ||
+          resolveInstanceLaunchMode(instance) === formLaunchMode,
+      ),
+    [formLaunchMode, sortedInstances],
+  );
+
+  useEffect(() => {
+    if (editing || formInitMode !== "copy") return;
+    if (!formCopySourceInstanceId) {
+      setFormCopySourceInstanceId(defaultInstanceId);
+      return;
+    }
+    const selected = availableCopySourceInstances.find(
+      (instance) => instance.id === formCopySourceInstanceId,
+    );
+    if (!selected) {
+      setFormCopySourceInstanceId(defaultInstanceId);
+    }
+  }, [
+    availableCopySourceInstances,
+    defaultInstanceId,
+    editing,
+    formCopySourceInstanceId,
+    formInitMode,
+  ]);
 
   const formCodexQuickPresetOptions = useMemo(
     () => [
@@ -1566,31 +1691,33 @@ export function InstancesManager<TAccount extends AccountLike>({
           </span>
         </button>
       )}
-      {visibleAccounts.map((account) => (
-        <button
-          type="button"
-          key={account.id}
-          className={`account-select-item ${value === account.id && !isFollowingCurrent ? "active" : ""}`}
-          data-account-select-active={
-            value === account.id && !isFollowingCurrent ? "true" : undefined
-          }
-          onClick={() => {
-            onChange(account.id);
-            onClose();
-          }}
-        >
-          <span className="account-select-email-row">
-            <span
-              className="account-select-email"
-              title={maskAccountText(account.email)}
-            >
-              {maskAccountText(account.email)}
+      {visibleAccounts.map((account) => {
+        const bindValue = resolveBindAccountValue(account.id) ?? account.id;
+        const active = value === bindValue && !isFollowingCurrent;
+        return (
+          <button
+            type="button"
+            key={account.id}
+            className={`account-select-item ${active ? "active" : ""}`}
+            data-account-select-active={active ? "true" : undefined}
+            onClick={() => {
+              onChange(bindValue);
+              onClose();
+            }}
+          >
+            <span className="account-select-email-row">
+              <span
+                className="account-select-email"
+                title={maskAccountText(account.email)}
+              >
+                {maskAccountText(account.email)}
+              </span>
+              {renderAccountBadge?.(account)}
             </span>
-            {renderAccountBadge?.(account)}
-          </span>
-          {renderAccountQuotaPreview(account)}
-        </button>
-      ))}
+            {renderAccountQuotaPreview(account)}
+          </button>
+        );
+      })}
       {visibleAccounts.length === 0 &&
       !isCodexApp &&
       !allowUnbound &&
@@ -1630,15 +1757,25 @@ export function InstancesManager<TAccount extends AccountLike>({
       useState<AccountSelectPortalPosition | null>(null);
     const [searchValue, setSearchValue] = useState("");
     const [tagFilter, setTagFilter] = useState<string[]>([]);
+    const targetLaunchMode = useMemo(() => {
+      const instance = instanceId
+        ? instances.find((item) => item.id === instanceId)
+        : null;
+      return resolveInstanceLaunchMode(instance);
+    }, [instanceId, instances]);
+    const selectableAccounts = useMemo(
+      () => filterAccountsForLaunchMode(accounts, targetLaunchMode),
+      [accounts, filterAccountsForLaunchMode, targetLaunchMode],
+    );
 
     const availableTags = useMemo(
-      () => collectInstanceAccountTags(accounts),
-      [accounts],
+      () => collectInstanceAccountTags(selectableAccounts),
+      [selectableAccounts],
     );
     const visibleAccounts = useMemo(() => {
       const normalizedQuery = searchValue.trim().toLowerCase();
       const selectedTags = new Set(tagFilter.map(normalizeInstanceAccountTag));
-      return accounts.filter((account) => {
+      return selectableAccounts.filter((account) => {
         if (selectedTags.size > 0) {
           const accountTags = (account.tags || [])
             .map(normalizeInstanceAccountTag)
@@ -1657,7 +1794,7 @@ export function InstancesManager<TAccount extends AccountLike>({
           .toLowerCase();
         return haystack.includes(normalizedQuery);
       });
-    }, [accounts, getAccountSearchText, searchValue, tagFilter]);
+    }, [getAccountSearchText, searchValue, selectableAccounts, tagFilter]);
 
     const toggleTagFilter = useCallback((tag: string) => {
       setTagFilter((prev) =>
@@ -1849,15 +1986,19 @@ export function InstancesManager<TAccount extends AccountLike>({
       useState<AccountSelectPortalPosition | null>(null);
     const [searchValue, setSearchValue] = useState("");
     const [tagFilter, setTagFilter] = useState<string[]>([]);
+    const selectableAccounts = useMemo(
+      () => filterAccountsForLaunchMode(accounts, formLaunchMode),
+      [accounts, filterAccountsForLaunchMode, formLaunchMode],
+    );
 
     const availableTags = useMemo(
-      () => collectInstanceAccountTags(accounts),
-      [accounts],
+      () => collectInstanceAccountTags(selectableAccounts),
+      [selectableAccounts],
     );
     const visibleAccounts = useMemo(() => {
       const normalizedQuery = searchValue.trim().toLowerCase();
       const selectedTags = new Set(tagFilter.map(normalizeInstanceAccountTag));
-      return accounts.filter((account) => {
+      return selectableAccounts.filter((account) => {
         if (selectedTags.size > 0) {
           const accountTags = (account.tags || [])
             .map(normalizeInstanceAccountTag)
@@ -1876,7 +2017,7 @@ export function InstancesManager<TAccount extends AccountLike>({
           .toLowerCase();
         return haystack.includes(normalizedQuery);
       });
-    }, [accounts, getAccountSearchText, searchValue, tagFilter]);
+    }, [getAccountSearchText, searchValue, selectableAccounts, tagFilter]);
 
     const toggleTagFilter = useCallback((tag: string) => {
       setTagFilter((prev) =>
@@ -2076,8 +2217,8 @@ export function InstancesManager<TAccount extends AccountLike>({
     }, [disabled, open]);
 
     const selected =
-      sortedInstances.find((item) => item.id === value) ||
-      sortedInstances.find((item) => item.isDefault) ||
+      availableCopySourceInstances.find((item) => item.id === value) ||
+      availableCopySourceInstances.find((item) => item.isDefault) ||
       null;
     const selectedLabel = selected
       ? selected.isDefault
@@ -2110,14 +2251,14 @@ export function InstancesManager<TAccount extends AccountLike>({
         </button>
         {open && !disabled && (
           <div className="account-select-menu">
-            {sortedInstances.length === 0 ? (
+            {availableCopySourceInstances.length === 0 ? (
               <div className="account-select-item active">
                 <span className="account-select-email muted">
                   {t("instances.defaultName", "默认实例")}
                 </span>
               </div>
             ) : (
-              sortedInstances.map((instance) => {
+              availableCopySourceInstances.map((instance) => {
                 const label = instance.isDefault
                   ? t("instances.defaultName", "默认实例")
                   : instance.name || "";
@@ -2144,7 +2285,7 @@ export function InstancesManager<TAccount extends AccountLike>({
   };
 
   const handleFormAccountChange = (nextId: string | null) => {
-    setFormBindAccountId(nextId ?? "");
+    setFormBindAccountId(resolveBindAccountValue(nextId) ?? "");
   };
 
   const handleInitGuideStart = async () => {
@@ -2174,13 +2315,14 @@ export function InstancesManager<TAccount extends AccountLike>({
       return;
     }
     if (!nextId) return;
-    const sameSelection = (instance.bindAccountId || null) === nextId;
+    const normalizedNextId = resolveBindAccountValue(nextId);
+    const sameSelection = (instance.bindAccountId || null) === normalizedNextId;
     if (sameSelection && !instance.followLocalAccount) return;
     setActionLoading(instance.id);
     try {
       await updateInstance({
         instanceId: instance.id,
-        bindAccountId: nextId,
+        bindAccountId: normalizedNextId,
         followLocalAccount: instance.isDefault ? false : undefined,
       });
     } catch (e) {
@@ -2428,7 +2570,7 @@ export function InstancesManager<TAccount extends AccountLike>({
                         ? t("instances.defaultName", "默认实例")
                         : instance.name}
                     </span>
-                    {isCodexApp && (
+                    {(isCodexApp || isClaudeApp) && (
                       <span
                         className={`instance-launch-mode-badge ${launchMode}`}
                       >
@@ -3058,7 +3200,7 @@ export function InstancesManager<TAccount extends AccountLike>({
                       missing={Boolean(
                         formBindAccountId &&
                         !isApiServiceBindId(formBindAccountId) &&
-                        !accounts.find((item) => item.id === formBindAccountId),
+                        resolveBoundAccount(formBindAccountId).missing,
                       )}
                     />
                   )}

@@ -33,7 +33,7 @@
         "promptCredits": "Crediti prompt",
         "creditPackage": "Pacchetto crediti",
         "sharedCreditPackage": "Pacchetto crediti condiviso",
-        "account": "Account",
+        "account": "Account​",
         "createdAt": "Data di creazione",
         "userId": "ID utente"
       },
@@ -48,7 +48,7 @@
         "all": "Tutti ({{count}})",
         "enterprise": "IMPRESA ({{count}})",
         "free": "GRATUITO ({{count}})",
-        "pro": "PRO ({{count}})",
+        "pro": "PRO ({{count}})​",
         "business": "AFFARI ({{count}})",
         "individual": "INDIVIDUALE ({{count}})",
         "validAccounts": "Account validi ({{count}})"
@@ -184,7 +184,7 @@
         "relativeHours": "{{hours}} h",
         "relativeHoursMinutes": "{{hours}} h {{minutes}} min",
         "relativeMinutes": "{{minutes}} min",
-        "relativeWithAbsolute": "{{relative}} ({{absolute}})"
+        "relativeWithAbsolute": "{{relative}} ({{absolute}})​"
       },
       "credits": {
         "leftInline": "{{left}} rimanenti",
@@ -197,7 +197,7 @@
         "planEndsInHours": "Si ripristina tra {{hours}}h"
       },
       "flowNotice": {
-        "alternative": "Alternativa: usa l'isolamento multi-istanza (diverso --user-data-dir). Accedi una volta per istanza e poi avvia per istanza per passare rapidamente all'ambiente account desiderato."
+        "alternative": "Isolamento multi-istanza: usa profili gestiti separati e accedi una volta per istanza per cambiare rapidamente ambiente account."
       },
       "injecting": "Iniezione in corso...",
       "usage": {
@@ -218,7 +218,7 @@
       "desc": "Quest’area è fissata in alto a destra su tutte le pagine per campagne o annunci del brand.",
       "action": "Vedi dettagli"
     },
-    "appName": "Cockpit Tools",
+    "appName": "Cockpit Tools​",
     "collapse": "Comprimi",
     "confirmDelete": "Conferma eliminazione",
     "confirmDeleteTag": "Conferma eliminazione tag",
@@ -228,14 +228,13 @@
     "selectAll": "Seleziona tutto"
   },
   "nav": {
-    "overview": "Antigravity IDE",
+    "overview": "Antigravity IDE​",
     "accounts": "Account",
     "wakeup": "Attività di risveglio",
-    "fingerprints": "Impronte",
     "settings": "Impostazioni",
-    "codex": "Codex",
-    "githubCopilot": "GitHub Copilot",
-    "windsurf": "Windsurf",
+    "codex": "Codex​",
+    "githubCopilot": "GitHub Copilot​",
+    "windsurf": "Windsurf​",
     "dashboard": "Pannello di controllo",
     "morePlatforms": "Altre piattaforme",
     "instances": "Multi-Istanza",
@@ -245,21 +244,35 @@
       "restart": "Riavvia",
       "installing": "Installazione"
     },
-    "gemini": "Gemini Cli",
-    "codebuddy": "CodeBuddy",
-    "qoder": "Qoder",
-    "trae": "Trae",
-    "codebuddyCn": "CodeBuddy CN",
+    "gemini": "Gemini Cli​",
+    "codebuddy": "CodeBuddy​",
+    "qoder": "Qoder​",
+    "trae": "Trae​",
+    "codebuddyCn": "CodeBuddy CN​",
     "zed": "Piattaforma Zed",
     "expandSidebar": "Espandi la barra laterale",
     "collapseSidebar": "Comprimi la barra laterale",
     "logs": "Registri",
+    "sponsors": "Sponsor",
+    "sponsorAppreciation": "Sostieni",
     "switchClassicLayoutEntry": "Passa al layout classico",
     "switchClassicLayoutTitle": "Passa al layout classico della barra laterale",
     "switchClassicLayoutDesc": "Il layout classico mostra l'intera navigazione delle piattaforme e supporta la chiusura della barra laterale. Puoi tornare indietro in qualsiasi momento da Impostazioni > Generale > Layout barra laterale.",
     "switchClassicLayoutDontAskAgain": "Non mostrare più questo avviso",
     "switchClassicLayoutConfirm": "Passa ora",
-    "2faManager": "Gestione 2FA"
+    "2faManager": "Gestione 2FA",
+    "apiRelay": "Relay API",
+    "claude": "Claude"
+  },
+  "sponsors": {
+    "pageTitle": "Sponsor",
+    "pageDesc": "Grazie a questi sponsor per il supporto a Cockpit Tools.",
+    "loading": "Caricamento sponsor...",
+    "emptyTitle": "Nessuno sponsor al momento",
+    "emptyDesc": "Il modulo sponsor remoto è attualmente disattivato.",
+    "listAriaLabel": "Elenco sponsor",
+    "defaultDescription": "Grazie per il supporto a Cockpit Tools.",
+    "openSponsor": "Apri"
   },
   "platformLayout": {
     "title": "Layout piattaforme",
@@ -269,10 +282,11 @@
     "sidebarToggle": "Mostra nella barra laterale",
     "dashboardToggle": "Mostra nella dashboard",
     "trayToggle": "Mostra nell'area di notifica",
+    "apiRelayTrayDisabled": "Il relay non può ancora comparire nell'area di notifica",
     "hiddenBadge": "Nascosto",
     "openFromMore": "Gestisci layout piattaforme",
     "dragHandleLabel": "Trascina per riordinare",
-    "tipWithGroups": "Trascina per riordinare. Nella barra laterale possono essere mostrate al massimo tre voci. I sotto-elementi del gruppo non hanno i toggle barra laterale/dashboard e servono solo per la barra dei menu e il cambio della piattaforma predefinita.",
+    "tipWithGroups": "Trascina per riordinare. Nella barra laterale possono comparire al massimo {{max}} voci. Gli elementi figlio dei gruppi non hanno interruttori per barra laterale/dashboard e servono solo per la barra dei menu e la piattaforma predefinita.",
     "addGroup": "Aggiungi gruppo",
     "editGroup": "Modifica gruppo",
     "deleteGroup": "Elimina gruppo",
@@ -352,19 +366,19 @@
       "ready": "Pronta"
     },
     "labels": {
-      "path": "Directory",
+      "path": "Directory​",
       "args": "Argomenti di avvio",
       "argsEmpty": "Nessuno",
       "bindAccount": "Account collegato",
       "unbound": "Non collegato",
       "pendingInit": "In attesa di inizializzazione (avvia prima una volta)",
-      "quota": "Quota",
+      "quota": "Quota​",
       "lastLaunched": "Ultimo avvio",
       "argsPresent": "Arg presenti"
     },
     "columns": {
       "instance": "Istanza",
-      "email": "Account",
+      "email": "Account​",
       "quota": "Stato quota",
       "actions": "Azioni",
       "speed": "Velocità"
@@ -509,7 +523,7 @@
       "force": {
         "title": "Riavvio forzato",
         "principle": "Identifica i processi tramite --user-data-dir e li chiude forzatamente (SIGKILL / taskkill /F), quindi avvia l'istanza di destinazione.",
-        "commandMac": "macOS/Linux: pkill -9 -f \"--user-data-dir <dir>\"",
+        "commandMac": "macOS/Linux: pkill -9 -f \"--user-data-dir <dir>\"​",
         "commandWin": "Windows: taskkill /F /PID <pid> (corrispondenza --user-data-dir)",
         "pros": "Può riavviare con precisione una singola istanza.",
         "cons": "Potrebbe causare un avviso di \"chiusura imprevista\", rischio di perdita di dati non salvati."
@@ -549,7 +563,8 @@
     "tabs": {
       "general": "Generale",
       "network": "Rete",
-      "about": "Informazioni"
+      "about": "Informazioni",
+      "data": "Gestione dati"
     },
     "general": {
       "appearance": "Aspetto",
@@ -572,7 +587,7 @@
       "every15min": "Ogni 15 minuti",
       "every30min": "Ogni 30 minuti",
       "every1hour": "Ogni ora",
-      "minutes": "min",
+      "minutes": "min​",
       "refreshIntervalLimited": "Il risveglio al ripristino della quota è abilitato, quindi l'intervallo minimo di aggiornamento è di 2 minuti.",
       "closeBehavior": "Comportamento alla chiusura",
       "closeBehaviorDesc": "Scegli azione alla chiusura della finestra",
@@ -600,8 +615,8 @@
       "floatingCardShowNowAction": "Mostra la scheda flottante",
       "dataDir": "Directory dati",
       "dataDirDesc": "Posizione di archiviazione per account e file di configurazione.",
-      "fpDir": "Archiviazione Antigravity IDE",
-      "fpDirDesc": "Posizione dei file di dati di Antigravity IDE.",
+      "topRightAdVisible": "Mostra promo superiore",
+      "topRightAdVisibleDesc": "Nasconde lo spazio promo superiore nell’app. La pagina Sponsor non viene modificata.",
       "opencodeTitle": "Integrazione OpenCode",
       "opencodeRestart": "Riavvia OpenCode quando si cambia Codex",
       "opencodeRestartDesc": "Sincronizza le informazioni dell'account Codex in OpenCode",
@@ -616,6 +631,11 @@
       "codexAppPathPlaceholder": "Percorso predefinito",
       "codexPathSelect": "Seleziona",
       "codexPathReset": "Ripristina predefinito",
+      "codexSyncWsl": "Sincronizza Codex con WSL",
+      "codexSyncWslDesc": "Dopo il cambio dell'account Codex predefinito, anche auth.json e config.toml vengono scritti nella directory Codex in WSL.",
+      "codexWslConfigDir": "Directory Codex WSL",
+      "codexWslConfigDirDesc": "Inserisci la directory .codex in WSL. I percorsi \\\\wsl.localhost\\ sono supportati.",
+      "codexWslConfigDirPlaceholder": "Esempio: \\\\wsl.localhost\\Ubuntu-24.04\\home\\user\\.codex",
       "vscodeTitle": "Avvio di VS Code",
       "vscodeAppPath": "Percorso app VS Code",
       "vscodeAppPathDesc": "Lascia vuoto per usare il percorso predefinito",
@@ -759,7 +779,10 @@
       "codexAppSpeedFast": "Rapida",
       "codexAppSpeedLaunch": "Riavvia Codex",
       "codexAppSpeedSaveFailed": "Impossibile salvare la velocità di Codex: {{error}}",
-      "codexAppSpeedLaunchFailed": "Impossibile riavviare Codex: {{error}}"
+      "codexAppSpeedLaunchFailed": "Impossibile riavviare Codex: {{error}}",
+      "claudeSettingsTitle": "Impostazioni Claude Desktop",
+      "claudeAutoRefresh": "Aggiornamento automatico quota Claude Desktop",
+      "claudeAutoRefreshDesc": "Aggiorna automaticamente in background la cache delle quote degli account Claude Desktop."
     },
     "network": {
       "apiTitle": "API della cabina di pilotaggio antigravità",
@@ -801,16 +824,16 @@
       "proxyUrlRequired": "L'URL del proxy non può essere vuoto quando il proxy globale è abilitato."
     },
     "about": {
-      "appName": "Cockpit Tools",
+      "appName": "Cockpit Tools​",
       "slogan": "Soluzione Professionale per la Gestione degli Account",
       "author": "Autore",
-      "wechat": "WeChat",
+      "wechat": "WeChat​",
       "github": "Repository GitHub",
-      "alipay": "Alipay",
+      "alipay": "Alipay​",
       "wechatpay": "WeChat paga",
-      "sponsor": "Sponsor",
+      "sponsor": "Sponsor​",
       "sponsorDesc": "Sostenere lo sviluppo",
-      "feedback": "Feedback",
+      "feedback": "Feedback​",
       "feedbackDesc": "Segnalare problemi/suggerimenti",
       "supportDev": "Supporta lo Sviluppo",
       "checkUpdate": "Controlla aggiornamenti",
@@ -928,6 +951,66 @@
         "unsupportedLegacyFile": "Questo formato di backup account legacy non è riconosciuto",
         "unsupportedVersion": "Questa versione dell'app non supporta quella versione del pacchetto"
       }
+    },
+    "webdav": {
+      "groupTitle": "Sincronizzazione WebDAV",
+      "enabledTitle": "Sincronizzazione backup WebDAV",
+      "enabledDesc": "Predefinito Jianguoyun, può essere modificato in qualsiasi servizio WebDAV.",
+      "urlTitle": "Indirizzo del servizio",
+      "urlDesc": "Indirizzo predefinito di Jianguoyun: https://dav.jianguoyun.com/dav/",
+      "usernameTitle": "Account​",
+      "usernameDesc": "Jianguoyun utilizza l'e-mail del tuo account.",
+      "usernamePlaceholder": "E-mail o nome utente",
+      "passwordTitle": "Password dell'applicazione",
+      "passwordDesc": "Salvata localmente; lascia vuoto per mantenere la password esistente.",
+      "passwordPlaceholder": "Password dell'applicazione di terze parti Jianguoyun",
+      "passwordSavedPlaceholder": "Salvata; lascia vuoto per mantenerla",
+      "clearPassword": "Cancella",
+      "remoteDirTitle": "Cartella remota",
+      "remoteDirDesc": "Vengono gestiti solo i file di backup di Cockpit in questa cartella.",
+      "statusTitle": "Stato di sincronizzazione",
+      "statusDesc": "Il ripristino remoto richiede una selezione manuale e non sovrascrive mai silenziosamente i dati locali.",
+      "lastUpload": "Ultimo caricamento: {{time}}",
+      "lastDownload": "Ultimo ripristino: {{time}}",
+      "never": "Non ancora sincronizzato",
+      "testAction": "Testa/Salva configurazione",
+      "uploadAction": "Crea e carica",
+      "syncAction": "Sincronizza configurazione",
+      "syncLatestConfirm": "Sei sicuro di voler scaricare l'ultimo backup remoto {{name}} e sincronizzarlo localmente? Questo sovrascriverà i dati locali esistenti.",
+      "remoteListTitle": "Backup remoti",
+      "remoteListDesc": "Vengono mostrati solo i file JSON e ZIP che corrispondono ai nomi dei backup automatici/manuali di Cockpit.",
+      "emptyTitle": "Nessun backup remoto",
+      "emptyDesc": "Salva le impostazioni, quindi crea e carica un backup.",
+      "unknownTime": "Sconosciuto",
+      "restoreAction": "Ripristina",
+      "restoreConfirm": "Ripristinare i dati dal backup remoto {{name}}?",
+      "deleteConfirm": "Eliminare il backup remoto {{name}}?",
+      "feedback": {
+        "testingAndSaving": "Salvataggio e test della connessione WebDAV...",
+        "saveAndTestSuccess": "Configurazione salvata e test di connessione riuscito!",
+        "saveSuccessTestFailed": "Configurazione salvata, ma il test di connessione è fallito: {{message}}",
+        "saveAndTestFailed": "Salvataggio e test della connessione falliti: {{error}}",
+        "uploading": "Creazione e caricamento del backup...",
+        "uploadSuccess": "Caricato/i {{count}} file, ripulito/i {{deleted}} backup remoto/i scaduto/i",
+        "uploadFailed": "Caricamento su WebDAV fallito: {{error}}",
+        "listFailed": "Caricamento dei backup remoti fallito: {{error}}",
+        "loadSettingsFailed": "Caricamento delle impostazioni WebDAV fallito: {{error}}",
+        "restoring": "Lettura del backup remoto e importazione...",
+        "restoreEmpty": "Nessun dato è stato ripristinato dal backup remoto",
+        "deleteSuccess": "Backup remoto eliminato",
+        "deleteFailed": "Eliminazione del backup remoto fallita: {{error}}",
+        "syncingLatest": "Sincronizzazione dell'ultima configurazione remota...",
+        "syncFailed": "Sincronizzazione dell'ultima configurazione fallita: {{error}}",
+        "noRemoteBackup": "Nessun file di backup ripristinabile trovato sul telecomando"
+      },
+      "errors": {
+        "notEnabled": "Abilita prima la sincronizzazione WebDAV"
+      },
+      "retentionTitle": "Remote Retention Days",
+      "retentionDesc": "Backups older than this on the cloud will be removed during the next sync.",
+      "retentionUnit": "days",
+      "collapseAll": "Collapse remote backups",
+      "expandAll": "Expand all remote backups ({{count}} more)"
     }
   },
   "appPath": {
@@ -959,7 +1042,6 @@
       "email": "E-mail",
       "subscription": "Abbonamento",
       "quota": "Stato Quota",
-      "fingerprint": "Impronta",
       "lastUsed": "Ultimo Utilizzo",
       "actions": "Azioni"
     },
@@ -969,13 +1051,13 @@
       "authInvalid": "Credenziali non valide",
       "refreshFailed": "Aggiornamento non riuscito",
       "normal": "Normale",
-      "forbidden": "403",
+      "forbidden": "403​",
       "forbidden_tooltip": "API ha restituito 403 Forbidden, l'account non ha accesso a Gemini Code Assist",
       "forbidden_msg": "Account vietato, aggiornamento automatico saltato"
     },
     "tier": {
-      "pro": "PRO",
-      "ultra": "ULTRA"
+      "pro": "PRO​",
+      "ultra": "ULTRA​"
     },
     "credits": {
       "label": "Crediti IA"
@@ -997,8 +1079,8 @@
     "filterLabel": "Filtra account",
     "filter": {
       "all": "Tutti ({{count}})",
-      "pro": "PRO ({{count}})",
-      "ultra": "ULTRA ({{count}})"
+      "pro": "PRO ({{count}})​",
+      "ultra": "ULTRA ({{count}})​"
     },
     "sortLabel": "Ordina",
     "sort": {
@@ -1045,10 +1127,8 @@
     "actions": {
       "viewDetails": "Vedi dettagli",
       "viewError": "Vedi errore",
-      "fingerprint": "Impronta",
       "switch": "Cambia account",
       "switchTo": "Passa a questo account",
-      "selectFingerprint": "Seleziona impronta",
       "delete": "Elimina",
       "deleteSelected": "Elimina selezionati",
       "export": "Esporta",
@@ -1186,7 +1266,10 @@
     "switchSuccess": "Cambio riuscito",
     "switched": "Passato a {{email}}",
     "tagButton": "Modifica tag",
-    "tagUpdated": "Tag aggiornato"
+    "tagUpdated": "Tag aggiornato",
+    "plan": {
+      "personal": "Personale"
+    }
   },
   "overview": {
     "title": "Panoramica Account",
@@ -1197,106 +1280,8 @@
     "currentAccount": "Attualmente in uso",
     "switchTo": "Passa a questo account",
     "switching": "Passaggio in corso...",
-    "fingerprint": "Impronta",
     "bound": "Vincolato",
     "brandTitle": "Gestione account Antigravity IDE"
-  },
-  "fingerprints": {
-    "title": "Impronte Dispositivo",
-    "subtitle": "Gestisci le impronte dei dispositivi collegate agli account.",
-    "toolbar": {
-      "generate": "Genera Nuova",
-      "capture": "Cattura Corrente",
-      "import": "Importa",
-      "folder": "Cartella",
-      "delete": "Elimina",
-      "deleteUnbound": "Elimina non associate"
-    },
-    "table": {
-      "name": "Nome Impronta",
-      "machineId": "ID Macchina",
-      "accounts": "Account Collegati",
-      "actions": "Azioni",
-      "accountCount": "{{count}} account",
-      "apply": "Applica",
-      "noData": "Nessun dato di impronta",
-      "preview": "Anteprima",
-      "rename": "Rinomina"
-    },
-    "modals": {
-      "generate": {
-        "title": "Genera Impronta",
-        "btn": "Genera"
-      },
-      "capture": {
-        "title": "Cattura Impronta",
-        "btn": "Cattura"
-      },
-      "rename": {
-        "title": "Rinomina Impronta",
-        "label": "Nome Impronta"
-      },
-      "import": {
-        "title": "Importa Impronte",
-        "fromTools": "Importa da Antigravity Tools",
-        "desc": "Importa dalla cartella ~/.antigravity_tools/",
-        "fromJsonBtn": "Importa da JSON",
-        "jsonExample": "Esempio di formato:",
-        "jsonPlaceholder": "Impronta di lavoro",
-        "orPasteJson": "Oppure incolla JSON"
-      },
-      "bound": {
-        "title": "Account Collegati",
-        "add": "Aggiungi Account",
-        "empty": "Nessun account collegato",
-        "emptyAll": "Tutti gli account sono collegati",
-        "select": "Seleziona account da aggiungere",
-        "from": "Da: {{name}}",
-        "back": "Indietro"
-      },
-      "detail": {
-        "title": "Dettagli Impronta",
-        "created": "Creato il {{time}}"
-      }
-    },
-    "messages": {
-      "deleteConfirm": "Eliminare questa impronta? Gli account collegati torneranno all'originale.",
-      "batchDeleteConfirm": "Eliminare {{count}} impronte? Gli account collegati torneranno all'originale.",
-      "generated": "Nuova impronta generata",
-      "captured": "Impronta corrente catturata",
-      "renamed": "Rinominata",
-      "deleted": "Impronta eliminata",
-      "imported": "Importate {{count}} impronte",
-      "addedAccounts": "Aggiunti {{count}} account",
-      "enterName": "Inserisci il nome dell'impronta",
-      "previewNotReady": "Anteprima non pronta, attendere",
-      "duplicate": "Esiste già un'impronta identica: {{name}}",
-      "autoGeneratedSuffix": "(Non trovato, generato automaticamente)",
-      "readOnly": "Sola lettura",
-      "current": "Corrente",
-      "addCount": "Aggiunti {{count}} account",
-      "addFailed": "Aggiunta non riuscita",
-      "adding": "Aggiunta in corso...",
-      "applyFailed": "Applicazione non riuscita",
-      "boundCount": "{{count}} account collegati",
-      "captureFailed": "Acquisizione non riuscita",
-      "count": "{{count}}",
-      "deleteFailed": "Eliminazione non riuscita",
-      "fpLabel": "Impronta:",
-      "generateFailed": "Generazione non riuscita",
-      "importFailed": "Importazione non riuscita",
-      "importPartialFailed": "{{failCount}} non riusciti: {{failList}}",
-      "refreshingQuota": "Aggiornamento quota {{done}}/{{total}} (puoi chiudere questa finestra)",
-      "quotaRefreshDone": "Aggiornamento quota completato",
-      "importing": "Importazione in corso...",
-      "loadFailed": "Impossibile caricare l'elenco delle impronte",
-      "processing": "Elaborazione in corso...",
-      "renameFailed": "Rinomina non riuscita",
-      "serviceMachineIdEmpty": "Vuoto",
-      "deleteUnboundConfirm": "Eliminare {{count}} impronte senza account associati?",
-      "deletedUnbound": "Eliminate {{count}} impronte non associate",
-      "noUnboundToDelete": "Nessuna impronta non associata da eliminare"
-    }
   },
   "modals": {
     "addAccount": {
@@ -1332,15 +1317,6 @@
       "fromFilesDesc": "Seleziona file JSON per importare account (formati multipli supportati)",
       "importingFiles": "Importazione di {{count}} file..."
     },
-    "fingerprint": {
-      "title": "Seleziona Impronta",
-      "desc": "Seleziona l'impronta per l'account <1>{{email}}</1>",
-      "original": "Impronta Originale",
-      "new": "Aggiungi Nuova Impronta",
-      "bind": "Conferma Collegamento",
-      "selectLabel": "Seleziona Impronta",
-      "boundCount": "account"
-    },
     "quota": {
       "title": "Dettagli Quota",
       "noData": "Nessun dato sulla quota",
@@ -1350,7 +1326,7 @@
     "errors": {
       "title": "Dettagli errore",
       "empty": "Nessun dettaglio errore",
-      "account": "Account",
+      "account": "Account​",
       "code": "Codice errore",
       "time": "Avvenuto il"
     }
@@ -1365,6 +1341,12 @@
   "messages": {
     "deleteConfirm": "Sei sicuro di voler eliminare questo account?",
     "batchDeleteConfirm": "Sei sicuro di voler eliminare i {{count}} account selezionati?",
+    "cleanErrorAccountsAction": "Pulisci account ERROR",
+    "cleanErrorAccountsConfirm": "Eliminare {{count}} account ERROR nell’ambito attuale?",
+    "selectAllFilteredAccounts": "Seleziona corrispondenti {{count}}",
+    "selectedAllFilteredAccounts": "Selezionati {{count}} corrispondenti",
+    "deleteFilteredAccountsConfirm": "Verranno eliminati {{count}} account Codex corrispondenti ai filtri attuali, non solo questa pagina. Continuare?",
+    "clearSelection": "Cancella selezione",
     "switched": "Passato a {{email}}",
     "switchFailed": "Passaggio fallito: {{error}}",
     "antigravityLegacyUnsupported": "Antigravity 2.0.0 e versioni successive non sono supportati qui. Scegli una versione di Antigravity precedente alla 2.0.0 oppure usa Antigravity IDE.",
@@ -1378,7 +1360,7 @@
     "bindFailed": "Collegamento fallito: {{error}}",
     "jsonRequired": "Inserisci o incolla il contenuto JSON",
     "example": "Esempio",
-    "actionRunning": "{{action}}...",
+    "actionRunning": "{{action}}...​",
     "actionSuccess": "{{action}} riuscito",
     "actionFailed": "{{action}} non riuscito: {{error}}"
   },
@@ -1450,20 +1432,20 @@
     },
     "format": {
       "noReply": "(Nessuna risposta)",
-      "durationMs": "{{ms}}ms",
+      "durationMs": "{{ms}}ms​",
       "tokens": "gettoni={{prompt}}+{{completion}}={{total}}",
-      "traceId": "traceId={{traceId}}",
-      "detailJoiner": ", ",
-      "message": "[[{{model}}]]: {{reply}}{{suffix}}",
-      "none": "--",
+      "traceId": "traceId={{traceId}}​",
+      "detailJoiner": ", ​",
+      "message": "[[{{model}}]]: {{reply}}{{suffix}}​",
+      "none": "--​",
       "today": "Oggi {{time}}",
       "tomorrow": "Domani {{time}}",
-      "weekdayWithTime": "{{day}} {{time}}",
+      "weekdayWithTime": "{{day}} {{time}}​",
       "notSelected": "Non selezionato",
-      "joiner": ", ",
+      "joiner": ", ​",
       "moreItems": "{{items}} ({{total}} elementi)",
       "quotaReset": "Risveglio al reset quota",
-      "crontab": "Crontab: {{expr}}",
+      "crontab": "Crontab: {{expr}}​",
       "daily": "Giornaliero {{times}}{{suffix}}",
       "weekly": "Settimanale {{days}} {{times}}{{suffix}}",
       "interval": "Ogni {{hours}} h ({{start}}-{{end}})",
@@ -1507,7 +1489,7 @@
     },
     "triggerSource": {
       "scheduled": "Programmato",
-      "crontab": "Crontab",
+      "crontab": "Crontab​",
       "quotaReset": "Reset quota",
       "manual": "Test immediato",
       "unknown": "Sconosciuto",
@@ -1535,7 +1517,7 @@
       "triggerMode": "Modalità di attivazione",
       "triggerModeHint": "1. Programmato: attiva a orari definiti.\n2. Crontab: definisci con un'espressione.\n3. Reset quota: attiva una volta quando la quota è piena.",
       "modeScheduled": "📅 Programmato",
-      "modeCrontab": "🧩 Crontab",
+      "modeCrontab": "🧩 Crontab​",
       "modeQuotaReset": "🔄 Reset quota",
       "antigravityVersion": "Versione Antigravity IDE",
       "modelSelect": "Selezione modelli",
@@ -1577,7 +1559,11 @@
       "timeWindowFrom": "Da",
       "timeWindowTo": "A",
       "fallbackTimes": "Orari fuori finestra",
-      "saveTask": "Salva attività"
+      "saveTask": "Salva attività",
+      "executionMode": "Modalità di esecuzione",
+      "executionModeAuto": "Esegui subito",
+      "executionModeConfirm": "Richiedi conferma",
+      "confirmTimeout": "Timeout conferma"
     },
     "test": {
       "modelsLabel": "Modelli da attivare",
@@ -1652,7 +1638,8 @@
       "comingSoon": "Multi-Istanza In Arrivo",
       "comingSoonDesc": "Esegui più istanze Codex.app con account diversi contemporaneamente.",
       "unsupported": {
-        "desc": "La multi-istanza Codex è attualmente disponibile solo su macOS."
+        "desc": "La multi-istanza Codex è attualmente disponibile solo su macOS.",
+        "title": "Non supportato su questo sistema"
       },
       "quota": {
         "hourly": "5 ore",
@@ -1682,7 +1669,7 @@
         },
         "force": {
           "principle": "Identifica i processi tramite CODEX_HOME e li chiude forzatamente (SIGKILL / taskkill /F), quindi avvia l'istanza di destinazione.",
-          "commandMac": "macOS: pkill -9 -f \"CODEX_HOME=<dir>\"",
+          "commandMac": "macOS: pkill -9 -f \"CODEX_HOME=<dir>\"​",
           "commandWin": "Windows: taskkill /F /PID <pid> (corrispondenza CODEX_HOME)"
         }
       }
@@ -1743,11 +1730,11 @@
     },
     "exportFormat": {
       "label": "Formato di esportazione",
-      "cockpitTools": "Cockpit Tools",
+      "cockpitTools": "Cockpit Tools​",
       "sub2api": "Formato sub2api",
       "cpa": "Formato cpa",
       "downloadAll": "Scarica tutto",
-      "cpaCardTitle": "Account {{index}}",
+      "cpaCardTitle": "Account {{index}}​",
       "savedFolder": "Cartella salvata",
       "savedPath": "Percorso salvato"
     },
@@ -1795,6 +1782,7 @@
         "freeNotice": "Gli account gratuiti non sono ancora supportati. Non è possibile selezionare account gratuiti.",
         "freeUnsupported": "Gli account gratuiti non sono ancora supportati",
         "restrictFreeToggle": "Limita account Free",
+        "chatApiKeyUnsupported": "Chat Completions non supportato",
         "freeNoticeRestricted": "Gli account Free sono limitati. Disattiva questa opzione per selezionarli.",
         "freeNoticeUnstable": "Il proxy degli account Free può essere instabile. Usalo con cautela.",
         "restrictFreeDisableConfirmTitle": "Consenti account Free",
@@ -1845,7 +1833,7 @@
         "requests": "Richieste",
         "requestsDetail": "OK {{success}} / Errori {{failed}} / Annull. {{canceled}} / Monte {{upstreamFailed}} / Incompl. {{incomplete}}",
         "tokens": "Token",
-        "tokensDetail": "Input {{input}} / Output {{output}}",
+        "tokensDetail": "Input {{input}} / Output {{output}}​",
         "specialTokens": "Cache / Ragionamento",
         "specialTokensDetail": "Cache {{cached}} / Ragionamento {{reasoning}}",
         "avgLatency": "Latenza media",
@@ -1853,7 +1841,7 @@
         "accountRequests": "{{count}} richieste",
         "accountTokens": "{{count}} token",
         "accountResult": "Successi {{success}} / Errori {{failed}}",
-        "accountTokensCompact": "{{value}}",
+        "accountTokensCompact": "{{value}}​",
         "images": "Richieste immagine",
         "imagesDetail": "Genera {{generate}} / Modifica {{edit}} / Permesso {{blocked}}",
         "estimatedCost": "Valore stimato",
@@ -1918,7 +1906,7 @@
       "modelIdViewOnly": "Solo vista",
       "quotaPool": {
         "title": "Pool quota",
-        "hourlyShort": "5h",
+        "hourlyShort": "5h​",
         "weeklyShort": "Settimana",
         "viewFull": "Vedi statistiche complete",
         "modalTitle": "Pool quota del servizio API",
@@ -1941,7 +1929,7 @@
       "customRoutingWeightShort": "Peso",
       "customRoutingApplyBatch": "Applica ai selezionati",
       "customRoutingReset": "Ripristina",
-      "customRoutingAccountColumn": "Account",
+      "customRoutingAccountColumn": "Account​",
       "customRoutingQuotaColumn": "Disponibilità",
       "customRoutingEmpty": "Nessun account configurabile nella raccolta attuale del servizio API",
       "customRoutingSave": "Salva routing",
@@ -1991,7 +1979,7 @@
       },
       "testSuccessInline": "Test del servizio API riuscito",
       "gatewayModeLabel": "Modalita gateway",
-      "gatewayModeLegacyShort": "Legacy",
+      "gatewayModeLegacyShort": "Legacy​",
       "gatewayModeSidecarShort": "Nuovo",
       "gatewayModeNewLabel": "Servizio API-Nuovo",
       "gatewayModeOldLabel": "Servizio API-Vecchio",
@@ -2055,11 +2043,11 @@
       "requestFailedManualRetry": "Controlla la rete. La quota più recente non è stata recuperata. Aggiorna per riprovare."
     },
     "plan": {
-      "free": "FREE",
-      "plus": "PLUS",
-      "pro": "PRO",
-      "team": "TEAM",
-      "enterprise": "ENTERPRISE"
+      "free": "FREE​",
+      "plus": "PLUS​",
+      "pro": "PRO​",
+      "team": "TEAM​",
+      "enterprise": "ENTERPRISE​"
     },
     "list": {
       "showCodeReviewQuota": "Mostra quota Code Review"
@@ -2067,7 +2055,7 @@
     "time": {
       "today": "Oggi {{time}}",
       "tomorrow": "Domani {{time}}",
-      "dateTime": "{{date}} {{time}}"
+      "dateTime": "{{date}} {{time}}​"
     },
     "view": {
       "compact": "Vista compatta"
@@ -2305,6 +2293,8 @@
         "repairVisibility": "Ripara visibilità",
         "restoreSessions": "Ripristina sessioni",
         "copySessionId": "Copia ID sessione",
+        "selectAllSessions": "Seleziona tutto",
+        "clearSelectedSessions": "Deseleziona",
         "copyToInstance": "Copia in istanza"
       },
       "confirm": {
@@ -2365,7 +2355,7 @@
         "addAndSwitch": "Aggiungi e passa"
       },
       "provider": {
-        "label": "Provider",
+        "label": "Provider​",
         "inlineLabel": "Fornitore: {{provider}}",
         "custom": "Personalizzato",
         "endpoint": "Endpoint del provider",
@@ -2376,67 +2366,67 @@
       },
       "providers": {
         "openai_official": {
-          "name": "OpenAI Official"
+          "name": "OpenAI Official​"
         },
         "azure_openai": {
-          "name": "Azure OpenAI"
+          "name": "Azure OpenAI​"
         },
         "packycode": {
-          "name": "PackyCode"
+          "name": "PackyCode​"
         },
         "cubence": {
-          "name": "Cubence"
+          "name": "Cubence​"
         },
         "aigocode": {
-          "name": "AIGoCode"
+          "name": "AIGoCode​"
         },
         "rightcode": {
-          "name": "RightCode"
+          "name": "RightCode​"
         },
         "sssaicode": {
-          "name": "SSSAiCode"
+          "name": "SSSAiCode​"
         },
         "micu": {
-          "name": "Micu"
+          "name": "Micu​"
         },
         "x_code_api": {
-          "name": "X-Code API"
+          "name": "X-Code API​"
         },
         "ctok_ai": {
-          "name": "CTok.ai"
+          "name": "CTok.ai​"
         },
         "aihubmix": {
-          "name": "AiHubMix"
+          "name": "AiHubMix​"
         },
         "dmxapi": {
-          "name": "DMXAPI"
+          "name": "DMXAPI​"
         },
         "compshare": {
-          "name": "Compshare"
+          "name": "Compshare​"
         },
         "openrouter": {
-          "name": "OpenRouter"
+          "name": "OpenRouter​"
         },
         "aicodemirror": {
-          "name": "AICodeMirror"
+          "name": "AICodeMirror​"
         },
         "aicoding": {
-          "name": "AICoding"
+          "name": "AICoding​"
         },
         "crazyrouter": {
-          "name": "CrazyRouter"
+          "name": "CrazyRouter​"
         },
         "deepseek": {
-          "name": "DeepSeek"
+          "name": "DeepSeek​"
         },
         "moonshot": {
-          "name": "Moonshot"
+          "name": "Moonshot​"
         },
         "siliconflow": {
-          "name": "SiliconFlow"
+          "name": "SiliconFlow​"
         },
         "cockpit_api": {
-          "name": "Cockpit Api"
+          "name": "Cockpit Api​"
         }
       },
       "oauthBinding": {
@@ -2482,7 +2472,13 @@
         "website": "Sito web (facoltativo)",
         "apiKeyUrl": "Pagina della chiave API (facoltativa)",
         "newApiKeyName": "Nome della nuova chiave (facoltativo)",
-        "newApiKey": "Nuova chiave API"
+        "newApiKey": "Nuova chiave API",
+        "wireApi": "Protocollo",
+        "enableMode": "Modalità",
+        "modelCatalog": "Catalogo modelli",
+        "visionCapability": "Input immagini",
+        "visionModels": "Modelli visivi",
+        "visionRoutingModel": "Modello immagini"
       },
       "validation": {
         "nameRequired": "Il nome del provider è obbligatorio.",
@@ -2497,6 +2493,19 @@
       "confirmDelete": "Eliminare il provider \"{{name}}\"?",
       "deleteFailed": "Impossibile eliminare il provider: {{error}}",
       "deleteApiKeyFailed": "Impossibile eliminare la chiave API: {{error}}",
+      "enableAsBackend": "Usa come backend Codex",
+      "enabling": "Attivazione...",
+      "enableSuccess": "{{name}} abilitato e {{instance}} avviata.",
+      "enableFailed": "Impossibile attivare il provider: {{error}}",
+      "status": {
+        "active": "Backend attuale",
+        "available": "Pronto"
+      },
+      "enableMode": {
+        "label": "Modalità connessione",
+        "gatewayMode": "Modalità gateway",
+        "directMode": "Modalità diretta"
+      },
       "selectSavedProvider": "Provider salvati",
       "selectSavedApiKey": "Chiavi API salvate",
       "noSavedProviders": "Non ci sono ancora provider salvati. Puoi compilare direttamente i campi e verranno salvati automaticamente.",
@@ -2555,7 +2564,108 @@
         "partialDetected": "Attualmente è impostato un solo campo gestito: model_context_window={{context}}, model_auto_compact_token_limit={{compact}}. Il salvataggio riscriverà entrambi i campi utilizzando lo schema corrente.",
         "notSet": "Non impostato"
       },
-      "managePresets": "Preset modello"
+      "managePresets": "Preset modello",
+      "wireApi": {
+        "responses": "Responses nativo",
+        "chatCompletions": "Protocollo Chat Completions",
+        "help": "Usa Responses per la maggior parte dei provider. Passa a Chat Completions solo quando il provider supporta esplicitamente solo quel protocollo. In caso di dubbi, scegli prima Responses.",
+        "helpAria": "Vedi guida protocollo"
+      },
+      "testing": "Test in corso...",
+      "testSuccess": "Connessione del provider valida: {{protocol}}, {{model}}, {{latency}}.",
+      "testFailed": "Test del provider non riuscito: {{error}}",
+      "testFailure": {
+        "credential": "API Key non disponibile",
+        "url": "Base URL non valida",
+        "network": "Connessione di rete non riuscita",
+        "models": "Endpoint modelli in errore",
+        "parse": "Analisi risposta non riuscita",
+        "httpStatus": "Stato {{status}}",
+        "message": "{{title}}: {{detail}}. {{suggestion}}​"
+      },
+      "testSuggestion": {
+        "addApiKey": "Aggiungi una API Key per questo provider prima del test.",
+        "checkBaseUrl": "Verifica che la Base URL includa il percorso di versione corretto, ad esempio /v1.",
+        "checkNetwork": "Verifica URL del provider, proxy, firewall o stato del servizio upstream.",
+        "checkApiKey": "Verifica che la API Key sia valida e autorizzata all’endpoint dei modelli.",
+        "checkProviderStatus": "Verifica stato del provider, proxy o compatibilità API.",
+        "checkModelsApi": "Conferma che il provider restituisca una lista modelli compatibile OpenAI."
+      },
+      "enableAndStart": "Avvia",
+      "instance": {
+        "label": "Istanza",
+        "default": "Istanza predefinita",
+        "running": "In esecuzione",
+        "targetHint": "Destinazione: {{instance}}",
+        "uninitializedHint": "L’istanza di destinazione non è inizializzata. Avviala una volta da Multi-istanza.",
+        "shortLabel": "Istanza",
+        "saveFailed": "Impossibile salvare il collegamento dell’istanza: {{error}}"
+      },
+      "modelCatalog": "Modelli",
+      "modelCatalogEmpty": "Nessun catalogo modelli",
+      "gatewayHint": "I provider di terze parti si avviano tramite il gateway locale per isolare l’istanza e convertire il protocollo. I provider ufficiali OpenAI restano diretti.",
+      "vision": {
+        "providerDefault": "Questo provider supporta le immagini per impostazione predefinita",
+        "providerDefaultHint": "Se disattivato, solo i modelli elencati sotto possono ricevere immagini; gli altri vengono bloccati dal gateway locale.",
+        "modelsHint": "Un modello per riga. Utile quando solo alcuni modelli del provider supportano immagini incollate.",
+        "routingModelHint": "Quando il modello attuale non legge immagini, la richiesta usa questo modello; vuoto usa automaticamente l'unico modello visivo.",
+        "allModels": "Immagini",
+        "partialModels": "Alcune immagini",
+        "textOnly": "Solo testo"
+      },
+      "sponsorRecommended": "Relay consigliato",
+      "builtinProviders": "Provider integrati",
+      "sponsorHint": "L’URL del servizio relay esclusivo è stata compilata. Dopo aver inserito l’API Key, la scheda consulterà automaticamente saldo e utilizzo.",
+      "integration": {
+        "sub2api": "Compatibile Sub2API",
+        "newApi": "Compatibile New API"
+      },
+      "usage": {
+        "title": "Panoramica quota",
+        "remaining": "Residuo",
+        "today": "Oggi",
+        "total": "Totale",
+        "requests": "Richieste di oggi",
+        "loading": "Interrogazione quota...",
+        "failed": "Interrogazione quota non riuscita: {{error}}",
+        "pending": "In attesa della quota",
+        "noKey": "Nessuna quota consultabile",
+        "used": "Usato",
+        "limit": "Limite",
+        "viewDetail": "Dettagli",
+        "detailTitle": "Pannello servizio",
+        "rawFields": "Dati servizio",
+        "fields": {
+          "status": "Stato",
+          "planName": "Piano",
+          "remaining": "Credito residuo",
+          "balance": "Saldo",
+          "todayRequests": "Richieste oggi",
+          "todayTokens": "Token oggi",
+          "todayCost": "Costo oggi",
+          "totalRequests": "Richieste totali",
+          "totalTokens": "Token totali",
+          "totalCost": "Costo totale",
+          "hardLimitUsd": "Limite rigido",
+          "softLimitUsd": "Limite morbido",
+          "systemHardLimitUsd": "Limite sistema",
+          "accessUntil": "Accesso fino a",
+          "totalUsage": "Uso totale",
+          "quotaUnlimited": "Illimitato",
+          "expiresAt": "Scade il",
+          "totalGranted": "Assegnato",
+          "totalAvailable": "Disponibile",
+          "modelLimitsEnabled": "Limiti modello"
+        },
+        "accountBalance": "Saldo account",
+        "unlimitedQuota": "Illimitato",
+        "booleanTrue": "Sì",
+        "booleanFalse": "Disattivato"
+      },
+      "oauthBinding": {
+        "desc": "Opzionale. Puoi collegare qualsiasi account OAuth con refresh_token. Senza collegamento, il provider continua con il flusso API Key originale.",
+        "currentProvider": "Provider: {{name}}​"
+      }
     },
     "quickSwitch": {
       "action": "Cambio rapido provider",
@@ -2606,7 +2716,7 @@
         "api": "Modalità API",
         "apiKey": "Chiave API",
         "apiService": "Servizio API",
-        "account": "Account"
+        "account": "Account​"
       }
     },
     "accountNote": {
@@ -2657,6 +2767,21 @@
         "logs": "Statistiche e log"
       },
       "healthTitle": "Stato servizio",
+      "compat": {
+        "title": "Compat. protocolli",
+        "desc": "Lo stesso URL del servizio API supporta OpenAI Chat, Responses, Anthropic Messages, Gemini e Ollama.",
+        "openaiTitle": "Compatibile OpenAI",
+        "openaiNote": "La Base URL usa /v1.",
+        "responsesTitle": "Ingresso Responses",
+        "responsesNote": "Ingresso Responses nativo Codex.",
+        "anthropicTitle": "Messaggi Anthropic",
+        "anthropicNote": "Usa la stessa chiave servizio.",
+        "geminiTitle": "Ingresso Gemini",
+        "geminiNote": "La Base URL usa /v1beta.",
+        "ollamaTitle": "Bridge Ollama",
+        "ollamaNote": "Usa Authorization: Bearer.",
+        "modelCatalogLabel": "Catalogo modelli"
+      },
       "health": {
         "availableAccounts": "Account disponibili",
         "cooldowns": "Raffreddamenti",
@@ -2726,7 +2851,7 @@
         "allGatewayModes": "Tutte le modalita",
         "modelFilter": "Modello",
         "modelPlaceholder": "ID modello",
-        "accountFilter": "Account",
+        "accountFilter": "Account​",
         "accountPlaceholder": "Email o ID account",
         "apiKeyFilter": "Chiave API",
         "apiKeyPlaceholder": "Nome o ID",
@@ -2801,6 +2926,46 @@
         "saveSuccess": "Blocchi modello salvati",
         "cardCount": "{{count}} bloccati"
       }
+    },
+    "apiKey": {
+      "renameSuccess": "Rinominato",
+      "renameFailed": "Rinomina non riuscita"
+    },
+    "batchImport": {
+      "title": "Importazione batch Codex",
+      "resultSubtitle": "Risultato importazione",
+      "previewSubtitle": "Seleziona gli account da salvare",
+      "scanSubtitle": "Analisi e controllo degli account uno alla volta",
+      "parseSubtitle": "Analisi dei file account",
+      "cancelling": "Annullamento...",
+      "scanDone": "Scansione completata",
+      "parseDone": "Analisi completata",
+      "scanning": "Scansione",
+      "parsing": "Analisi",
+      "current": "Corrente",
+      "imported": "Importati",
+      "failed": "Non riusciti",
+      "quotaOk": "Account OK",
+      "quotaFailed": "Anomalia",
+      "checkQuotaToggle": "Controlla account",
+      "preparing": "Preparazione importazione...",
+      "importSelected": "Importa account selezionati",
+      "noSelection": "Seleziona prima gli account",
+      "groups": {
+        "ready": "Pronti",
+        "quotaFailed": "Anomalia",
+        "existing": "Esistenti",
+        "invalid": "Non validi"
+      },
+      "cancelScan": "Annulla scansione",
+      "cancelParse": "Annulla analisi",
+      "cancelled": "Annullato",
+      "resumeScan": "Riprendi scansione",
+      "resumeParse": "Riprendi analisi",
+      "selectedCount": "Selezionati {{count}}/{{total}}",
+      "selectAllAccounts": "Seleziona tutti",
+      "selectReady": "Seleziona account OK",
+      "clearSelection": "Cancella selezione"
     }
   },
   "githubCopilot": {
@@ -2863,6 +3028,13 @@
   },
   "dashboard": {
     "title": "Dashboard account",
+    "apiRelay": {
+      "localConfig": "Configurazione locale",
+      "localConfigDesc": "Gestisci impostazioni relay locali, controllo API Key e configurazione rapida del client.",
+      "status": "Stato config",
+      "enabledByConfig": "Attivato dalla configurazione remota",
+      "openLocalConfig": "Apri configurazione locale"
+    },
     "summary": {
       "label": "Panoramica",
       "title": "Istantanea account",
@@ -2877,9 +3049,9 @@
       "totalAccounts": "Totale account"
     },
     "panels": {
-      "antigravity": "Antigravity IDE",
-      "codex": "Codex",
-      "githubCopilot": "GitHub Copilot",
+      "antigravity": "Antigravity IDE​",
+      "codex": "Codex​",
+      "githubCopilot": "GitHub Copilot​",
       "planDistribution": "Distribuzione piani",
       "current": "Account attuale",
       "recommended": "Account consigliato",
@@ -3065,6 +3237,10 @@
       "title": "Memoria filtri",
       "enable": "Ricorda i filtri della panoramica account (esclusa la ricerca)",
       "hint": "Disattivato per impostazione predefinita. Se attivato, ogni piattaforma mantiene filtri, tag e ordinamento."
+    },
+    "claudeRefreshInterval": "Aggiornamento quota automatico",
+    "claude": {
+      "appPath": "Percorso Claude Desktop"
     }
   },
   "quotaAlert": {
@@ -3107,7 +3283,7 @@
     "password": {
       "desc": "Accedi con l’e-mail e la password del tuo account Windsurf per recuperare automaticamente API key e dati account.",
       "emailPlaceholder": "Indirizzo e-mail",
-      "passwordPlaceholder": "Password",
+      "passwordPlaceholder": "Password​",
       "empty": "Inserisci e-mail e password",
       "login": "Accedi",
       "logging": "Accesso in corso...",
@@ -3115,7 +3291,7 @@
       "failed": "Accesso non riuscito: {{error}}",
       "modeLabel": "Modalità",
       "modeSingle": "Singolo",
-      "modeBatch": "Batch",
+      "modeBatch": "Batch​",
       "batchDesc": "L’importazione batch supporta JSON o testo con un account per riga. In modalità testo è necessario specificare un delimitatore.",
       "batchInputModeLabel": "Formato",
       "batchInputModeJson": "Formato JSON",
@@ -3125,7 +3301,7 @@
       "batchDelimiterSpace": "Spazio",
       "batchDelimiterComma": "Virgola",
       "batchDelimiterPipe": "Barra verticale",
-      "batchDelimiterDash": "----",
+      "batchDelimiterDash": "----​",
       "batchDelimiterCustom": "Personalizzato",
       "batchJsonDesc": "Incolla un array JSON in cui ogni elemento contiene email e password.",
       "batchTextDesc": "Inserisci un account per riga; il parsing segue rigorosamente il delimitatore selezionato.",
@@ -3148,7 +3324,7 @@
       "batchPartial": "{{success}} importati, {{failed}} non riusciti",
       "batchFailed": "Importazione batch non riuscita per {{failed}} account",
       "batchFailureEntryWithLine": "Elemento {{line}} ({{email}}): {{error}}",
-      "batchFailureEntry": "{{email}}: {{error}}",
+      "batchFailureEntry": "{{email}}: {{error}}​",
       "batchFailureMore": "{{count}} altri non riusciti"
     },
     "oauth": {
@@ -3205,7 +3381,7 @@
       "bonusUsageLine": "{{used}} usato / {{total}} totale",
       "planUsageCoveredLine": "{{used}} usato / {{total}} coperto nel piano",
       "expiryDays": "{{days}} giorni",
-      "expiryUnknown": "—",
+      "expiryUnknown": "—​",
       "resetNow": "Ripristina presto",
       "resetInHours": "Si ripristina tra {{hours}}h",
       "resetInMinutes": "Si ripristina tra {{minutes}}m"
@@ -3217,11 +3393,11 @@
       "estUsage": "Est. Utilizzo"
     },
     "plan": {
-      "free": "Kiro Free",
-      "individual": "Kiro Individual",
-      "pro": "Kiro Pro",
-      "business": "Kiro Business",
-      "enterprise": "Kiro Enterprise",
+      "free": "Kiro Free​",
+      "individual": "Kiro Individual​",
+      "pro": "Kiro Pro​",
+      "business": "Kiro Business​",
+      "enterprise": "Kiro Enterprise​",
       "unknown": "Sconosciuto"
     },
     "flowNotice": {
@@ -3300,7 +3476,7 @@
     "startHint": "Clicca Avvia o premi Spazio",
     "rankTitle": "Classifica storica locale",
     "rankCurrent": "Attuale",
-    "rankNoData": "--",
+    "rankNoData": "--​",
     "restart": "Ricomincia",
     "pause": "Pausa",
     "resume": "Riprendi",
@@ -3323,7 +3499,7 @@
     "rankingShort": "Locale",
     "rankingEmpty": "Nessun record locale",
     "rankingClear": "Cancella classifica locale",
-    "rankingRankShort": "#{{rank}}",
+    "rankingRankShort": "#{{rank}}​",
     "minimize": "Minimizza",
     "resumeGameNav": "Riprendi partita",
     "closeConfirmTitle": "Terminare questa partita?",
@@ -3363,7 +3539,6 @@
       "goAntigravity": "Vai ad Antigravity IDE",
       "goCodex": "Vai a Codex",
       "goDashboard": "Vai alla dashboard",
-      "goFingerprints": "Vai alle impronte dispositivo",
       "goGitHubCopilot": "Vai a GitHub Copilot",
       "goInstances": "Vai a multi-istanza",
       "goKiro": "Vai a Kiro",
@@ -3458,28 +3633,6 @@
     "empty": {
       "desc": "Prova parole chiave come istanza, switch, impostazioni, esporta.",
       "title": "Nessun contenuto corrispondente"
-    },
-    "fingerprints": {
-      "cautions": {
-        "0": "Esegui backup dati prima di azioni rischiose o massive in Impronte dispositivo."
-      },
-      "keywords": {
-        "0": "Impronte dispositivo",
-        "1": "guida",
-        "2": "flusso",
-        "3": "account"
-      },
-      "outcomes": {
-        "0": "Capisci cosa può fare Impronte dispositivo per te.",
-        "1": "Usa il flusso consigliato in Impronte dispositivo per ridurre errori."
-      },
-      "steps": {
-        "0": "Apri la pagina di Impronte dispositivo.",
-        "1": "Completa setup base e collegamenti richiesti in Impronte dispositivo.",
-        "2": "Esegui un’operazione manuale in Impronte dispositivo per verificare il risultato."
-      },
-      "summary": "Questa sezione spiega come usare Impronte dispositivo nel flusso quotidiano.",
-      "title": "Impronte dispositivo"
     },
     "instances": {
       "cautions": {
@@ -3626,7 +3779,11 @@
       "resetsIn": "Si reimposta tra {{relative}}",
       "resetsSoon": "Reimpostazione imminente",
       "resetsUnknown": "Ora di reimpostazione sconosciuta",
-      "onDemand": "Su richiesta"
+      "onDemand": "Su richiesta",
+      "gemini5h": "5h",
+      "geminiWeekly": "Weekly",
+      "claude5h": "5h",
+      "claudeWeekly": "Weekly"
     },
     "title": "Gestione account Gemini Cli",
     "instances": {
@@ -3693,9 +3850,9 @@
       "leftOfTotal": "Residuo / Totale",
       "usage": "Usato",
       "usageResets": "Reset utilizzo",
-      "usedPercent": "{{value}}%",
-      "remainingOfTotal": "{{remaining}} / {{total}}",
-      "resetAtWithRelative": "{{absolute}} ({{relative}})"
+      "usedPercent": "{{value}}%​",
+      "remainingOfTotal": "{{remaining}} / {{total}}​",
+      "resetAtWithRelative": "{{absolute}} ({{relative}})​"
     },
     "tierText": {
       "pro": "Gemini Code Assist su Google One AI Pro",
@@ -3713,8 +3870,8 @@
       "permission": "Ambito autorizzazioni: leggere il database di autenticazione CodeBuddy (state.vscdb), chiamare le capacita credenziali del sistema (Portachiavi macOS / DPAPI Windows / Secret Service Linux) per decrittografia e riscrittura.",
       "network": "Ambito rete: laccesso OAuth e il rinnovo del token richiedono richieste a codebuddy.ai; le query quota chiamano le API di fatturazione. Nessuna chiave locale o credenziale viene caricata."
     },
-    "nickname": "Nickname",
-    "enterprise": "Enterprise",
+    "nickname": "Nickname​",
+    "enterprise": "Enterprise​",
     "usage": "Stato utilizzo",
     "creditsBalance": "Saldo crediti",
     "usageNormal": "Stato normale",
@@ -3800,7 +3957,7 @@
       }
     },
     "quota": {
-      "usedOfTotal": "{{used}} / {{total}}"
+      "usedOfTotal": "{{used}} / {{total}}​"
     }
   },
   "qoder": {
@@ -3822,8 +3979,8 @@
       "title": "Panoramica utilizzo",
       "viewDetails": "Vedi dettagli",
       "includedCredits": "Crediti inclusi nel piano",
-      "usedOfTotal": "{{used}} / {{total}}",
-      "usedEmpty": "-- / --",
+      "usedOfTotal": "{{used}} / {{total}}​",
+      "usedEmpty": "-- / --​",
       "upgradeHint": "Esegui l'upgrade del piano per aumentare la quota mensile",
       "upgradeAction": "Aggiorna piano"
     },
@@ -3923,8 +4080,8 @@
       "permission": "Ambito autorizzazioni: leggere e scrivere il file di accesso WorkBuddy (CodeBuddyExtension/Data/Public/auth/workbuddy-desktop.info) per importazione locale e cambio account; il vecchio state.vscdb non viene più letto né modificato.",
       "network": "Ambito rete: l'accesso OAuth e il rinnovo del token richiedono richieste a WorkBuddy; le query quota chiamano le API di fatturazione. I file di accesso locali e le credenziali grezze non vengono caricati."
     },
-    "nickname": "Nickname",
-    "enterprise": "Enterprise",
+    "nickname": "Nickname​",
+    "enterprise": "Enterprise​",
     "usage": "Stato utilizzo",
     "creditsBalance": "Saldo crediti",
     "usageNormal": "Stato normale",
@@ -4014,7 +4171,7 @@
       }
     },
     "quota": {
-      "usedOfTotal": "{{used}} / {{total}}"
+      "usedOfTotal": "{{used}} / {{total}}​"
     },
     "checkin": {
       "title": "Check-in giornaliero",
@@ -4121,7 +4278,7 @@
     "plan": "Piano",
     "cycle": "Ciclo",
     "status": "Stato",
-    "pager": "{{current}} / {{total}}",
+    "pager": "{{current}} / {{total}}​",
     "badges": {
       "recommended": "Consigliato"
     },
@@ -4255,5 +4412,333 @@
     "copyCode": "Copia codice",
     "copied": "Copiato",
     "refreshIn": "{{time}} s"
+  },
+  "relay": {
+    "pageTitle": "Relay esclusivo",
+    "pageDesc": "Servizio API partner per gli utenti di Cockpit Tools, utilizzabile con account API Key Codex.",
+    "loading": "Caricamento relay...",
+    "emptyTitle": "Relay disattivato",
+    "emptyDesc": "La configurazione remota non ha abilitato il relay esclusivo.",
+    "defaultDescription": "Servizio relay API partner.",
+    "getApiKey": "Ottieni API Key",
+    "configTitle": "Abilita in Codex",
+    "apiKeyLabel": "Chiave API",
+    "apiKeyPlaceholder": "Incolla l’API Key del relay",
+    "apiKeyRequired": "Inserisci una API Key.",
+    "baseUrl": "URL API",
+    "protocol": "Protocollo",
+    "vision": "Immagini",
+    "testConnection": "Test connessione",
+    "saveAndEnable": "Salva e abilita",
+    "goCodex": "Vai a Codex",
+    "statusUnavailable": "La configurazione del relay non è disponibile.",
+    "testing": "Test connessione...",
+    "testSuccess": "Test riuscito. Questa API Key può essere usata con il relay.",
+    "testFailed": "Test connessione non riuscito.",
+    "saving": "Salvataggio e abilitazione in Codex...",
+    "saveSuccess": "Configurazione relay salvata. Puoi usarla nella pagina account Codex.",
+    "saveFailed": "Salvataggio della configurazione relay non riuscito.",
+    "savedProvider": "Provider salvato: {{name}}",
+    "modelsTitle": "Modelli supportati",
+    "modelsEmpty": "Nessun elenco fisso di modelli è configurato da remoto. Dopo il salvataggio, Codex userà le capacità del servizio."
+  },
+  "apiKeyFun": {
+    "eyebrow": "Intermediario",
+    "title": "Relay APIKEY.FUN",
+    "description": "Il relay partner ufficiale di Cockpit offre accesso API stabile, aperto e conveniente ai grandi modelli. Supporta modelli principali come Claude, OpenAI e Gemini ed è adatto a una configurazione unificata in Codex, Gemini CLI, Claude Code e altri strumenti di sviluppo. Registrandoti tramite il link esclusivo Cockpit, puoi ottenere uno sconto permanente fino al 5% sulle ricariche.",
+    "register": "Link esclusivo",
+    "docs": "Doc ufficiali",
+    "viewNow": "Vedi ora",
+    "queryTitle": "Quota chiave",
+    "queryDesc": "Inserisci una API Key APIKEY.FUN per controllare automaticamente la quota.",
+    "keyNotSet": "Nessuna chiave",
+    "apiKeyLabel": "Chiave API",
+    "apiKeyPlaceholder": "Incolla la API Key creata nella console APIKEY.FUN",
+    "hideKey": "Nascondi",
+    "showKey": "Mostra",
+    "endpointLabel": "Punto finale",
+    "protocolLabel": "Protocollo Codex",
+    "queryUsage": "Controlla quota",
+    "querying": "Controllo",
+    "saveToCodex": "Scrivi in Codex",
+    "saving": "Scrittura",
+    "saveSuccess": "Scritto in Codex Provider: {{name}}",
+    "toolsTitle": "Scrivi config client",
+    "toolsDesc": "Scrive direttamente i file di configurazione locali seguendo la documentazione APIKEY.FUN e il layout di CC Switch.",
+    "endpoint": {
+      "global": "Globale rete",
+      "globalDesc": "API Base ufficiale predefinita per la maggior parte delle reti.",
+      "direct": "Linea diretta",
+      "directDesc": "Per scenari sensibili alla latenza."
+    },
+    "wireApi": {
+      "responses": "Protocollo Responses",
+      "responsesDesc": "Preferito per Codex, usa direttamente il protocollo OpenAI Responses.",
+      "chatCompletions": "Protocollo Chat Completions",
+      "chatCompletionsDesc": "Compatibilità tramite gateway locale."
+    },
+    "usage": {
+      "remaining": "Residuo",
+      "used": "Usato",
+      "todayRequests": "Oggi",
+      "todayTokens": "Token oggi",
+      "totalRequests": "Richieste totali",
+      "totalTokens": "Token totali"
+    },
+    "tool": {
+      "codexTitle": "Provider Codex",
+      "codexDesc": "Scrive un Provider con la Base URL /v1 dell’endpoint corrente.",
+      "envTitle": "Ambiente",
+      "envDesc": "Riferimento per Claude Code, Gemini CLI, Hermes e altri ingressi compatibili OpenAI.",
+      "curlTitle": "Script API",
+      "curlDesc": "Verifica rapidamente una richiesta compatibile Chat Completions."
+    },
+    "docTool": {
+      "codex": "Può essere scritto direttamente in Codex Provider.",
+      "claudeCode": "Copia parametri compatibili Anthropic Messages.",
+      "geminiCli": "Copia Base URL compatibile OpenAI e API Key.",
+      "traeSolo": "Copia i parametri relay richiesti dalla documentazione ufficiale.",
+      "openClaw": "Copia parametri di connessione compatibili OpenAI.",
+      "hermes": "Copia parametri per la pagina modelli Hermes.",
+      "apiScript": "Copia parametri base per script."
+    },
+    "apply": {
+      "codexTitle": "Codex​",
+      "codexDesc": "Scrive ~/.codex/config.toml e auth.json con protocollo Responses e API Key corrente.",
+      "geminiTitle": "Config Gemini CLI",
+      "geminiDesc": "Scrive ~/.gemini/.env e imposta in settings.json la modalità auth gemini-api-key.",
+      "openclawTitle": "Config OpenClaw",
+      "openclawDesc": "Scrive models.providers.apikeyfun in ~/.openclaw/openclaw.json.",
+      "hermesTitle": "Config Hermes",
+      "hermesDesc": "Scrive custom_providers in ~/.hermes/config.yaml e passa al modello predefinito apikeyfun.",
+      "button": "Scrivi config",
+      "applying": "Scrittura",
+      "success": "File di configurazione scritti: {{paths}}",
+      "failed": "Scrittura config non riuscita: {{error}}"
+    },
+    "error": {
+      "missingApiKey": "Inserisci una API Key.",
+      "queryFailed": "Controllo quota non riuscito: {{error}}",
+      "saveFailed": "Scrittura non riuscita: {{error}}"
+    },
+    "models": {
+      "title": "Modelli disponibili",
+      "desc": "Letti dall’endpoint modelli della API Key corrente e passati a Codex o Claude CLI.",
+      "count": "{{count}} modelli",
+      "loading": "Caricamento",
+      "loadingDesc": "Lettura della lista modelli dalla API Key corrente...",
+      "empty": "Inserisci una API Key per leggere i modelli disponibili.",
+      "emptyFromKey": "La API Key corrente non ha restituito modelli.",
+      "queryFailed": "Lettura lista modelli non riuscita: {{error}}"
+    },
+    "keyManager": {
+      "title": "Gestione chiavi",
+      "desc": "Salva le API Key per cambiare rapidamente e controllare automaticamente la quota.",
+      "saveButton": "Salva chiave",
+      "savedButton": "Salvata",
+      "empty": "Nessuna chiave salvata.",
+      "lastRemaining": "Saldo precedente {{value}}",
+      "notQueried": "Non controllata",
+      "deleteButton": "Elimina",
+      "editAlias": "Edit alias​",
+      "renamePlaceholder": "Enter alias...​",
+      "createdAt": "Aggiunta il {{time}}",
+      "saveFlash": "Appena salvata",
+      "addingToCodex": "Aggiunta a Codex...",
+      "addedToCodex": "Aggiunto a Codex",
+      "addToCodexFailed": "Aggiunta a Codex fallita: {{error}}",
+      "addingToClaude": "Aggiunta a Claude CLI...",
+      "addedToClaude": "Aggiunto a Claude CLI",
+      "addToClaudeFailed": "Aggiunta a Claude CLI fallita: {{error}}",
+      "codexAdded": "Codex aggiunto",
+      "claudeAdded": "Claude aggiunto",
+      "addToCodex": "Aggiungi a Codex",
+      "addToClaude": "Aggiungi a Claude CLI",
+      "codexShort": "Codex",
+      "claudeShort": "Claude CLI"
+    },
+    "copyKey": "Copy Key​",
+    "clearKey": "Clear input​"
+  },
+  "claude": {
+    "import": {
+      "localSuccess": "Importati {{count}} accessi locali Claude Desktop",
+      "localClient": "Importa Desktop attuale",
+      "jsonLabel": "Dati JSON",
+      "jsonPlaceholder": "Incolla il JSON account Claude esportato",
+      "localDesc": "Legge lo stato di accesso corrente dell’app ufficiale Claude Desktop e lo copia in questo strumento come snapshot locale dell’account.",
+      "desktopJsonPlaceholder": "Incolla il JSON esportato dell’account Claude Desktop",
+      "cliJsonPlaceholder": "Incolla il JSON esportato dell’account Claude CLI"
+    },
+    "deleteCurrentDisabled": "L’account corrente non può essere eliminato",
+    "flowNotice": {
+      "title": "Account Claude",
+      "desc": "Questo strumento gestisce lo stato di accesso Claude Desktop e le Anthropic API Key. Il login Desktop si completa nella finestra di autorizzazione della piattaforma e viene salvato prima in locale; viene scritto nell’app ufficiale Claude Desktop solo al cambio account.",
+      "permission": "Permessi: lettura/scrittura della cartella dati dell’app ufficiale Claude Desktop. API Key e snapshot Desktop sono salvati nei dati account locali di questo strumento.",
+      "network": "Rete: la finestra di login Desktop apre claude.ai; l’aggiornamento account può chiamare endpoint Claude Web. L’import API Key non usa rete di per sé.",
+      "desktopDesc": "Questo strumento gestisce lo stato di accesso di Claude Desktop. L’accesso viene salvato prima in locale e scritto nel Claude Desktop ufficiale solo al cambio account.",
+      "cliDesc": "Questo strumento gestisce Claude Code OAuth e API Key di più provider. Il cambio OAuth scrive nella configurazione locale di Claude Code; le API Key scrivono i valori env del provider in Claude Code settings.json.",
+      "desktopPermission": "Ambito permessi: lettura/scrittura della directory dati dell’app ufficiale Claude Desktop. Gli snapshot Desktop sono salvati nei dati account locali di questo strumento.",
+      "cliPermission": "Ambito permessi: lettura/scrittura della configurazione locale di Claude Code e delle credenziali Claude Code nel Keychain macOS; gli account API Key sono salvati localmente da questo strumento e scritti come env in chiaro in settings.json durante cambio o avvio CLI.",
+      "desktopNetwork": "Ambito rete: la finestra di accesso Desktop apre claude.ai; l’aggiornamento account può richiedere endpoint Claude Web.",
+      "cliNetwork": "Rete: OAuth usa la pagina ufficiale Claude e gli endpoint token/profile/usage; l’import API Key è offline, poi Claude CLI contatta il provider scelto."
+    },
+    "search": "Cerca account Claude...",
+    "noAccounts": "Nessun account Claude",
+    "addAccount": {
+      "title": "Aggiungi account Claude",
+      "desktopTitle": "Aggiungi account Claude Desktop",
+      "cliTitle": "Aggiungi account Claude CLI"
+    },
+    "deleteConfirm": "Eliminare account Claude {{email}}?",
+    "switch": {
+      "success": "Cambio completato"
+    },
+    "instances": {
+      "unsupportedDescPlatform": "Le istanze multiple di Claude Desktop sono supportate solo su macOS, Windows e Linux.",
+      "launchDialogTitle": "Avvia istanza",
+      "launchCommand": "Comando di avvio",
+      "executeInTerminal": "Esegui nel terminale",
+      "startSuccess": "Claude Desktop avviato"
+    },
+    "quota": {
+      "title": "Limite",
+      "fiveHour": "Sessione attuale",
+      "sevenDay": "Settimana corrente (tutti i modelli)",
+      "sonnet": "Sonnet 7 g",
+      "extra": "Uso extra",
+      "empty": "Nessuna quota",
+      "unsupported": "Non aggiornabile",
+      "updatedAt": "Aggiornato: {{time}}",
+      "resetAt": "{{label}} reset: {{time}}",
+      "refreshSuccess": "Quota aggiornata",
+      "refreshAllDone": "Aggiornamento quota completato",
+      "refreshFailed": "Aggiornamento quota non riuscito: {{error}}",
+      "refreshWithWarning": "Aggiornamento quota non riuscito: {{error}}",
+      "notUpdated": "Quota non aggiornata",
+      "updated": "Aggiornata",
+      "notUpdatedShort": "Non aggiornata"
+    },
+    "addTabs": {
+      "desktop": "Scrivania",
+      "oauth": "OAuth",
+      "apiKey": "Chiave API",
+      "import": "Locale/JSON"
+    },
+    "authMode": {
+      "oauth": "Modalità OAuth",
+      "setup_token": "Token di setup",
+      "api_key": "Chiave API",
+      "desktop_oauth": "Login Desktop"
+    },
+    "apiKey": {
+      "desc": "Salva una API Key di Claude CLI come credenziale separata. Cambio o avvio CLI scrive i valori env del provider in Claude Code settings.json, senza scrivere lo stato di accesso di Claude Desktop.",
+      "nameLabel": "Nome account",
+      "namePlaceholder": "Opzionale, es. APIKEY.FUN",
+      "keyLabel": "Chiave API",
+      "placeholder": "Incolla la API Key del provider",
+      "hide": "Nascondi API Key",
+      "show": "Mostra API Key",
+      "hint": "Gli account API Key sono solo per Claude CLI. Vengono scritti come env in chiaro in Claude Code settings.json, non influenzano Claude Desktop e non supportano l’aggiornamento della quota abbonamento.",
+      "importAction": "Importa API Key",
+      "required": "Inserisci una API Key",
+      "importSuccess": "Account Claude API Key importato: {{name}}",
+      "quotaUnsupported": "Gli account API Key non supportano aggiornamento",
+      "switchDisabled": "Un account API Key non può passare a Claude Desktop",
+      "cliUnsupported": "Un account API Key non può avviare Claude CLI",
+      "providerLabel": "Fornitore",
+      "customProvider": "Personalizzato",
+      "endpointLabel": "Endpoint provider",
+      "officialEndpoint": "Predef. ufficiale",
+      "baseUrlLabel": "URL base",
+      "baseUrlPlaceholder": "Vuoto usa Anthropic ufficiale",
+      "keyFieldLabel": "Campo auth",
+      "baseUrlInvalid": "Base URL non è un URL valido"
+    },
+    "desktopOAuth": {
+      "title": "Login Claude Desktop",
+      "desc": "Login Claude in questo strumento; supporta Google, Apple, email e free.",
+      "start": "Apri login",
+      "hint": "Salva localmente; scrive in Claude Desktop solo al cambio.",
+      "nameLabel": "Nome account",
+      "namePlaceholder": "Opzionale, es. Claude Free",
+      "waiting": "Accedi nella finestra Claude e completa qui.",
+      "profileDir": "Directory profile isolata",
+      "complete": "Completa",
+      "localTitle": "Importa Desktop attuale",
+      "localDesc": "Copia la sessione Claude Desktop corrente come snapshot locale.",
+      "localAction": "Importa",
+      "localSuccess": "Login Claude Desktop locale importato: {{name}}",
+      "importSuccess": "Login Claude Desktop importato: {{name}}",
+      "switchHint": "Passa a Claude Desktop ufficiale",
+      "planUnknown": "Piano sconosciuto"
+    },
+    "oauth": {
+      "title": "Autorizzazione Claude OAuth",
+      "desc": "Apri la pagina ufficiale di autorizzazione OAuth di Claude, poi incolla il link di callback o il codice per importare l’account.",
+      "start": "Autorizza OAuth",
+      "proRequiredHint": "L’OAuth ufficiale di Claude è di solito usato per Claude Code. Se la pagina resta su upgrade o accesso negato, usa l’accesso Claude Desktop.",
+      "openInstruction": "Fai clic sul pulsante qui sotto e completa l’autorizzazione Claude OAuth nel browser.",
+      "waiting": "Al termine, incolla sotto l’indirizzo finale o il codice mostrato.",
+      "authUrl": "Link di autorizzazione",
+      "preparing": "Generazione link di autorizzazione...",
+      "openInBrowser": "Apri nel browser",
+      "openFailed": "Impossibile aprire il link di autorizzazione: {{error}}",
+      "callbackPlaceholder": "Incolla link di callback o codice di autorizzazione",
+      "callbackRequired": "Incolla il link di callback o il codice dopo l’autorizzazione",
+      "authorizeUrlNotCallback": "Hai incollato il link di avvio autorizzazione qui sopra, non il codice finale. Completa prima l’autorizzazione nel browser, poi copia l’indirizzo finale o il codice mostrato.",
+      "complete": "Completa importazione",
+      "emailPlaceholder": "Email (compila se non rilevata)",
+      "importSuccess": "Autorizzazione Claude OAuth importata: {{name}}"
+    },
+    "plan": {
+      "label": "Badge piano",
+      "selectPlaceholder": "Scegli piano",
+      "updateFailed": "Aggiornamento badge piano non riuscito: {{error}}"
+    },
+    "legacyOAuth": {
+      "switchDisabled": "Gli account OAuth legacy non possono passare a Claude Desktop",
+      "quotaUnsupported": "Gli account OAuth legacy non supportano più l’aggiornamento",
+      "cliUnsupported": "Gli account OAuth legacy non possono avviare Claude CLI"
+    },
+    "cli": {
+      "quickLaunch": "Avvia CLI",
+      "selectWorkingDir": "Scegli la cartella di lavoro di Claude CLI",
+      "launchSuccess": "Claude CLI avviata",
+      "prepared": "Claude CLI pronto",
+      "launchFailed": "Avvio di Claude CLI non riuscito: {{error}}",
+      "localTitle": "Importa Claude Code attuale",
+      "localDesc": "Legge l’attuale accesso OAuth locale di Claude Code e lo copia come snapshot account locale.",
+      "localSuccess": "Accesso locale Claude Code importato: {{name}}"
+    },
+    "accountNote": {
+      "title": "Nota account",
+      "desc": "Aggiungi una nota locale per {{email}} così riconosci l’account durante il cambio.",
+      "label": "Nota account",
+      "placeholder": "Esempio: Free principale, Max 20x, account team",
+      "saved": "Nota account salvata",
+      "saveFailed": "Salvataggio nota non riuscito: {{error}}",
+      "emptyTitle": "Aggiungi nota account",
+      "short": "Nota",
+      "addShort": "Nota"
+    },
+    "account": {
+      "signedInWith": "Accesso con {{provider}}",
+      "userId": "ID utente",
+      "nickname": "Soprannome"
+    },
+    "selection": {
+      "selected": "{{count}} selezionati"
+    },
+    "deleteSelectedLabel": "{{count}} account",
+    "subPlatform": {
+      "label": "Sottopiattaforma Claude",
+      "desktop": "Claude Desktop app",
+      "cli": "Claude riga di comando"
+    },
+    "searchDesktop": "Cerca account Claude Desktop...",
+    "searchCli": "Cerca account Claude CLI...",
+    "noDesktopAccounts": "Nessun account Claude Desktop",
+    "noCliAccounts": "Nessun account Claude CLI"
   }
 }

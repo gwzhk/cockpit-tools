@@ -1,5 +1,6 @@
 import { ALL_PLATFORM_IDS, PlatformId } from '../types/platform';
 import * as accountService from './accountService';
+import * as claudeService from './claudeService';
 import * as codexService from './codexService';
 import * as githubCopilotService from './githubCopilotService';
 import * as windsurfService from './windsurfService';
@@ -36,6 +37,16 @@ const PLATFORM_ADAPTERS: Record<PlatformId, TransferAdapter> = {
     listAccounts: codexService.listCodexAccounts,
     exportAccounts: codexService.exportCodexAccounts,
     importFromJson: codexService.importCodexFromJson,
+  },
+  claude: {
+    listAccounts: claudeService.listClaudeAccounts,
+    exportAccounts: claudeService.exportClaudeAccounts,
+    importFromJson: claudeService.importClaudeFromJson,
+  },
+  claude_cli: {
+    listAccounts: claudeService.listClaudeAccounts,
+    exportAccounts: claudeService.exportClaudeAccounts,
+    importFromJson: claudeService.importClaudeFromJson,
   },
   zed: {
     listAccounts: zedService.listZedAccounts,

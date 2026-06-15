@@ -54,6 +54,7 @@ import { useWindsurfAccountStore } from '../stores/useWindsurfAccountStore';
 import { useKiroAccountStore } from '../stores/useKiroAccountStore';
 import { useCursorAccountStore } from '../stores/useCursorAccountStore';
 import { useGeminiAccountStore } from '../stores/useGeminiAccountStore';
+import { useClaudeAccountStore } from '../stores/useClaudeAccountStore';
 import { useCodebuddyAccountStore } from '../stores/useCodebuddyAccountStore';
 import { useCodebuddyCnAccountStore } from '../stores/useCodebuddyCnAccountStore';
 import { useWorkbuddyAccountStore } from '../stores/useWorkbuddyAccountStore';
@@ -65,6 +66,7 @@ import { getWindsurfAccountDisplayEmail } from '../types/windsurf';
 import { getKiroAccountDisplayEmail } from '../types/kiro';
 import { getCursorAccountDisplayEmail } from '../types/cursor';
 import { getGeminiAccountDisplayEmail } from '../types/gemini';
+import { getClaudeAccountDisplayEmail } from '../types/claude';
 import { getCodebuddyAccountDisplayEmail } from '../types/codebuddy';
 import { getWorkbuddyAccountDisplayEmail } from '../types/workbuddy';
 import { getQoderAccountDisplayEmail } from '../types/qoder';
@@ -72,6 +74,7 @@ import { getTraeAccountDisplayEmail } from '../types/trae';
 import { getZedAccountDisplayEmail } from '../types/zed';
 import { ALL_PLATFORM_IDS, PlatformId } from '../types/platform';
 import { SettingsAccountTransferSection } from '../components/SettingsAccountTransferSection';
+import { SettingsWebdavSyncSection } from '../components/SettingsWebdavSyncSection';
 import { useEscClose } from '../hooks/useEscClose';
 import './settings/Settings.css';
 import { 
@@ -105,6 +108,9 @@ interface GeneralConfig {
   ui_scale: number;
   auto_refresh_minutes: number;
   codex_auto_refresh_minutes: number;
+  claude_auto_refresh_minutes: number;
+  codex_sync_wsl: boolean;
+  codex_wsl_config_dir: string;
   ghcp_auto_refresh_minutes: number;
   windsurf_auto_refresh_minutes: number;
   kiro_auto_refresh_minutes: number;
@@ -156,6 +162,7 @@ interface GeneralConfig {
   codex_launch_on_switch: boolean;
   codex_restart_specified_app_on_switch: boolean;
   codex_local_access_entry_visible: boolean;
+  top_right_ad_visible?: boolean;
   antigravity_dual_switch_no_restart_enabled: boolean;
   auto_switch_enabled: boolean;
   auto_switch_threshold: number;
@@ -172,6 +179,8 @@ interface GeneralConfig {
   quota_alert_threshold: number;
   codex_quota_alert_enabled: boolean;
   codex_quota_alert_threshold: number;
+  claude_quota_alert_enabled: boolean;
+  claude_quota_alert_threshold: number;
   ghcp_quota_alert_enabled: boolean;
   ghcp_quota_alert_threshold: number;
   windsurf_quota_alert_enabled: boolean;
@@ -211,17 +220,19 @@ const FALLBACK_PLATFORM_SETTINGS_ORDER: Record<PlatformId, number> = {
   antigravity: 0,
   antigravity_ide: 1,
   codex: 2,
-  'github-copilot': 3,
-  windsurf: 4,
-  kiro: 5,
-  cursor: 6,
-  gemini: 7,
-  codebuddy: 8,
-  codebuddy_cn: 9,
-  qoder: 10,
-  trae: 11,
-  workbuddy: 12,
-  zed: 13,
+  claude: 3,
+  claude_cli: 4,
+  'github-copilot': 5,
+  windsurf: 6,
+  kiro: 7,
+  cursor: 8,
+  gemini: 9,
+  codebuddy: 10,
+  codebuddy_cn: 11,
+  qoder: 12,
+  trae: 13,
+  workbuddy: 14,
+  zed: 15,
 };
 type UpdateCheckSource = 'auto' | 'manual';
 type UpdateCheckFinishedDetail = {
@@ -282,7 +293,7 @@ export function SettingsPage() {
   const isLinux = usePlatformRuntimeSupport('linux-only');
   const sideNavLayoutMode = useSideNavLayoutStore((state) => state.mode);
   const setSideNavLayoutMode = useSideNavLayoutStore((state) => state.setMode);
-  const [activeTab, setActiveTab] = useState<'general' | 'network' | 'about'>('general');
+  const [activeTab, setActiveTab] = useState<'general' | 'network' | 'data' | 'about'>('general');
   const [availableTerminals, setAvailableTerminals] = useState<string[]>(['system']);
 
   useEffect(() => {
@@ -361,6 +372,9 @@ export function SettingsPage() {
   const [uiScale, setUiScale] = useState('1');
   const [autoRefresh, setAutoRefresh] = useState('5');
   const [codexAutoRefresh, setCodexAutoRefresh] = useState('10');
+  const [claudeAutoRefresh, setClaudeAutoRefresh] = useState('10');
+  const [codexSyncWsl, setCodexSyncWsl] = useState(false);
+  const [codexWslConfigDir, setCodexWslConfigDir] = useState('');
   const [ghcpAutoRefresh, setGhcpAutoRefresh] = useState('10');
   const [windsurfAutoRefresh, setWindsurfAutoRefresh] = useState('10');
   const [kiroAutoRefresh, setKiroAutoRefresh] = useState('10');
@@ -405,6 +419,9 @@ export function SettingsPage() {
   const [accountOverrides, setAccountOverrides] = useState<AccountRefreshOverrides>(
     loadAccountRefreshOverrides(),
   );
+  const [accountLevelRefreshCustomMode, setAccountLevelRefreshCustomMode] = useState<
+    Record<string, boolean>
+  >({});
   const [codebuddyQuotaAlertEnabled, setCodebuddyQuotaAlertEnabled] = useState(false);
   const [codebuddyQuotaAlertThreshold, setCodebuddyQuotaAlertThreshold] = useState('20');
   const [codebuddyCnQuotaAlertEnabled, setCodebuddyCnQuotaAlertEnabled] = useState(false);
@@ -436,6 +453,7 @@ export function SettingsPage() {
   const [codexLaunchOnSwitch, setCodexLaunchOnSwitch] = useState(true);
   const [codexRestartSpecifiedAppOnSwitch, setCodexRestartSpecifiedAppOnSwitch] = useState(false);
   const [codexLocalAccessEntryVisible, setCodexLocalAccessEntryVisible] = useState(true);
+  const [topRightAdVisible, setTopRightAdVisible] = useState(true);
   const [antigravityDualSwitchNoRestartEnabled, setAntigravityDualSwitchNoRestartEnabled] = useState(false);
   const [autoSwitchEnabled, setAutoSwitchEnabled] = useState(false);
   const [autoSwitchThreshold, setAutoSwitchThreshold] = useState('20');
@@ -454,6 +472,8 @@ export function SettingsPage() {
   const [quotaAlertThreshold, setQuotaAlertThreshold] = useState('20');
   const [codexQuotaAlertEnabled, setCodexQuotaAlertEnabled] = useState(false);
   const [codexQuotaAlertThreshold, setCodexQuotaAlertThreshold] = useState('20');
+  const [claudeQuotaAlertEnabled, setClaudeQuotaAlertEnabled] = useState(false);
+  const [claudeQuotaAlertThreshold, setClaudeQuotaAlertThreshold] = useState('20');
   const [ghcpQuotaAlertEnabled, setGhcpQuotaAlertEnabled] = useState(false);
   const [ghcpQuotaAlertThreshold, setGhcpQuotaAlertThreshold] = useState('20');
   const [windsurfQuotaAlertEnabled, setWindsurfQuotaAlertEnabled] = useState(false);
@@ -466,6 +486,7 @@ export function SettingsPage() {
   const [geminiQuotaAlertThreshold, setGeminiQuotaAlertThreshold] = useState('20');
   const [autoRefreshCustomMode, setAutoRefreshCustomMode] = useState(false);
   const [codexAutoRefreshCustomMode, setCodexAutoRefreshCustomMode] = useState(false);
+  const [claudeAutoRefreshCustomMode, setClaudeAutoRefreshCustomMode] = useState(false);
   const [ghcpAutoRefreshCustomMode, setGhcpAutoRefreshCustomMode] = useState(false);
   const [windsurfAutoRefreshCustomMode, setWindsurfAutoRefreshCustomMode] = useState(false);
   const [kiroAutoRefreshCustomMode, setKiroAutoRefreshCustomMode] = useState(false);
@@ -475,6 +496,7 @@ export function SettingsPage() {
   const [autoSwitchCreditsThresholdCustomMode, setAutoSwitchCreditsThresholdCustomMode] = useState(false);
   const [quotaAlertThresholdCustomMode, setQuotaAlertThresholdCustomMode] = useState(false);
   const [codexQuotaAlertThresholdCustomMode, setCodexQuotaAlertThresholdCustomMode] = useState(false);
+  const [claudeQuotaAlertThresholdCustomMode, setClaudeQuotaAlertThresholdCustomMode] = useState(false);
   const [ghcpQuotaAlertThresholdCustomMode, setGhcpQuotaAlertThresholdCustomMode] = useState(false);
   const [windsurfQuotaAlertThresholdCustomMode, setWindsurfQuotaAlertThresholdCustomMode] = useState(false);
   const [kiroQuotaAlertThresholdCustomMode, setKiroQuotaAlertThresholdCustomMode] = useState(false);
@@ -734,6 +756,7 @@ export function SettingsPage() {
     if (
       !autoRefresh.trim() ||
       !codexAutoRefresh.trim() ||
+      !claudeAutoRefresh.trim() ||
       !ghcpAutoRefresh.trim() ||
       !windsurfAutoRefresh.trim() ||
       !kiroAutoRefresh.trim() ||
@@ -751,6 +774,7 @@ export function SettingsPage() {
 
     const autoRefreshNum = parseInt(autoRefresh, 10) || -1;
     const codexAutoRefreshNum = parseInt(codexAutoRefresh, 10) || -1;
+    const claudeAutoRefreshNum = parseInt(claudeAutoRefresh, 10) || -1;
     const ghcpAutoRefreshNum = parseInt(ghcpAutoRefresh, 10) || -1;
     const windsurfAutoRefreshNum = parseInt(windsurfAutoRefresh, 10) || -1;
     const kiroAutoRefreshNum = parseInt(kiroAutoRefresh, 10) || -1;
@@ -770,6 +794,7 @@ export function SettingsPage() {
     const parsedAutoSwitchCreditsThreshold = Number.parseInt(autoSwitchCreditsThreshold, 10);
     const parsedQuotaAlertThreshold = Number.parseInt(quotaAlertThreshold, 10);
     const parsedCodexQuotaAlertThreshold = Number.parseInt(codexQuotaAlertThreshold, 10);
+    const parsedClaudeQuotaAlertThreshold = Number.parseInt(claudeQuotaAlertThreshold, 10);
     const parsedGhcpQuotaAlertThreshold = Number.parseInt(ghcpQuotaAlertThreshold, 10);
     const parsedWindsurfQuotaAlertThreshold = Number.parseInt(windsurfQuotaAlertThreshold, 10);
     const parsedKiroQuotaAlertThreshold = Number.parseInt(kiroQuotaAlertThreshold, 10);
@@ -795,6 +820,9 @@ export function SettingsPage() {
           uiScale: normalizedUiScale,
           autoRefreshMinutes: autoRefreshNum,
           codexAutoRefreshMinutes: codexAutoRefreshNum,
+          claudeAutoRefreshMinutes: claudeAutoRefreshNum,
+          codexSyncWsl,
+          codexWslConfigDir,
           ghcpAutoRefreshMinutes: ghcpAutoRefreshNum,
           windsurfAutoRefreshMinutes: windsurfAutoRefreshNum,
           kiroAutoRefreshMinutes: kiroAutoRefreshNum,
@@ -834,6 +862,7 @@ export function SettingsPage() {
           codexLaunchOnSwitch,
           codexRestartSpecifiedAppOnSwitch,
           codexLocalAccessEntryVisible,
+          topRightAdVisible,
           antigravityDualSwitchNoRestartEnabled,
           autoSwitchEnabled,
           autoSwitchThreshold: Number.isNaN(parsedAutoSwitchThreshold) ? 20 : parsedAutoSwitchThreshold,
@@ -851,6 +880,10 @@ export function SettingsPage() {
           codexQuotaAlertThreshold: Number.isNaN(parsedCodexQuotaAlertThreshold)
             ? 20
             : parsedCodexQuotaAlertThreshold,
+          claudeQuotaAlertEnabled,
+          claudeQuotaAlertThreshold: Number.isNaN(parsedClaudeQuotaAlertThreshold)
+            ? 20
+            : parsedClaudeQuotaAlertThreshold,
           ghcpQuotaAlertEnabled,
           ghcpQuotaAlertThreshold: Number.isNaN(parsedGhcpQuotaAlertThreshold)
             ? 20
@@ -911,6 +944,9 @@ export function SettingsPage() {
   }, [
     autoRefresh,
     codexAutoRefresh,
+    claudeAutoRefresh,
+    codexSyncWsl,
+    codexWslConfigDir,
     ghcpAutoRefresh,
     windsurfAutoRefresh,
     kiroAutoRefresh,
@@ -953,6 +989,7 @@ export function SettingsPage() {
     codexLaunchOnSwitch,
     codexRestartSpecifiedAppOnSwitch,
     codexLocalAccessEntryVisible,
+    topRightAdVisible,
     antigravityDualSwitchNoRestartEnabled,
     autoSwitchEnabled,
     autoSwitchThreshold,
@@ -966,6 +1003,8 @@ export function SettingsPage() {
     quotaAlertThreshold,
     codexQuotaAlertEnabled,
     codexQuotaAlertThreshold,
+    claudeQuotaAlertEnabled,
+    claudeQuotaAlertThreshold,
     ghcpQuotaAlertEnabled,
     ghcpQuotaAlertThreshold,
     windsurfQuotaAlertEnabled,
@@ -1205,6 +1244,9 @@ export function SettingsPage() {
       setUiScale(String(config.ui_scale ?? 1));
       setAutoRefresh(String(config.auto_refresh_minutes));
       setCodexAutoRefresh(String(config.codex_auto_refresh_minutes ?? 10));
+      setClaudeAutoRefresh(String(config.claude_auto_refresh_minutes ?? 10));
+      setCodexSyncWsl(Boolean(config.codex_sync_wsl ?? false));
+      setCodexWslConfigDir(config.codex_wsl_config_dir || '');
       setGhcpAutoRefresh(String(config.ghcp_auto_refresh_minutes ?? 10));
       setWindsurfAutoRefresh(String(config.windsurf_auto_refresh_minutes ?? 10));
       setKiroAutoRefresh(String(config.kiro_auto_refresh_minutes ?? 10));
@@ -1261,6 +1303,7 @@ export function SettingsPage() {
         config.codex_restart_specified_app_on_switch ?? false,
       );
       setCodexLocalAccessEntryVisible(config.codex_local_access_entry_visible ?? true);
+      setTopRightAdVisible(config.top_right_ad_visible ?? true);
       setAntigravityDualSwitchNoRestartEnabled(
         config.antigravity_dual_switch_no_restart_enabled ?? false
       );
@@ -1281,6 +1324,8 @@ export function SettingsPage() {
       setQuotaAlertThreshold(String(config.quota_alert_threshold ?? 20));
       setCodexQuotaAlertEnabled(config.codex_quota_alert_enabled ?? false);
       setCodexQuotaAlertThreshold(String(config.codex_quota_alert_threshold ?? 20));
+      setClaudeQuotaAlertEnabled(config.claude_quota_alert_enabled ?? false);
+      setClaudeQuotaAlertThreshold(String(config.claude_quota_alert_threshold ?? 20));
       setGhcpQuotaAlertEnabled(config.ghcp_quota_alert_enabled ?? false);
       setGhcpQuotaAlertThreshold(String(config.ghcp_quota_alert_threshold ?? 20));
       setWindsurfQuotaAlertEnabled(config.windsurf_quota_alert_enabled ?? false);
@@ -1293,6 +1338,7 @@ export function SettingsPage() {
       setGeminiQuotaAlertThreshold(String(config.gemini_quota_alert_threshold ?? 20));
       setAutoRefreshCustomMode(false);
       setCodexAutoRefreshCustomMode(false);
+      setClaudeAutoRefreshCustomMode(false);
       setGhcpAutoRefreshCustomMode(false);
       setWindsurfAutoRefreshCustomMode(false);
       setKiroAutoRefreshCustomMode(false);
@@ -1308,6 +1354,7 @@ export function SettingsPage() {
       setAutoSwitchCreditsThresholdCustomMode(false);
       setQuotaAlertThresholdCustomMode(false);
       setCodexQuotaAlertThresholdCustomMode(false);
+      setClaudeQuotaAlertThresholdCustomMode(false);
       setGhcpQuotaAlertThresholdCustomMode(false);
       setWindsurfQuotaAlertThresholdCustomMode(false);
       setKiroQuotaAlertThresholdCustomMode(false);
@@ -1559,6 +1606,8 @@ export function SettingsPage() {
         return parseRefresh(autoRefresh) > 0;
       case 'codex':
         return parseRefresh(codexAutoRefresh) > 0;
+      case 'claude':
+        return parseRefresh(claudeAutoRefresh) > 0;
       case 'ghcp':
         return parseRefresh(ghcpAutoRefresh) > 0;
       case 'windsurf':
@@ -1697,6 +1746,8 @@ export function SettingsPage() {
         return antigravityAccounts.map((a) => ({ id: a.id, email: a.email }));
       case 'codex':
         return codexAccounts.map((a) => ({ id: a.id, email: a.email }));
+      case 'claude':
+        return getProviderAccounts(useClaudeAccountStore, getClaudeAccountDisplayEmail);
       case 'ghcp':
         return getProviderAccounts(useGitHubCopilotAccountStore, getGitHubCopilotAccountDisplayEmail);
       case 'windsurf':
@@ -1731,8 +1782,29 @@ export function SettingsPage() {
   ) => {
     if (value === 'inherit') {
       removeAccountRefreshOverride(platform, email);
+      setAccountLevelRefreshCustomMode((prev) => {
+        const next = { ...prev };
+        delete next[`${platform}:${email}`];
+        return next;
+      });
+    } else if (value === 'custom') {
+      setAccountLevelRefreshCustomMode((prev) => ({
+        ...prev,
+        [`${platform}:${email}`]: true,
+      }));
+      const currentValue = accountOverrides[platform]?.[email];
+      if (currentValue !== undefined) {
+        setAccountRefreshMinutes(platform, email, currentValue);
+      } else {
+        setAccountRefreshMinutes(platform, email, 1);
+      }
     } else {
       setAccountRefreshMinutes(platform, email, Number(value));
+      setAccountLevelRefreshCustomMode((prev) => {
+        const next = { ...prev };
+        delete next[`${platform}:${email}`];
+        return next;
+      });
     }
     setAccountOverrides(loadAccountRefreshOverrides());
   };
@@ -1771,7 +1843,11 @@ export function SettingsPage() {
             <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
               {accounts.map((account) => {
                 const overrideValue = platformOverrides[account.email];
-                const selectValue = overrideValue !== undefined ? String(overrideValue) : 'inherit';
+                const isCustomMode = accountLevelRefreshCustomMode[`${platform}:${account.email}`];
+                const isPreset = overrideValue !== undefined && [1, 2, 5, 10, 15, -1].includes(overrideValue);
+                const selectValue = isCustomMode
+                  ? 'custom'
+                  : (overrideValue !== undefined ? String(overrideValue) : 'inherit');
                 return (
                   <div
                     key={account.id}
@@ -1789,28 +1865,78 @@ export function SettingsPage() {
                     >
                       {account.email}
                     </span>
-                    <select
-                      className="settings-select"
-                      style={{ minWidth: '100px', width: 'auto', fontSize: '12px' }}
-                      value={selectValue}
-                      onChange={(e) =>
-                        handleAccountOverrideChange(platform, account.email, e.target.value)
-                      }
-                    >
-                      <option value="inherit">
-                        {t('settings.general.accountLevelRefreshInherit', '继承平台设置')}
-                      </option>
-                      <option value="-1">
-                        {t('settings.general.accountLevelRefreshDisabled', '禁用')}
-                      </option>
-                      <option value="1">1 {t('settings.general.minutes')}</option>
-                      <option value="2">2 {t('settings.general.minutes')}</option>
-                      <option value="5">5 {t('settings.general.minutes')}</option>
-                      <option value="10">10 {t('settings.general.minutes')}</option>
-                      <option value="15">15 {t('settings.general.minutes')}</option>
-                      <option value="30">30 {t('settings.general.minutes')}</option>
-                      <option value="60">60 {t('settings.general.minutes')}</option>
-                    </select>
+                    {isCustomMode ? (
+                      <div className="settings-inline-input" style={{ minWidth: '100px', width: 'auto' }}>
+                        <input
+                          type="number"
+                          min={1}
+                          max={999}
+                          className="settings-select settings-select--input-mode settings-select--with-unit"
+                          value={overrideValue !== undefined ? String(overrideValue) : '1'}
+                          placeholder={t('quickSettings.inputMinutes', '输入分钟数')}
+                          onChange={(e) => {
+                            const sanitized = sanitizeNumberInput(e.target.value);
+                            if (sanitized) {
+                              setAccountRefreshMinutes(platform, account.email, Number(sanitized));
+                              setAccountOverrides(loadAccountRefreshOverrides());
+                            }
+                          }}
+                          onBlur={() => {
+                            const currentValue = overrideValue !== undefined ? String(overrideValue) : '1';
+                            const normalized = normalizeNumberInput(currentValue, 1, 999);
+                            setAccountRefreshMinutes(platform, account.email, Number(normalized));
+                            setAccountOverrides(loadAccountRefreshOverrides());
+                            setAccountLevelRefreshCustomMode((prev) => {
+                              const next = { ...prev };
+                              delete next[`${platform}:${account.email}`];
+                              return next;
+                            });
+                          }}
+                          onKeyDown={(event) => {
+                            if (event.key === 'Enter') {
+                              event.preventDefault();
+                              const currentValue = overrideValue !== undefined ? String(overrideValue) : '1';
+                              const normalized = normalizeNumberInput(currentValue, 1, 999);
+                              setAccountRefreshMinutes(platform, account.email, Number(normalized));
+                              setAccountOverrides(loadAccountRefreshOverrides());
+                              setAccountLevelRefreshCustomMode((prev) => {
+                                const next = { ...prev };
+                                delete next[`${platform}:${account.email}`];
+                                return next;
+                              });
+                            }
+                          }}
+                        />
+                        <span className="settings-input-unit">{t('settings.general.minutes')}</span>
+                      </div>
+                    ) : (
+                      <select
+                        className="settings-select"
+                        style={{ minWidth: '100px', width: 'auto', fontSize: '12px' }}
+                        value={selectValue}
+                        onChange={(e) =>
+                          handleAccountOverrideChange(platform, account.email, e.target.value)
+                        }
+                      >
+                        <option value="inherit">
+                          {t('settings.general.accountLevelRefreshInherit', '继承平台设置')}
+                        </option>
+                        <option value="-1">
+                          {t('settings.general.accountLevelRefreshDisabled', '禁用')}
+                        </option>
+                        <option value="1">1 {t('settings.general.minutes')}</option>
+                        <option value="2">2 {t('settings.general.minutes')}</option>
+                        <option value="5">5 {t('settings.general.minutes')}</option>
+                        <option value="10">10 {t('settings.general.minutes')}</option>
+                        <option value="15">15 {t('settings.general.minutes')}</option>
+                        {!isPreset && overrideValue !== undefined && overrideValue > 0 && (
+                          <option value={String(overrideValue)}>
+                            {overrideValue} {t('settings.general.minutes')}
+                          </option>
+                        )}
+                        <option value="custom">{t('settings.general.autoRefreshCustom', '自定义')}</option>
+                      </select>
+                    )}
                   </div>
                 );
               })}
@@ -1821,8 +1947,192 @@ export function SettingsPage() {
     );
   };
 
+  const renderPlatformAutoRefreshRow = ({
+    title,
+    description,
+    value,
+    setValue,
+    customMode,
+    setCustomMode,
+    isPreset,
+  }: {
+    title: string;
+    description: string;
+    value: string;
+    setValue: (value: string) => void;
+    customMode: boolean;
+    setCustomMode: (enabled: boolean) => void;
+    isPreset: boolean;
+  }) => (
+    <div className="settings-row">
+      <div className="row-label">
+        <div className="row-title">{title}</div>
+        <div className="row-desc">{description}</div>
+      </div>
+      <div className="row-control">
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          {customMode ? (
+            <div className="settings-inline-input" style={{ minWidth: '120px', width: 'auto' }}>
+              <input
+                type="number"
+                min={1}
+                max={999}
+                className="settings-select settings-select--input-mode settings-select--with-unit"
+                value={value}
+                placeholder={t('quickSettings.inputMinutes', '输入分钟数')}
+                onChange={(event) => setValue(sanitizeNumberInput(event.target.value))}
+                onBlur={() => {
+                  setValue(normalizeNumberInput(value, 1, 999));
+                  setCustomMode(false);
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') {
+                    event.preventDefault();
+                    setValue(normalizeNumberInput(value, 1, 999));
+                    setCustomMode(false);
+                  }
+                }}
+              />
+              <span className="settings-input-unit">{t('settings.general.minutes')}</span>
+            </div>
+          ) : (
+            <select
+              className="settings-select"
+              style={{ minWidth: '120px', width: 'auto' }}
+              value={value}
+              onChange={(event) => {
+                const nextValue = event.target.value;
+                if (nextValue === 'custom') {
+                  setCustomMode(true);
+                  setValue(value !== '-1' ? value : '1');
+                  return;
+                }
+                setCustomMode(false);
+                setValue(nextValue);
+              }}
+            >
+              {!isPreset && (
+                <option value={value}>
+                  {value} {t('settings.general.minutes')}
+                </option>
+              )}
+              <option value="-1">{t('settings.general.autoRefreshDisabled')}</option>
+              <option value="2">2 {t('settings.general.minutes')}</option>
+              <option value="5">5 {t('settings.general.minutes')}</option>
+              <option value="10">10 {t('settings.general.minutes')}</option>
+              <option value="15">15 {t('settings.general.minutes')}</option>
+              <option value="custom">{t('settings.general.autoRefreshCustom')}</option>
+            </select>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderPlatformQuotaAlertRows = ({
+    enabled,
+    setEnabled,
+    threshold,
+    setThreshold,
+    customMode,
+    setCustomMode,
+    isPreset,
+  }: {
+    enabled: boolean;
+    setEnabled: (enabled: boolean) => void;
+    threshold: string;
+    setThreshold: (value: string) => void;
+    customMode: boolean;
+    setCustomMode: (enabled: boolean) => void;
+    isPreset: boolean;
+  }) => (
+    <>
+      <div className="settings-row">
+        <div className="row-label">
+          <div className="row-title">{t('quickSettings.quotaAlert.enable', '超额预警')}</div>
+          <div className="row-desc">
+            {t(
+              'quickSettings.quotaAlert.hint',
+              '当当前账号任意模型配额低于阈值时，发送原生通知并在页面提示快捷切号。',
+            )}
+          </div>
+        </div>
+        <div className="row-control">
+          <label className="switch">
+            <input
+              type="checkbox"
+              checked={enabled}
+              onChange={(event) => setEnabled(event.target.checked)}
+            />
+            <span className="slider"></span>
+          </label>
+        </div>
+      </div>
+      {enabled && (
+        <div className="settings-row" style={{ animation: 'fadeUp 0.3s ease both' }}>
+          <div className="row-label">
+            <div className="row-title">{t('quickSettings.quotaAlert.threshold', '预警阈值')}</div>
+            <div className="row-desc">
+              {t('quickSettings.quotaAlert.thresholdDesc', '任意模型配额低于此百分比时触发预警')}
+            </div>
+          </div>
+          <div className="row-control">
+            {customMode ? (
+              <div className="settings-inline-input">
+                <input
+                  type="number"
+                  min={0}
+                  max={100}
+                  className="settings-select settings-select--input-mode settings-select--with-unit"
+                  value={threshold}
+                  placeholder={t('quickSettings.inputPercent', '输入百分比')}
+                  onChange={(event) => setThreshold(sanitizeNumberInput(event.target.value))}
+                  onBlur={() => {
+                    setThreshold(normalizeNumberInput(threshold, 0, 100));
+                    setCustomMode(false);
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      event.preventDefault();
+                      setThreshold(normalizeNumberInput(threshold, 0, 100));
+                      setCustomMode(false);
+                    }
+                  }}
+                />
+                <span className="settings-input-unit">%</span>
+              </div>
+            ) : (
+              <select
+                className="settings-select"
+                value={threshold}
+                onChange={(event) => {
+                  const nextValue = event.target.value;
+                  if (nextValue === 'custom') {
+                    setCustomMode(true);
+                    setThreshold(threshold || '20');
+                    return;
+                  }
+                  setCustomMode(false);
+                  setThreshold(nextValue);
+                }}
+              >
+                {!isPreset && <option value={threshold}>{threshold}%</option>}
+                <option value="0">0%</option>
+                <option value="20">20%</option>
+                <option value="40">40%</option>
+                <option value="60">60%</option>
+                <option value="custom">{t('settings.general.autoRefreshCustom')}</option>
+              </select>
+            )}
+          </div>
+        </div>
+      )}
+    </>
+  );
+
   const autoRefreshIsPreset = REFRESH_PRESET_VALUES.includes(autoRefresh);
   const codexAutoRefreshIsPreset = REFRESH_PRESET_VALUES.includes(codexAutoRefresh);
+  const claudeAutoRefreshIsPreset = REFRESH_PRESET_VALUES.includes(claudeAutoRefresh);
   const ghcpAutoRefreshIsPreset = REFRESH_PRESET_VALUES.includes(ghcpAutoRefresh);
   const windsurfAutoRefreshIsPreset = REFRESH_PRESET_VALUES.includes(windsurfAutoRefresh);
   const kiroAutoRefreshIsPreset = REFRESH_PRESET_VALUES.includes(kiroAutoRefresh);
@@ -1840,6 +2150,7 @@ export function SettingsPage() {
   );
   const quotaAlertThresholdIsPreset = THRESHOLD_PRESET_VALUES.includes(quotaAlertThreshold);
   const codexQuotaAlertThresholdIsPreset = THRESHOLD_PRESET_VALUES.includes(codexQuotaAlertThreshold);
+  const claudeQuotaAlertThresholdIsPreset = THRESHOLD_PRESET_VALUES.includes(claudeQuotaAlertThreshold);
   const ghcpQuotaAlertThresholdIsPreset = THRESHOLD_PRESET_VALUES.includes(ghcpQuotaAlertThreshold);
   const windsurfQuotaAlertThresholdIsPreset = THRESHOLD_PRESET_VALUES.includes(windsurfQuotaAlertThreshold);
   const kiroQuotaAlertThresholdIsPreset = THRESHOLD_PRESET_VALUES.includes(kiroQuotaAlertThreshold);
@@ -1960,7 +2271,7 @@ export function SettingsPage() {
 
   return (
     <main className="main-content">
-      <div className="page-tabs-row">
+      <div className="page-tabs-row settings-page-tabs-row">
         <div className="page-tabs-label">{t('settings.title')}</div>
         <div className="page-tabs filter-tabs">
           <button 
@@ -1974,6 +2285,12 @@ export function SettingsPage() {
             onClick={() => setActiveTab('network')}
           >
             {t('settings.tabs.network')}
+          </button>
+          <button 
+            className={`filter-tab ${activeTab === 'data' ? 'active' : ''}`}
+            onClick={() => setActiveTab('data')}
+          >
+            {t('settings.tabs.data', '数据管理')}
           </button>
           <button 
             className={`filter-tab ${activeTab === 'about' ? 'active' : ''}`}
@@ -2278,19 +2595,28 @@ export function SettingsPage() {
 
               <div className="settings-row">
                 <div className="row-label">
-                  <div className="row-title">{t('settings.general.fpDir')}</div>
-                  <div className="row-desc">{t('settings.general.fpDirDesc')}</div>
+                  <div className="row-title">
+                    {t('settings.general.topRightAdVisible', '显示顶部推广')}
+                  </div>
+                  <div className="row-desc">
+                    {t(
+                      'settings.general.topRightAdVisibleDesc',
+                      '关闭后隐藏应用顶部推广位。'
+                    )}
+                  </div>
                 </div>
                 <div className="row-control">
-                  <button className="btn btn-secondary" onClick={() => accountService.openDeviceFolder()}>
-                    <FolderOpen size={16} />{t('common.open')}
-                  </button>
+                  <label className="switch">
+                    <input
+                      type="checkbox"
+                      checked={topRightAdVisible}
+                      onChange={(e) => setTopRightAdVisible(e.target.checked)}
+                    />
+                    <span className="slider"></span>
+                  </label>
                 </div>
               </div>
             </div>
-
-            <SettingsAccountTransferSection />
-
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <div style={{ order: platformSettingsOrder.antigravity }}>
                 <div className="group-title">{t('settings.general.antigravitySettingsTitle', 'Antigravity IDE 设置')}</div>
@@ -2815,6 +3141,45 @@ export function SettingsPage() {
               {renderCurrentAccountRefreshRow('codex')}
               {renderAccountLevelRefreshConfig('codex')}
 
+              {isWindows && (
+                <>
+                  <div className="settings-row">
+                    <div className="row-label">
+                      <div className="row-title">{t('settings.general.codexSyncWsl')}</div>
+                      <div className="row-desc">{t('settings.general.codexSyncWslDesc')}</div>
+                    </div>
+                    <div className="row-control">
+                      <label className="switch">
+                        <input
+                          type="checkbox"
+                          checked={codexSyncWsl}
+                          onChange={(e) => setCodexSyncWsl(e.target.checked)}
+                        />
+                        <span className="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  {codexSyncWsl && (
+                    <div className="settings-row">
+                      <div className="row-label">
+                        <div className="row-title">{t('settings.general.codexWslConfigDir')}</div>
+                        <div className="row-desc">{t('settings.general.codexWslConfigDirDesc')}</div>
+                      </div>
+                      <div className="row-control row-control--grow">
+                        <input
+                          type="text"
+                          className="settings-input settings-input--path"
+                          value={codexWslConfigDir}
+                          placeholder={t('settings.general.codexWslConfigDirPlaceholder')}
+                          onChange={(e) => setCodexWslConfigDir(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+
               <div className="settings-row">
                 <div className="row-label">
                   <div className="row-title">{t('settings.general.codexAppPath', 'Codex 启动路径')}</div>
@@ -3132,6 +3497,40 @@ export function SettingsPage() {
               )}
             </div>
 
+              </div>
+
+              <div style={{ order: platformSettingsOrder.claude }}>
+                <div className="group-title">
+                  {t('settings.general.claudeSettingsTitle', 'Claude Desktop 设置')}
+                </div>
+                <div className="settings-group">
+                  {renderPlatformAutoRefreshRow({
+                    title: t(
+                      'settings.general.claudeAutoRefresh',
+                      'Claude Desktop 自动刷新配额',
+                    ),
+                    description: t(
+                      'settings.general.claudeAutoRefreshDesc',
+                      '后台自动更新 Claude Desktop 账号配额缓存',
+                    ),
+                    value: claudeAutoRefresh,
+                    setValue: setClaudeAutoRefresh,
+                    customMode: claudeAutoRefreshCustomMode,
+                    setCustomMode: setClaudeAutoRefreshCustomMode,
+                    isPreset: claudeAutoRefreshIsPreset,
+                  })}
+                  {renderCurrentAccountRefreshRow('claude')}
+                  {renderAccountLevelRefreshConfig('claude')}
+                  {renderPlatformQuotaAlertRows({
+                    enabled: claudeQuotaAlertEnabled,
+                    setEnabled: setClaudeQuotaAlertEnabled,
+                    threshold: claudeQuotaAlertThreshold,
+                    setThreshold: setClaudeQuotaAlertThreshold,
+                    customMode: claudeQuotaAlertThresholdCustomMode,
+                    setCustomMode: setClaudeQuotaAlertThresholdCustomMode,
+                    isPreset: claudeQuotaAlertThresholdIsPreset,
+                  })}
+                </div>
               </div>
 
               <div style={{ order: platformSettingsOrder['github-copilot'] }}>
@@ -5198,6 +5597,13 @@ export function SettingsPage() {
               </div>
             </div>
 
+          </>
+        )}
+
+        {activeTab === 'data' && (
+          <>
+            <SettingsAccountTransferSection />
+            <SettingsWebdavSyncSection />
           </>
         )}
 

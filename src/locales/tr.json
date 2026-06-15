@@ -48,7 +48,7 @@
         "all": "Tümü ({{count}})",
         "enterprise": "KURUMSAL ({{count}})",
         "free": "ÜCRETSİZ ({{count}})",
-        "pro": "PRO ({{count}})",
+        "pro": "PRO ({{count}})​",
         "business": "İŞ ({{count}})",
         "individual": "BİREYSEL ({{count}})",
         "validAccounts": "Geçerli hesaplar ({{count}})"
@@ -184,7 +184,7 @@
         "relativeHours": "{{hours}} sa",
         "relativeHoursMinutes": "{{hours}} sa {{minutes}} dk",
         "relativeMinutes": "{{minutes}} dk",
-        "relativeWithAbsolute": "{{relative}} ({{absolute}})"
+        "relativeWithAbsolute": "{{relative}} ({{absolute}})​"
       },
       "credits": {
         "leftInline": "{{left}} kaldı",
@@ -197,7 +197,7 @@
         "planEndsInHours": "{{hours}}h içinde sıfırlanır"
       },
       "flowNotice": {
-        "alternative": "Alternatif: çoklu örnek izolasyonunu kullanın (farklı --user-data-dir). Her örnek için bir kez giriş yapın, ardından hedef hesap ortamına hızlı geçiş için örnek bazında başlatın."
+        "alternative": "Çoklu örnek izolasyonu: ayrı yönetilen profiller kullanın ve hesap ortamları arasında hızlı geçiş için her örnekte bir kez giriş yapın."
       },
       "injecting": "Enjekte ediliyor...",
       "usage": {
@@ -218,7 +218,7 @@
       "desc": "Bu alan tüm sayfalarda sağ üstte sabitlenir ve kampanya ya da marka reklamları için uygundur.",
       "action": "Ayrıntıları görüntüle"
     },
-    "appName": "Cockpit Tools",
+    "appName": "Cockpit Tools​",
     "collapse": "Daralt",
     "confirmDelete": "Silmeyi Onayla",
     "confirmDeleteTag": "Etiket Silmeyi Onayla",
@@ -228,14 +228,13 @@
     "selectAll": "Tümünü Seç"
   },
   "nav": {
-    "overview": "Antigravity IDE",
+    "overview": "Antigravity IDE​",
     "accounts": "Hesaplar",
     "wakeup": "Uyandırma Görevleri",
-    "fingerprints": "Parmak İzleri",
     "settings": "Ayarlar",
-    "codex": "Codex",
-    "githubCopilot": "GitHub Copilot",
-    "windsurf": "Windsurf",
+    "codex": "Codex​",
+    "githubCopilot": "GitHub Copilot​",
+    "windsurf": "Windsurf​",
     "dashboard": "Gösterge Paneli",
     "morePlatforms": "Daha Fazla Platform",
     "instances": "Çoklu Örnek",
@@ -245,21 +244,35 @@
       "restart": "Yeniden başlat",
       "installing": "Yükleniyor"
     },
-    "gemini": "Gemini Cli",
-    "codebuddy": "CodeBuddy",
-    "qoder": "Qoder",
-    "trae": "Trae",
-    "codebuddyCn": "CodeBuddy CN",
+    "gemini": "Gemini Cli​",
+    "codebuddy": "CodeBuddy​",
+    "qoder": "Qoder​",
+    "trae": "Trae​",
+    "codebuddyCn": "CodeBuddy CN​",
     "zed": "Zed Platformu",
     "expandSidebar": "Kenar çubuğunu genişlet",
     "collapseSidebar": "Kenar çubuğunu daralt",
     "logs": "Günlükler",
+    "sponsors": "Sponsorlar",
+    "sponsorAppreciation": "Destekle",
     "switchClassicLayoutEntry": "Klasik düzene geç",
     "switchClassicLayoutTitle": "Klasik kenar çubuğu düzenine geç",
     "switchClassicLayoutDesc": "Klasik düzen, platform gezinmesinin tamamını gösterir ve kenar çubuğunu daraltmayı destekler. Ayarlar > Genel > Kenar Çubuğu Düzeni bölümünden istediğiniz zaman geri dönebilirsiniz.",
     "switchClassicLayoutDontAskAgain": "Bu uyarıyı tekrar gösterme",
     "switchClassicLayoutConfirm": "Şimdi geç",
-    "2faManager": "2FA Yönetimi"
+    "2faManager": "2FA Yönetimi",
+    "apiRelay": "Aktarım",
+    "claude": "Claude"
+  },
+  "sponsors": {
+    "pageTitle": "Sponsorlar",
+    "pageDesc": "Cockpit Tools'u destekleyen sponsorlara teşekkür ederiz.",
+    "loading": "Sponsorlar yükleniyor...",
+    "emptyTitle": "Henüz sponsor yok",
+    "emptyDesc": "Uzak sponsor modülü şu anda devre dışı.",
+    "listAriaLabel": "Sponsor listesi",
+    "defaultDescription": "Cockpit Tools'u desteklediğiniz için teşekkürler.",
+    "openSponsor": "Aç"
   },
   "platformLayout": {
     "title": "Platform Düzeni",
@@ -269,10 +282,11 @@
     "sidebarToggle": "Kenar çubuğunda göster",
     "dashboardToggle": "Panoda göster",
     "trayToggle": "Tepside göster",
+    "apiRelayTrayDisabled": "Relay henüz tepside gösterilemez",
     "hiddenBadge": "Gizli",
     "openFromMore": "Platform düzenini yönet",
     "dragHandleLabel": "Sürükleyerek sırala",
-    "tipWithGroups": "Sürükleyerek sıralayın. Kenar çubuğunda en fazla üç giriş gösterilebilir. Grup alt platformlarında kenar çubuğu/pano anahtarı yoktur; yalnızca menü çubuğu görünürlüğü ve varsayılan platform geçişi için kullanılır.",
+    "tipWithGroups": "Sıralamak için sürükleyin. Kenar çubuğunda en fazla {{max}} giriş gösterilebilir. Grup alt öğelerinde kenar çubuğu/pano anahtarı yoktur; yalnızca menü çubuğu ve varsayılan platform seçimi için kullanılır.",
     "addGroup": "Grup ekle",
     "editGroup": "Grubu düzenle",
     "deleteGroup": "Grubu sil",
@@ -509,7 +523,7 @@
       "force": {
         "title": "Zorunlu yeniden başlatma",
         "principle": "İşlemleri --user-data-dir aracılığıyla tanımlar ve zorla kapatır (SIGKILL / taskkill /F), ardından hedef oturumu başlatır.",
-        "commandMac": "macOS/Linux: pkill -9 -f \"--user-data-dir <dir>\"",
+        "commandMac": "macOS/Linux: pkill -9 -f \"--user-data-dir <dir>\"​",
         "commandWin": "Windows: taskkill /F /PID <pid> (--user-data-dir ile eşleşen)",
         "pros": "Tek bir oturumu hassas bir şekilde yeniden başlatabilir.",
         "cons": "Beklenmedik kapanma uyarısına neden olabilir, kaydedilmemiş veri kaybı riski vardır."
@@ -549,7 +563,8 @@
     "tabs": {
       "general": "Genel",
       "network": "Ağ",
-      "about": "Hakkında"
+      "about": "Hakkında",
+      "data": "Veri Yönetimi"
     },
     "general": {
       "appearance": "Görünüm",
@@ -603,8 +618,8 @@
       "floatingCardShowNowAction": "Yüzen kartı göster",
       "dataDir": "Veri dizini",
       "dataDirDesc": "Hesaplar ve yapılandırma dosyaları için depolama konumu.",
-      "fpDir": "Antigravity IDE Depolama",
-      "fpDirDesc": "Antigravity IDE veri dosyalarının depolandığı konum.",
+      "topRightAdVisible": "Üst tanıtımı göster",
+      "topRightAdVisibleDesc": "Uygulamadaki üst tanıtım alanını gizler. Sponsorlar sayfası etkilenmez.",
       "opencodeTitle": "OpenCode Entegrasyonu",
       "opencodeRestart": "Codex değiştirildiğinde OpenCode'u yeniden başlat",
       "opencodeRestartDesc": "OpenCode içinde Codex hesap bilgisini senkronize et",
@@ -619,6 +634,11 @@
       "codexAppPathPlaceholder": "Varsayılan yol",
       "codexPathSelect": "Seç",
       "codexPathReset": "Varsayılana sıfırla",
+      "codexSyncWsl": "Codex'i WSL ile eşitle",
+      "codexSyncWslDesc": "Varsayılan Codex hesabı değiştirildikten sonra auth.json ve config.toml WSL içindeki Codex dizinine de yazılır.",
+      "codexWslConfigDir": "WSL Codex dizini",
+      "codexWslConfigDirDesc": "WSL içindeki .codex dizinini girin. \\\\wsl.localhost\\ yolları desteklenir.",
+      "codexWslConfigDirPlaceholder": "Örnek: \\\\wsl.localhost\\Ubuntu-24.04\\home\\user\\.codex",
       "vscodeTitle": "VS Code Başlatma",
       "vscodeAppPath": "VS Code Uygulama Yolu",
       "vscodeAppPathDesc": "Varsayılan yolu kullanmak için boş bırakın",
@@ -759,7 +779,10 @@
       "codexAppSpeedFast": "Hızlı",
       "codexAppSpeedLaunch": "Codex'i yeniden başlat",
       "codexAppSpeedSaveFailed": "Codex hızı kaydedilemedi: {{error}}",
-      "codexAppSpeedLaunchFailed": "Codex yeniden başlatılamadı: {{error}}"
+      "codexAppSpeedLaunchFailed": "Codex yeniden başlatılamadı: {{error}}",
+      "claudeSettingsTitle": "Claude Desktop Ayarları",
+      "claudeAutoRefresh": "Claude Desktop kota otomatik yenileme",
+      "claudeAutoRefreshDesc": "Claude Desktop hesaplarının kota önbelleğini arka planda otomatik yeniler."
     },
     "network": {
       "apiTitle": "Yerçekimine Karşı Kokpit API'si",
@@ -792,7 +815,7 @@
       "proxyTitle": "Genel Proxy",
       "proxyEnabled": "Genel proxyyi etkinleştir",
       "proxyEnabledDesc": "Cockpit tarafından başlatılan yönetilen platform süreçlerine proxy ortam değişkenleri enjekte eder.",
-      "proxyUrl": "Proxy URL",
+      "proxyUrl": "Proxy URL​",
       "proxyUrlDesc": "Örnek: http://127.0.0.1:7890 veya socks5://127.0.0.1:7890",
       "proxyUrlPlaceholder": "örn. http://127.0.0.1:7890",
       "proxyNoProxy": "NO_PROXY Listesi",
@@ -801,14 +824,14 @@
       "proxyUrlRequired": "Genel proxy etkin olduğunda proxy URL boş olamaz."
     },
     "about": {
-      "appName": "Cockpit Tools",
+      "appName": "Cockpit Tools​",
       "slogan": "Profesyonel Hesap Yönetimi Çözümü",
       "author": "Yazar",
-      "wechat": "WeChat",
+      "wechat": "WeChat​",
       "github": "GitHub Deposu",
-      "alipay": "Alipay",
-      "wechatpay": "WeChat Pay",
-      "sponsor": "Sponsor",
+      "alipay": "Alipay​",
+      "wechatpay": "WeChat Pay​",
+      "sponsor": "Sponsor​",
       "sponsorDesc": "Geliştirmeyi destekleyin",
       "feedback": "Geri bildirim",
       "feedbackDesc": "Sorunları/önerileri bildirin",
@@ -928,6 +951,66 @@
         "unsupportedLegacyFile": "Bu eski hesap yedeği biçimi tanınmadı",
         "unsupportedVersion": "Bu uygulama sürümü bu paket sürümünü desteklemiyor"
       }
+    },
+    "webdav": {
+      "groupTitle": "WebDAV Senkronizasyonu",
+      "enabledTitle": "WebDAV Yedekleme Senkronizasyonu",
+      "enabledDesc": "Varsayılan olarak Jianguoyun'dur ve herhangi bir WebDAV servisiyle değiştirilebilir.",
+      "urlTitle": "Servis Adresi",
+      "urlDesc": "Jianguoyun varsayılan adresi: https://dav.jianguoyun.com/dav/",
+      "usernameTitle": "Hesap",
+      "usernameDesc": "Jianguoyun hesap e-postanızı kullanır.",
+      "usernamePlaceholder": "E-posta veya kullanıcı adı",
+      "passwordTitle": "Uygulama Şifresi",
+      "passwordDesc": "Yerel olarak kaydedilir; mevcut şifreyi korumak için boş bırakın.",
+      "passwordPlaceholder": "Jianguoyun üçüncü taraf uygulama şifresi",
+      "passwordSavedPlaceholder": "Kaydedildi; korumak için boş bırakın",
+      "clearPassword": "Temizle",
+      "remoteDirTitle": "Uzak Klasör",
+      "remoteDirDesc": "Sadece bu klasördeki Cockpit yedekleme dosyaları yönetilir.",
+      "statusTitle": "Senkronizasyon Durumu",
+      "statusDesc": "Uzak yedekten geri yükleme manuel seçim gerektirir ve yerel verileri asla sessizce üzerine yazmaz.",
+      "lastUpload": "Son yükleme: {{time}}",
+      "lastDownload": "Son geri yükleme: {{time}}",
+      "never": "Henüz senkronize edilmedi",
+      "testAction": "Test Et/Kaydet",
+      "uploadAction": "Oluştur & Yükle",
+      "syncAction": "Ayarları Senkronize Et",
+      "syncLatestConfirm": "En son uzak yedeği {{name}} çekmek ve yerel verilerle senkronize etmek istediğinizden emin misiniz? Bu işlem mevcut yerel verilerin üzerine yazacaktır.",
+      "remoteListTitle": "Uzak Yedekler",
+      "remoteListDesc": "Sadece Cockpit otomatik/manuel yedekleme adlarıyla eşleşen JSON ve ZIP dosyaları gösterilir.",
+      "emptyTitle": "Uzak yedek yok",
+      "emptyDesc": "Ayarları kaydedin, ardından bir yedek oluşturup yükleyin.",
+      "unknownTime": "Bilinmeyen",
+      "restoreAction": "Geri Yükle",
+      "restoreConfirm": "{{name}} uzak yedeğinden veriler geri yüklensin mi?",
+      "deleteConfirm": "{{name}} uzak yedeği silinsin mi?",
+      "feedback": {
+        "testingAndSaving": "WebDAV bağlantısı kaydediliyor ve test ediliyor...",
+        "saveAndTestSuccess": "Ayarlar kaydedildi ve bağlantı testi başarılı oldu!",
+        "saveSuccessTestFailed": "Ayarlar kaydedildi, ancak bağlantı testi başarısız oldu: {{message}}",
+        "saveAndTestFailed": "Ayarları kaydetme ve bağlantı testi başarısız oldu: {{error}}",
+        "uploading": "Yedek oluşturuluyor ve yükleniyor...",
+        "uploadSuccess": "{{count}} dosya yüklendi, {{deleted}} süresi dolmuş uzak yedek temizlendi",
+        "uploadFailed": "WebDAV yüklemesi başarısız oldu: {{error}}",
+        "listFailed": "Uzak yedekler yüklenemedi: {{error}}",
+        "loadSettingsFailed": "WebDAV ayarları yüklenemedi: {{error}}",
+        "restoring": "Uzak yedek okunuyor ve içe aktarılıyor...",
+        "restoreEmpty": "Uzak yedekten hiçbir veri geri yüklenmedi",
+        "deleteSuccess": "Uzak yedek silindi",
+        "deleteFailed": "Uzak yedeği silme başarısız oldu: {{error}}",
+        "syncingLatest": "En son uzak ayarlar senkronize ediliyor...",
+        "syncFailed": "En son ayarları senkronize etme başarısız oldu: {{error}}",
+        "noRemoteBackup": "Uzak sunucuda geri yüklenebilir yedekleme dosyası bulunamadı"
+      },
+      "errors": {
+        "notEnabled": "Önce WebDAV senkronizasyonunu etkinleştirin"
+      },
+      "retentionTitle": "Remote Retention Days",
+      "retentionDesc": "Backups older than this on the cloud will be removed during the next sync.",
+      "retentionUnit": "days",
+      "collapseAll": "Collapse remote backups",
+      "expandAll": "Expand all remote backups ({{count}} more)"
     }
   },
   "appPath": {
@@ -959,7 +1042,6 @@
       "email": "E-posta",
       "subscription": "Abonelik",
       "quota": "Kota Durumu",
-      "fingerprint": "Parmak İzi",
       "lastUsed": "Son Kullanım",
       "actions": "İşlemler"
     },
@@ -968,14 +1050,14 @@
       "disabled": "Devre Dışı",
       "authInvalid": "Geçersiz kimlik bilgileri",
       "refreshFailed": "Yenileme başarısız oldu",
-      "normal": "Normal",
-      "forbidden": "403",
+      "normal": "Normal​",
+      "forbidden": "403​",
       "forbidden_tooltip": "API 403 Forbidden döndürdü, hesabın Gemini Code Assist'e erişimi yok",
       "forbidden_msg": "Hesap yasaklı, otomatik yenileme atlandı"
     },
     "tier": {
-      "pro": "PRO",
-      "ultra": "ULTRA"
+      "pro": "PRO​",
+      "ultra": "ULTRA​"
     },
     "credits": {
       "label": "AI Kredileri"
@@ -997,8 +1079,8 @@
     "filterLabel": "Hesapları filtrele",
     "filter": {
       "all": "Tümü ({{count}})",
-      "pro": "PRO ({{count}})",
-      "ultra": "ULTRA ({{count}})"
+      "pro": "PRO ({{count}})​",
+      "ultra": "ULTRA ({{count}})​"
     },
     "sortLabel": "Sırala",
     "sort": {
@@ -1045,10 +1127,8 @@
     "actions": {
       "viewDetails": "Detayları görüntüle",
       "viewError": "Hata görüntüle",
-      "fingerprint": "Parmak izi",
       "switch": "Hesap değiştir",
       "switchTo": "Bu hesaba geç",
-      "selectFingerprint": "Parmak izi seç",
       "delete": "Sil",
       "deleteSelected": "Seçilenleri Sil",
       "export": "Dışa Aktar",
@@ -1186,7 +1266,10 @@
     "switchSuccess": "Geçiş başarılı",
     "switched": "{{email}} hesabına geçildi",
     "tagButton": "Etiketleri Düzenle",
-    "tagUpdated": "Etiket güncellendi"
+    "tagUpdated": "Etiket güncellendi",
+    "plan": {
+      "personal": "Kişisel"
+    }
   },
   "overview": {
     "title": "Hesap Genel Bakışı",
@@ -1197,106 +1280,8 @@
     "currentAccount": "Şu an kullanımda",
     "switchTo": "Bu hesaba geç",
     "switching": "Geçiliyor...",
-    "fingerprint": "Parmak İzi",
     "bound": "Bağlı",
     "brandTitle": "Antigravity IDE Hesap Yönetimi"
-  },
-  "fingerprints": {
-    "title": "Cihaz Parmak İzleri",
-    "subtitle": "Hesaplara bağlı cihaz parmak izlerini yönetin.",
-    "toolbar": {
-      "generate": "Yeni Oluştur",
-      "capture": "Mevcudu Yakala",
-      "import": "İçe Aktar",
-      "folder": "Klasör",
-      "delete": "Sil",
-      "deleteUnbound": "Bağsızları sil"
-    },
-    "table": {
-      "name": "Parmak İzi Adı",
-      "machineId": "Makine ID",
-      "accounts": "Bağlı Hesaplar",
-      "actions": "İşlemler",
-      "accountCount": "{{count}} hesap",
-      "apply": "Uygula",
-      "noData": "Parmak izi verisi yok",
-      "preview": "Önizleme",
-      "rename": "Yeniden adlandır"
-    },
-    "modals": {
-      "generate": {
-        "title": "Parmak İzi Oluştur",
-        "btn": "Oluştur"
-      },
-      "capture": {
-        "title": "Parmak İzini Yakala",
-        "btn": "Yakala"
-      },
-      "rename": {
-        "title": "Parmak İzini Yeniden Adlandır",
-        "label": "Parmak İzi Adı"
-      },
-      "import": {
-        "title": "Parmak İzlerini İçe Aktar",
-        "fromTools": "Antigravity Tools'tan İçe Aktar",
-        "desc": "~/.antigravity_tools/ dizininden içe aktar",
-        "fromJsonBtn": "JSON'dan içe aktar",
-        "jsonExample": "Biçim örneği:",
-        "jsonPlaceholder": "İş parmak izi",
-        "orPasteJson": "Veya JSON yapıştır"
-      },
-      "bound": {
-        "title": "Bağlı Hesaplar",
-        "add": "Hesap Ekle",
-        "empty": "Bağlı hesap yok",
-        "emptyAll": "Tüm hesaplar bağlı",
-        "select": "Eklenecek hesapları seçin",
-        "from": "Kaynağı: {{name}}",
-        "back": "Geri"
-      },
-      "detail": {
-        "title": "Parmak İzi Detayları",
-        "created": "{{time}} tarihinde oluşturuldu"
-      }
-    },
-    "messages": {
-      "deleteConfirm": "Bu parmak izini silmek istiyor musunuz? Bağlı hesaplar orijinal haline dönecektir.",
-      "batchDeleteConfirm": "{{count}} parmak izini silmek istiyor musunuz? Bağlı hesaplar orijinal haline dönecektir.",
-      "generated": "Yeni parmak izi oluşturuldu",
-      "captured": "Mevcut parmak izi yakalandı",
-      "renamed": "Yeniden adlandırıldı",
-      "deleted": "Parmak izi silindi",
-      "imported": "{{count}} parmak izi içe aktarıldı",
-      "addedAccounts": "{{count}} hesap eklendi",
-      "enterName": "Parmak izi adını girin",
-      "previewNotReady": "Önizleme hazır değil, lütfen bekleyin",
-      "duplicate": "Aynı parmak izi zaten var: {{name}}",
-      "autoGeneratedSuffix": "(Bulunamadı, otomatik oluşturuldu)",
-      "readOnly": "Salt Okunur",
-      "current": "Mevcut",
-      "addCount": "{{count}} hesap eklendi",
-      "addFailed": "Ekleme başarısız",
-      "adding": "Ekleniyor...",
-      "applyFailed": "Uygulama başarısız",
-      "boundCount": "{{count}} hesap bağlandı",
-      "captureFailed": "Yakalama başarısız",
-      "count": "{{count}}",
-      "deleteFailed": "Silme başarısız",
-      "fpLabel": "Parmak izi:",
-      "generateFailed": "Oluşturma başarısız",
-      "importFailed": "İçe aktarma başarısız",
-      "importPartialFailed": "{{failCount}} başarısız oldu: {{failList}}",
-      "refreshingQuota": "Kota yenileniyor {{done}}/{{total}} (bu iletişim kutusunu kapatabilirsiniz)",
-      "quotaRefreshDone": "Kota yenileme tamamlandı",
-      "importing": "İçe aktarılıyor...",
-      "loadFailed": "Parmak izi listesi yüklenemedi",
-      "processing": "İşleniyor...",
-      "renameFailed": "Yeniden adlandırma başarısız",
-      "serviceMachineIdEmpty": "Boş",
-      "deleteUnboundConfirm": "Bağlı hesabı olmayan {{count}} parmak izi silinsin mi?",
-      "deletedUnbound": "{{count}} bağsız parmak izi silindi",
-      "noUnboundToDelete": "Silinecek bağsız parmak izi yok"
-    }
   },
   "modals": {
     "addAccount": {
@@ -1332,15 +1317,6 @@
       "fromFilesDesc": "Hesapları içe aktarmak için JSON dosyalarını seçin (birden fazla format desteklenir)",
       "importingFiles": "{{count}} dosya içe aktarılıyor..."
     },
-    "fingerprint": {
-      "title": "Parmak İzini Seç",
-      "desc": "<1>{{email}}</1> hesabı için parmak izi seçin",
-      "original": "Orijinal Parmak İzi",
-      "new": "Yeni Parmak İzi Ekle",
-      "bind": "Bağlamayı Onayla",
-      "selectLabel": "Parmak İzini Seç",
-      "boundCount": "hesap"
-    },
     "quota": {
       "title": "Kota Detayları",
       "noData": "Kota verisi yok",
@@ -1365,6 +1341,12 @@
   "messages": {
     "deleteConfirm": "Bu hesabı silmek istediğinizden emin misiniz?",
     "batchDeleteConfirm": "Seçilen {{count}} hesabı silmek istediğinizden emin misiniz?",
+    "cleanErrorAccountsAction": "ERROR hesaplarını temizle",
+    "cleanErrorAccountsConfirm": "Geçerli kapsamdaki {{count}} ERROR hesabı silinsin mi?",
+    "selectAllFilteredAccounts": "Eşleşen {{count}} öğeyi seç",
+    "selectedAllFilteredAccounts": "Eşleşen {{count}} öğe seçildi",
+    "deleteFilteredAccountsConfirm": "Geçerli filtrelerle eşleşen {{count}} Codex hesabı silinecek; yalnızca bu sayfa değil. Devam edilsin mi?",
+    "clearSelection": "Seçimi temizle",
     "switched": "{{email}} hesabına geçildi",
     "switchFailed": "Geçiş hatası: {{error}}",
     "antigravityLegacyUnsupported": "Antigravity 2.0.0 ve sonrası burada desteklenmiyor. Antigravity 2.0.0 altı bir sürüm seçin veya Antigravity IDE'yi kullanın.",
@@ -1378,7 +1360,7 @@
     "bindFailed": "Bağlama hatası: {{error}}",
     "jsonRequired": "Lütfen JSON içeriğini girin veya yapıştırın",
     "example": "Örnek",
-    "actionRunning": "{{action}}...",
+    "actionRunning": "{{action}}...​",
     "actionSuccess": "{{action}} başarılı",
     "actionFailed": "{{action}} başarısız: {{error}}"
   },
@@ -1450,20 +1432,20 @@
     },
     "format": {
       "noReply": "(Yanıt yok)",
-      "durationMs": "{{ms}}ms",
+      "durationMs": "{{ms}}ms​",
       "tokens": "tokenler={{prompt}}+{{completion}}={{total}}",
-      "traceId": "traceId={{traceId}}",
-      "detailJoiner": ", ",
-      "message": "[[{{model}}]]: {{reply}}{{suffix}}",
-      "none": "--",
+      "traceId": "traceId={{traceId}}​",
+      "detailJoiner": ", ​",
+      "message": "[[{{model}}]]: {{reply}}{{suffix}}​",
+      "none": "--​",
       "today": "Bugün {{time}}",
       "tomorrow": "Yarın {{time}}",
-      "weekdayWithTime": "{{day}} {{time}}",
+      "weekdayWithTime": "{{day}} {{time}}​",
       "notSelected": "Seçilmedi",
-      "joiner": ", ",
+      "joiner": ", ​",
       "moreItems": "{{items}} ({{total}} öğe)",
       "quotaReset": "Kota sıfırlandığında otomatik uyandır",
-      "crontab": "Crontab: {{expr}}",
+      "crontab": "Crontab: {{expr}}​",
       "daily": "Günlük {{times}}{{suffix}}",
       "weekly": "Haftalık {{days}} {{times}}{{suffix}}",
       "interval": "Her {{hours}}s ({{start}}-{{end}})",
@@ -1507,7 +1489,7 @@
     },
     "triggerSource": {
       "scheduled": "Planlı",
-      "crontab": "Crontab",
+      "crontab": "Crontab​",
       "quotaReset": "Kota sıfırlama",
       "manual": "Testi Çalıştır",
       "unknown": "Bilinmiyor",
@@ -1535,7 +1517,7 @@
       "triggerMode": "Tetikleme modu",
       "triggerModeHint": "1. Planlı: ayarlanan zamanlarda tetiklenir.\n2. Crontab: bir ifadeyle tanımlanır.\n3. Kota sıfırlama: kota dolu olduğunda bir kez tetiklenir.",
       "modeScheduled": "📅 Planlı",
-      "modeCrontab": "🧩 Crontab",
+      "modeCrontab": "🧩 Crontab​",
       "modeQuotaReset": "🔄 Kota sıfırlama",
       "antigravityVersion": "Antigravity IDE sürümü",
       "modelSelect": "Model seçimi",
@@ -1577,7 +1559,11 @@
       "timeWindowFrom": "Başlangıç",
       "timeWindowTo": "Bitiş",
       "fallbackTimes": "Geri dönüş zamanları",
-      "saveTask": "Görevi kaydet"
+      "saveTask": "Görevi kaydet",
+      "executionMode": "Çalıştırma modu",
+      "executionModeAuto": "Doğrudan çalıştır",
+      "executionModeConfirm": "Onay gerekli",
+      "confirmTimeout": "Onay zaman aşımı"
     },
     "test": {
       "modelsLabel": "Tetiklenecek modeller",
@@ -1652,7 +1638,8 @@
       "comingSoon": "Çoklu Örnek Yakında",
       "comingSoonDesc": "Farklı hesaplarla birden fazla Codex.app örneğini aynı anda çalıştırın.",
       "unsupported": {
-        "desc": "Codex çoklu örnek şu anda yalnızca macOS'ta kullanılabilir."
+        "desc": "Codex çoklu örnek şu anda yalnızca macOS'ta kullanılabilir.",
+        "title": "Bu sistemde desteklenmiyor"
       },
       "quota": {
         "hourly": "5sa",
@@ -1682,7 +1669,7 @@
         },
         "force": {
           "principle": "İşlemleri CODEX_HOME aracılığıyla tanımlar ve zorla kapatır (SIGKILL / taskkill /F), ardından hedef oturumu başlatır.",
-          "commandMac": "macOS: pkill -9 -f \"CODEX_HOME=<dir>\"",
+          "commandMac": "macOS: pkill -9 -f \"CODEX_HOME=<dir>\"​",
           "commandWin": "Windows: taskkill /F /PID <pid> (CODEX_HOME ile eşleşen)"
         }
       }
@@ -1743,7 +1730,7 @@
     },
     "exportFormat": {
       "label": "Dışa aktarma biçimi",
-      "cockpitTools": "Cockpit Tools",
+      "cockpitTools": "Cockpit Tools​",
       "sub2api": "sub2api biçimi",
       "cpa": "cpa biçimi",
       "downloadAll": "Tümünü indir",
@@ -1795,6 +1782,7 @@
         "freeNotice": "Ücretsiz hesaplar henüz desteklenmemektedir. Free accounts cannot be selected.",
         "freeUnsupported": "Ücretsiz hesaplar henüz desteklenmiyor",
         "restrictFreeToggle": "Free hesapları sınırla",
+        "chatApiKeyUnsupported": "Chat Completions desteklenmez",
         "freeNoticeRestricted": "Free hesaplar sınırlıdır. Seçmek için bunu kapatın.",
         "freeNoticeUnstable": "Free hesap proxy'si kararsız olabilir. Dikkatli kullanın.",
         "restrictFreeDisableConfirmTitle": "Free hesaplara izin ver",
@@ -1853,7 +1841,7 @@
         "accountRequests": "{{count}} istek",
         "accountTokens": "{{count}} token",
         "accountResult": "Başarılı {{success}} / Hatalı {{failed}}",
-        "accountTokensCompact": "{{value}}",
+        "accountTokensCompact": "{{value}}​",
         "images": "Görsel istekleri",
         "imagesDetail": "Üret {{generate}} / Düzenle {{edit}} / Yetki {{blocked}}",
         "estimatedCost": "Tahmini değer",
@@ -1912,13 +1900,13 @@
       "enableBeforeActivateTitle": "Hizmet etkin değil",
       "enableBeforeActivateMessage": "API hizmeti şu anda devre dışı ve önce etkinleştirilmesi gerekiyor. Şimdi etkinleştirip geçiş yapılsın mı?",
       "enableAndActivateAction": "Etkinleştir ve geçiş yap",
-      "apiPortUrl": "API Port URL",
-      "modelId": "Model ID",
+      "apiPortUrl": "API Port URL​",
+      "modelId": "Model ID​",
       "modelIdPlaceholder": "Model ID seçin",
       "modelIdViewOnly": "Yalnızca görüntüle",
       "quotaPool": {
         "title": "Kota havuzu",
-        "hourlyShort": "5h",
+        "hourlyShort": "5h​",
         "weeklyShort": "Hafta",
         "viewFull": "Tam istatistikleri gör",
         "modalTitle": "API hizmeti kota havuzu",
@@ -2055,11 +2043,11 @@
       "requestFailedManualRetry": "Ağı kontrol edin. En güncel kota alınamadı. Yenileyip tekrar deneyin."
     },
     "plan": {
-      "free": "FREE",
-      "plus": "PLUS",
-      "pro": "PRO",
-      "team": "TEAM",
-      "enterprise": "ENTERPRISE"
+      "free": "FREE​",
+      "plus": "PLUS​",
+      "pro": "PRO​",
+      "team": "TEAM​",
+      "enterprise": "ENTERPRISE​"
     },
     "list": {
       "showCodeReviewQuota": "Code Review kotasını göster"
@@ -2067,7 +2055,7 @@
     "time": {
       "today": "Bugün {{time}}",
       "tomorrow": "Yarın {{time}}",
-      "dateTime": "{{date}} {{time}}"
+      "dateTime": "{{date}} {{time}}​"
     },
     "view": {
       "compact": "Kompakt görünüm"
@@ -2305,6 +2293,8 @@
         "repairVisibility": "Görünürlüğü düzelt",
         "restoreSessions": "Oturumları geri yükle",
         "copySessionId": "Oturum kimliğini kopyala",
+        "selectAllSessions": "Tümünü seç",
+        "clearSelectedSessions": "Seçimi kaldır",
         "copyToInstance": "Örneğe kopyala"
       },
       "confirm": {
@@ -2376,67 +2366,67 @@
       },
       "providers": {
         "openai_official": {
-          "name": "OpenAI Official"
+          "name": "OpenAI Official​"
         },
         "azure_openai": {
-          "name": "Azure OpenAI"
+          "name": "Azure OpenAI​"
         },
         "packycode": {
-          "name": "PackyCode"
+          "name": "PackyCode​"
         },
         "cubence": {
-          "name": "Cubence"
+          "name": "Cubence​"
         },
         "aigocode": {
-          "name": "AIGoCode"
+          "name": "AIGoCode​"
         },
         "rightcode": {
-          "name": "RightCode"
+          "name": "RightCode​"
         },
         "sssaicode": {
-          "name": "SSSAiCode"
+          "name": "SSSAiCode​"
         },
         "micu": {
-          "name": "Micu"
+          "name": "Micu​"
         },
         "x_code_api": {
-          "name": "X-Code API"
+          "name": "X-Code API​"
         },
         "ctok_ai": {
-          "name": "CTok.ai"
+          "name": "CTok.ai​"
         },
         "aihubmix": {
-          "name": "AiHubMix"
+          "name": "AiHubMix​"
         },
         "dmxapi": {
-          "name": "DMXAPI"
+          "name": "DMXAPI​"
         },
         "compshare": {
-          "name": "Compshare"
+          "name": "Compshare​"
         },
         "openrouter": {
-          "name": "OpenRouter"
+          "name": "OpenRouter​"
         },
         "aicodemirror": {
-          "name": "AICodeMirror"
+          "name": "AICodeMirror​"
         },
         "aicoding": {
-          "name": "AICoding"
+          "name": "AICoding​"
         },
         "crazyrouter": {
-          "name": "CrazyRouter"
+          "name": "CrazyRouter​"
         },
         "deepseek": {
-          "name": "DeepSeek"
+          "name": "DeepSeek​"
         },
         "moonshot": {
-          "name": "Moonshot"
+          "name": "Moonshot​"
         },
         "siliconflow": {
-          "name": "SiliconFlow"
+          "name": "SiliconFlow​"
         },
         "cockpit_api": {
-          "name": "Cockpit Api"
+          "name": "Cockpit Api​"
         }
       },
       "oauthBinding": {
@@ -2482,7 +2472,13 @@
         "website": "Web sitesi (isteğe bağlı)",
         "apiKeyUrl": "API anahtarı sayfası (isteğe bağlı)",
         "newApiKeyName": "Yeni anahtar adı (isteğe bağlı)",
-        "newApiKey": "Yeni API anahtarı"
+        "newApiKey": "Yeni API anahtarı",
+        "wireApi": "Protokol",
+        "enableMode": "Mod",
+        "modelCatalog": "Model Kataloğu",
+        "visionCapability": "Görsel girişi",
+        "visionModels": "Görsel modeller",
+        "visionRoutingModel": "Görsel rota modeli"
       },
       "validation": {
         "nameRequired": "Sağlayıcı adı gerekli.",
@@ -2497,6 +2493,19 @@
       "confirmDelete": "\"{{name}}\" sağlayıcısı silinsin mi?",
       "deleteFailed": "Sağlayıcı silinemedi: {{error}}",
       "deleteApiKeyFailed": "API anahtarı silinemedi: {{error}}",
+      "enableAsBackend": "Codex backend olarak kullan",
+      "enabling": "Etkinleştiriliyor...",
+      "enableSuccess": "{{name}} etkinleştirildi ve {{instance}} başlatıldı.",
+      "enableFailed": "Sağlayıcı etkinleştirilemedi: {{error}}",
+      "status": {
+        "active": "Geçerli backend",
+        "available": "Hazır"
+      },
+      "enableMode": {
+        "label": "Bağlantı modu",
+        "gatewayMode": "Ağ geçidi modu",
+        "directMode": "Doğrudan mod"
+      },
       "selectSavedProvider": "Kayıtlı sağlayıcılar",
       "selectSavedApiKey": "Kayıtlı API anahtarları",
       "noSavedProviders": "Henüz kayıtlı sağlayıcı yok. Alanları doğrudan doldurabilirsiniz; otomatik olarak kaydedilir.",
@@ -2555,7 +2564,108 @@
         "partialDetected": "Şu anda yalnızca bir yönetilen alan ayarlanmıştır: model_context_window={{context}}, model_auto_compact_token_limit={{compact}}. Kaydetme, mevcut şemayı kullanarak her iki alanı da yeniden yazacaktır.",
         "notSet": "Ayarlanmadı"
       },
-      "managePresets": "Model ön ayarları"
+      "managePresets": "Model ön ayarları",
+      "wireApi": {
+        "responses": "Responses yerel",
+        "chatCompletions": "Chat Completions protokolü",
+        "help": "Çoğu sağlayıcı için Responses seçin. Yalnızca sağlayıcı açıkça sadece Chat Completions protokolünü destekliyorsa geçiş yapın. Emin değilseniz önce Responses seçin.",
+        "helpAria": "Protokol yardımını görüntüle"
+      },
+      "testing": "Test ediliyor...",
+      "testSuccess": "Sağlayıcı bağlantısı sağlıklı: {{protocol}}, {{model}}, {{latency}}.",
+      "testFailed": "Sağlayıcı testi başarısız: {{error}}",
+      "testFailure": {
+        "credential": "API Key kullanılamıyor",
+        "url": "Geçersiz Base URL",
+        "network": "Ağ bağlantısı başarısız",
+        "models": "Model uç noktası hatalı",
+        "parse": "Yanıt ayrıştırılamadı",
+        "httpStatus": "Durum {{status}}",
+        "message": "{{title}}: {{detail}}. {{suggestion}}​"
+      },
+      "testSuggestion": {
+        "addApiKey": "Testten önce bu sağlayıcı için API Key ekleyin.",
+        "checkBaseUrl": "Base URL içinde /v1 gibi doğru sürüm yolunun bulunduğunu kontrol edin.",
+        "checkNetwork": "Sağlayıcı adresini, proxy’yi, güvenlik duvarını veya upstream servis durumunu kontrol edin.",
+        "checkApiKey": "API Key geçerli mi ve model uç noktasına erişim izni var mı kontrol edin.",
+        "checkProviderStatus": "Sağlayıcı servis durumunu, proxy’yi veya API uyumluluğunu kontrol edin.",
+        "checkModelsApi": "Sağlayıcının OpenAI uyumlu model listesi yanıtı döndürdüğünü doğrulayın."
+      },
+      "enableAndStart": "Başlat",
+      "instance": {
+        "label": "Başlatılacak örnek",
+        "default": "Varsayılan örnek",
+        "running": "Çalışıyor",
+        "targetHint": "Hedef: {{instance}}",
+        "uninitializedHint": "Hedef örnek başlatılmamış. Önce Çoklu Örnek sayfasından bir kez başlatın.",
+        "shortLabel": "Instans",
+        "saveFailed": "Örnek bağlaması kaydedilemedi: {{error}}"
+      },
+      "modelCatalog": "Modeller",
+      "modelCatalogEmpty": "Model kataloğu yok",
+      "gatewayHint": "Üçüncü taraf sağlayıcılar, örnek yalıtımı ve protokol dönüştürme için yerel ağ geçidi üzerinden başlar. Resmi OpenAI sağlayıcıları doğrudan kalır.",
+      "vision": {
+        "providerDefault": "Bu sağlayıcı varsayılan olarak görsel girişini destekler",
+        "providerDefaultHint": "Kapalıyken yalnızca aşağıdaki modeller görsel alır; diğerleri yerel ağ geçidi tarafından reddedilir.",
+        "modelsHint": "Her satıra bir model yazın. Sağlayıcıdaki yalnızca bazı modeller yapıştırılan görselleri destekliyorsa kullanın.",
+        "routingModelHint": "Geçerli model görsel okuyamıyorsa istek bu modeli kullanır; boşsa tek görsel model otomatik kullanılır.",
+        "allModels": "Görsel",
+        "partialModels": "Bazı görseller",
+        "textOnly": "Yalnızca metin"
+      },
+      "sponsorRecommended": "Aktarım önerisi",
+      "builtinProviders": "Yerleşik Sağlayıcılar",
+      "sponsorHint": "Özel aktarım servisinin URL’si dolduruldu. API Key girdikten sonra kart bakiye ve kullanımı otomatik sorgular.",
+      "integration": {
+        "sub2api": "Sub2API uyumlu",
+        "newApi": "New API uyumlu"
+      },
+      "usage": {
+        "title": "Kota Özeti",
+        "remaining": "Kalan",
+        "today": "Bugün",
+        "total": "Toplam",
+        "requests": "Bugünkü istekler",
+        "loading": "Kota sorgulanıyor...",
+        "failed": "Kota sorgusu başarısız: {{error}}",
+        "pending": "Kota sorgusu bekleniyor",
+        "noKey": "Sorgulanabilir kota yok",
+        "used": "Kullanılan",
+        "limit": "Kota sınırı",
+        "viewDetail": "Ayrıntılar",
+        "detailTitle": "Servis paneli",
+        "rawFields": "Servis verileri",
+        "fields": {
+          "status": "Durum",
+          "planName": "Paket",
+          "remaining": "Kalan kota",
+          "balance": "Bakiye",
+          "todayRequests": "Bugünkü istek",
+          "todayTokens": "Bugünkü Token",
+          "todayCost": "Bugünkü maliyet",
+          "totalRequests": "Toplam istek",
+          "totalTokens": "Toplam Token",
+          "totalCost": "Toplam maliyet",
+          "hardLimitUsd": "Katı sınır",
+          "softLimitUsd": "Yumuşak sınır",
+          "systemHardLimitUsd": "Sistem sınırı",
+          "accessUntil": "Erişim bitişi",
+          "totalUsage": "Toplam kullanım",
+          "quotaUnlimited": "Sınırsız",
+          "expiresAt": "Bitiş",
+          "totalGranted": "Tanımlanan",
+          "totalAvailable": "Kullanılabilir",
+          "modelLimitsEnabled": "Model limitleri"
+        },
+        "accountBalance": "Hesap bakiyesi",
+        "unlimitedQuota": "Sınırsız",
+        "booleanTrue": "Evet",
+        "booleanFalse": "Hayır"
+      },
+      "oauthBinding": {
+        "desc": "İsteğe bağlı. refresh_token içeren herhangi bir OAuth hesabı bağlanabilir. Bağlantı yoksa sağlayıcı özgün API Key akışıyla çalışmaya devam eder.",
+        "currentProvider": "Sağlayıcı: {{name}}"
+      }
     },
     "quickSwitch": {
       "action": "Sağlayıcıyı hızlı değiştir",
@@ -2657,6 +2767,21 @@
         "logs": "İstatistik ve günlükler"
       },
       "healthTitle": "Hizmet durumu",
+      "compat": {
+        "title": "Protokol Uyumu",
+        "desc": "Aynı API servis URL'si OpenAI Chat, Responses, Anthropic Messages, Gemini ve Ollama girişlerini destekler.",
+        "openaiTitle": "OpenAI uyumlu",
+        "openaiNote": "Base URL /v1 kullanır.",
+        "responsesTitle": "Responses girişi",
+        "responsesNote": "Codex'e özgü Responses girişi.",
+        "anthropicTitle": "Anthropic mesajları",
+        "anthropicNote": "Aynı servis anahtarını kullanın.",
+        "geminiTitle": "Gemini girişi",
+        "geminiNote": "Base URL /v1beta kullanır.",
+        "ollamaTitle": "Ollama köprüsü",
+        "ollamaNote": "Authorization: Bearer kullanın.",
+        "modelCatalogLabel": "Model kataloğu"
+      },
       "health": {
         "availableAccounts": "Kullanılabilir hesaplar",
         "cooldowns": "Bekleme süreleri",
@@ -2725,7 +2850,7 @@
         "allStatuses": "Tüm durumlar",
         "allGatewayModes": "Tum modlar",
         "modelFilter": "Model adı",
-        "modelPlaceholder": "Model ID",
+        "modelPlaceholder": "Model ID​",
         "accountFilter": "Hesap",
         "accountPlaceholder": "E-posta veya hesap ID",
         "apiKeyFilter": "API anahtarı",
@@ -2801,6 +2926,46 @@
         "saveSuccess": "Hesap model engelleri kaydedildi",
         "cardCount": "{{count}} engelli"
       }
+    },
+    "apiKey": {
+      "renameSuccess": "Yeniden adlandırıldı",
+      "renameFailed": "Yeniden adlandırılamadı"
+    },
+    "batchImport": {
+      "title": "Codex toplu içe aktarma",
+      "resultSubtitle": "İçe aktarma sonucu",
+      "previewSubtitle": "Kaydedilecek hesapları seçin",
+      "scanSubtitle": "Hesaplar tek tek ayrıştırılıp kontrol ediliyor",
+      "parseSubtitle": "Hesap dosyaları ayrıştırılıyor",
+      "cancelling": "İptal ediliyor...",
+      "scanDone": "Tarama tamamlandı",
+      "parseDone": "Ayrıştırma tamamlandı",
+      "scanning": "Taranıyor",
+      "parsing": "Ayrıştırılıyor",
+      "current": "Geçerli",
+      "imported": "İçe aktarıldı",
+      "failed": "Başarısız",
+      "quotaOk": "Hesap OK",
+      "quotaFailed": "Hata",
+      "checkQuotaToggle": "Hesapları denetle",
+      "preparing": "İçe aktarma hazırlanıyor...",
+      "importSelected": "Seçili hesapları içe aktar",
+      "noSelection": "Önce hesap seçin",
+      "groups": {
+        "ready": "Hazır",
+        "quotaFailed": "Hata",
+        "existing": "Mevcut",
+        "invalid": "Geçersiz"
+      },
+      "cancelScan": "Taramayı iptal et",
+      "cancelParse": "Ayrıştırmayı iptal et",
+      "cancelled": "İptal edildi",
+      "resumeScan": "Taramaya devam et",
+      "resumeParse": "Ayrıştırmayı sürdür",
+      "selectedCount": "Seçildi {{count}}/{{total}}",
+      "selectAllAccounts": "Tüm hesapları seç",
+      "selectReady": "Sağlamları seç",
+      "clearSelection": "Seçimi temizle"
     }
   },
   "githubCopilot": {
@@ -2863,6 +3028,13 @@
   },
   "dashboard": {
     "title": "Hesap Gösterge Paneli",
+    "apiRelay": {
+      "localConfig": "Yerel yapılandırma",
+      "localConfigDesc": "Yerel relay ayarlarını, API Key sorgusunu ve tek tıkla istemci kurulumunu yönetin.",
+      "status": "Yapılandırma durumu",
+      "enabledByConfig": "Uzak yapılandırma ile etkin",
+      "openLocalConfig": "Yerel yapılandırmayı aç"
+    },
     "summary": {
       "label": "Genel Bakış",
       "title": "Hesap Anlık Görüntüsü",
@@ -2877,9 +3049,9 @@
       "totalAccounts": "Toplam hesap"
     },
     "panels": {
-      "antigravity": "Antigravity IDE",
-      "codex": "Codex",
-      "githubCopilot": "GitHub Copilot",
+      "antigravity": "Antigravity IDE​",
+      "codex": "Codex​",
+      "githubCopilot": "GitHub Copilot​",
       "planDistribution": "Plan dağılımı",
       "current": "Mevcut hesap",
       "recommended": "Önerilen hesap",
@@ -3065,6 +3237,10 @@
       "title": "Filtre hafızası",
       "enable": "Hesap genel görünüm filtrelerini hatırla (arama hariç)",
       "hint": "Varsayılan olarak kapalıdır. Açıldığında her platform için filtreler, etiketler ve sıralama korunur."
+    },
+    "claudeRefreshInterval": "Kota otomatik yenileme",
+    "claude": {
+      "appPath": "Claude Desktop yolu"
     }
   },
   "quotaAlert": {
@@ -3076,7 +3252,7 @@
       "title": "Kota Uyarısı",
       "desc": "Mevcut hesabın kotası uyarı eşiğine ulaştı. Lütfen kısa sürede ilgilenin.",
       "unknownModel": "Bilinmeyen model",
-      "platform": "Platform",
+      "platform": "Platform​",
       "account": "Mevcut hesap",
       "threshold": "Uyarı eşiği",
       "lowest": "Mevcut en düşük",
@@ -3125,7 +3301,7 @@
       "batchDelimiterSpace": "Boşluk",
       "batchDelimiterComma": "Virgül",
       "batchDelimiterPipe": "Dikey çizgi",
-      "batchDelimiterDash": "----",
+      "batchDelimiterDash": "----​",
       "batchDelimiterCustom": "Özel",
       "batchJsonDesc": "Her öğesinde email ve password bulunan bir JSON dizisi yapıştırın.",
       "batchTextDesc": "Her satıra bir hesap girin ve seçilen ayraçla sıkı biçimde ayrıştırın.",
@@ -3148,7 +3324,7 @@
       "batchPartial": "{{success}} başarılı, {{failed}} başarısız",
       "batchFailed": "{{failed}} hesap için toplu içe aktarma başarısız",
       "batchFailureEntryWithLine": "{{line}} öğesi ({{email}}): {{error}}",
-      "batchFailureEntry": "{{email}}: {{error}}",
+      "batchFailureEntry": "{{email}}: {{error}}​",
       "batchFailureMore": "{{count}} tane daha başarısız"
     },
     "oauth": {
@@ -3205,7 +3381,7 @@
       "bonusUsageLine": "{{used}} kullanılmış / {{total}} toplam",
       "planUsageCoveredLine": "{{used}} kullanıldı / {{total}} planda yer aldı",
       "expiryDays": "{{days}} gün",
-      "expiryUnknown": "—",
+      "expiryUnknown": "—​",
       "resetNow": "Yakında sıfırla",
       "resetInHours": "{{hours}}h içinde sıfırlanır",
       "resetInMinutes": "{{minutes}}m içinde sıfırlanır"
@@ -3217,11 +3393,11 @@
       "estUsage": "Avustralya, Brezilya ve Kuzey Amerika ülkelerinin kullandığı saat uygulaması. Kullanım"
     },
     "plan": {
-      "free": "Kiro Free",
-      "individual": "Kiro Individual",
-      "pro": "Kiro Pro",
-      "business": "Kiro Business",
-      "enterprise": "Kiro Enterprise",
+      "free": "Kiro Free​",
+      "individual": "Kiro Individual​",
+      "pro": "Kiro Pro​",
+      "business": "Kiro Business​",
+      "enterprise": "Kiro Enterprise​",
       "unknown": "Bilinmiyor"
     },
     "flowNotice": {
@@ -3300,7 +3476,7 @@
     "startHint": "Başlat'a tıkla veya Boşluk tuşuna bas",
     "rankTitle": "Geçmiş yerel sıralama",
     "rankCurrent": "Mevcut",
-    "rankNoData": "--",
+    "rankNoData": "--​",
     "restart": "Yeniden başlat",
     "pause": "Duraklat",
     "resume": "Devam et",
@@ -3323,7 +3499,7 @@
     "rankingShort": "Yerel",
     "rankingEmpty": "Henüz yerel kayıt yok",
     "rankingClear": "Yerel sıralamayı temizle",
-    "rankingRankShort": "#{{rank}}",
+    "rankingRankShort": "#{{rank}}​",
     "minimize": "Küçült",
     "resumeGameNav": "Oyuna devam et",
     "closeConfirmTitle": "Bu oyunu bitir?",
@@ -3363,7 +3539,6 @@
       "goAntigravity": "Antigravity IDE sayfasına git",
       "goCodex": "Codex sayfasına git",
       "goDashboard": "Gösterge paneline git",
-      "goFingerprints": "Cihaz parmak izi sayfasına git",
       "goGitHubCopilot": "GitHub Copilot sayfasına git",
       "goInstances": "Çoklu instance sayfasına git",
       "goKiro": "Kiro sayfasına git",
@@ -3459,28 +3634,6 @@
       "desc": "instance, switch, ayarlar, export gibi kelimeleri deneyin.",
       "title": "Eşleşen içerik yok"
     },
-    "fingerprints": {
-      "cautions": {
-        "0": "Cihaz parmak izi içinde riskli veya toplu işlemden önce veri yedeği alın."
-      },
-      "keywords": {
-        "0": "Cihaz parmak izi",
-        "1": "rehber",
-        "2": "akış",
-        "3": "hesap"
-      },
-      "outcomes": {
-        "0": "Cihaz parmak izi ile nelerin çözüldüğünü anlayın.",
-        "1": "Cihaz parmak izi içinde önerilen akışı kullanarak hataları azaltın."
-      },
-      "steps": {
-        "0": "Cihaz parmak izi sayfasını açın.",
-        "1": "Cihaz parmak izi için temel kurulum ve gerekli bağları tamamlayın.",
-        "2": "Beklenen sonucu doğrulamak için Cihaz parmak izi içinde bir manuel işlem çalıştırın."
-      },
-      "summary": "Bu bölüm, günlük akışta Cihaz parmak izi kullanımını açıklar.",
-      "title": "Cihaz parmak izi"
-    },
     "instances": {
       "cautions": {
         "0": "Çoklu instance (kritik) içinde riskli veya toplu işlemden önce veri yedeği alın.",
@@ -3560,7 +3713,7 @@
     },
     "resultCount": "Toplam {{count}} bölüm",
     "searchAria": "Kılavuzda ara",
-    "searchPlaceholder": "Özellik, senaryo veya anahtar kelime ara (örn: instance, inject, wakeup, fingerprint)",
+    "searchPlaceholder": "Özellik, senaryo veya anahtar kelime ara (örn: instance, inject, wakeup)",
     "settings": {
       "cautions": {
         "0": "Ayarlar ve sistem yetenekleri içinde riskli veya toplu işlemden önce veri yedeği alın.",
@@ -3653,7 +3806,11 @@
       "resetsIn": "{{relative}}'da sıfırlanır",
       "resetsSoon": "Yakında sıfırlanacak",
       "resetsUnknown": "Sıfırlama zamanı bilinmiyor",
-      "onDemand": "Talep üzerine"
+      "onDemand": "Talep üzerine",
+      "gemini5h": "5h",
+      "geminiWeekly": "Weekly",
+      "claude5h": "5h",
+      "claudeWeekly": "Weekly"
     },
     "instances": {
       "unsupported": "Gemini Cli çoklu örnek yönetimi henüz desteklenmiyor.",
@@ -3693,9 +3850,9 @@
       "leftOfTotal": "Kalan / Toplam",
       "usage": "Kullanılan",
       "usageResets": "Kullanım sıfırlanır",
-      "usedPercent": "{{value}}%",
-      "remainingOfTotal": "{{remaining}} / {{total}}",
-      "resetAtWithRelative": "{{absolute}} ({{relative}})"
+      "usedPercent": "{{value}}%​",
+      "remainingOfTotal": "{{remaining}} / {{total}}​",
+      "resetAtWithRelative": "{{absolute}} ({{relative}})​"
     },
     "tierText": {
       "pro": "Google One AI Pro içindeki Gemini Code Assist",
@@ -3717,7 +3874,7 @@
     "enterprise": "Kurumsal",
     "usage": "Kullanım durumu",
     "creditsBalance": "Kredi bakiyesi",
-    "usageNormal": "Normal",
+    "usageNormal": "Normal​",
     "usageAbnormal": "Anormal",
     "usageViewDetail": "Ayrıntıları görüntüle",
     "usageDetailTitle": "Kullanım durumu ayrıntıları",
@@ -3800,7 +3957,7 @@
       }
     },
     "quota": {
-      "usedOfTotal": "{{used}} / {{total}}"
+      "usedOfTotal": "{{used}} / {{total}}​"
     }
   },
   "qoder": {
@@ -3822,8 +3979,8 @@
       "title": "Kullanım özeti",
       "viewDetails": "Ayrıntıları görüntüle",
       "includedCredits": "Plana dahil krediler",
-      "usedOfTotal": "{{used}} / {{total}}",
-      "usedEmpty": "-- / --",
+      "usedOfTotal": "{{used}} / {{total}}​",
+      "usedEmpty": "-- / --​",
       "upgradeHint": "Aylık kotayı artırmak için planı yükseltin",
       "upgradeAction": "Yükselt"
     },
@@ -3927,7 +4084,7 @@
     "enterprise": "Kurumsal",
     "usage": "Kullanım durumu",
     "creditsBalance": "Kredi bakiyesi",
-    "usageNormal": "Normal",
+    "usageNormal": "Normal​",
     "usageAbnormal": "Anormal",
     "usageViewDetail": "Ayrıntıları görüntüle",
     "usageDetailTitle": "Kullanım durumu ayrıntıları",
@@ -4014,7 +4171,7 @@
       }
     },
     "quota": {
-      "usedOfTotal": "{{used}} / {{total}}"
+      "usedOfTotal": "{{used}} / {{total}}​"
     },
     "checkin": {
       "title": "Günlük check-in",
@@ -4121,7 +4278,7 @@
     "plan": "Paket",
     "cycle": "Döngü",
     "status": "Durum",
-    "pager": "{{current}} / {{total}}",
+    "pager": "{{current}} / {{total}}​",
     "badges": {
       "recommended": "Önerilen"
     },
@@ -4255,5 +4412,333 @@
     "copyCode": "Kodu kopyala",
     "copied": "Kopyalandı",
     "refreshIn": "{{time}} sn"
+  },
+  "relay": {
+    "pageTitle": "Özel aktarım",
+    "pageDesc": "Cockpit Tools kullanıcıları için Codex API Key hesaplarıyla kullanılabilen iş ortaklığı API servisi.",
+    "loading": "Aktarım yükleniyor...",
+    "emptyTitle": "Aktarım kapalı",
+    "emptyDesc": "Uzak yapılandırma özel aktarımı etkinleştirmedi.",
+    "defaultDescription": "İş ortaklığı API aktarım servisi.",
+    "getApiKey": "API Key al",
+    "configTitle": "Codex’te etkinleştir",
+    "apiKeyLabel": "API anahtarı",
+    "apiKeyPlaceholder": "Aktarımdan alınan API Key’i yapıştır",
+    "apiKeyRequired": "API Key girin.",
+    "baseUrl": "API adresi",
+    "protocol": "Protokol",
+    "vision": "Görsel girişi",
+    "testConnection": "Bağlantıyı test et",
+    "saveAndEnable": "Kaydet ve etkinleştir",
+    "goCodex": "Codex’e git",
+    "statusUnavailable": "Aktarım yapılandırması kullanılamıyor.",
+    "testing": "Bağlantı test ediliyor...",
+    "testSuccess": "Bağlantı testi geçti. Bu API Key aktarım ile kullanılabilir.",
+    "testFailed": "Bağlantı testi başarısız.",
+    "saving": "Codex’e kaydedilip etkinleştiriliyor...",
+    "saveSuccess": "Aktarım yapılandırması kaydedildi. Codex hesapları sayfasında kullanabilirsiniz.",
+    "saveFailed": "Aktarım yapılandırması kaydedilemedi.",
+    "savedProvider": "Kaydedilen sağlayıcı: {{name}}",
+    "modelsTitle": "Desteklenen modeller",
+    "modelsEmpty": "Uzakta sabit model listesi yapılandırılmamış. Kaydettikten sonra Codex servis yeteneklerini kullanabilir."
+  },
+  "apiKeyFun": {
+    "eyebrow": "Ara geçiş",
+    "title": "APIKEY.FUN relay",
+    "description": "Cockpit resmi iş ortağı ara geçiş hizmeti, büyük model API erişimi için kararlı, açık ve yüksek fiyat-performanslı bir çözüm sunar. Claude, OpenAI, Gemini gibi ana akım modelleri destekler; Codex, Gemini CLI, Claude Code ve diğer geliştirici araçlarında tek tip yapılandırma için uygundur. Cockpit özel bağlantısıyla kaydolarak yüklemelerde kalıcı olarak %5’e varan indirim alabilirsiniz.",
+    "register": "Özel kayıt linki",
+    "docs": "Resmi doküman",
+    "viewNow": "Hemen bak",
+    "queryTitle": "Anahtar kotası",
+    "queryDesc": "Kotayı otomatik sorgulamak için APIKEY.FUN API Key girin.",
+    "keyNotSet": "Anahtar yok",
+    "apiKeyLabel": "API anahtarı",
+    "apiKeyPlaceholder": "APIKEY.FUN konsolunda oluşturulan API Key’i yapıştırın",
+    "hideKey": "Gizle",
+    "showKey": "Göster",
+    "endpointLabel": "Bağlantı noktası",
+    "protocolLabel": "Codex protokolü",
+    "queryUsage": "Kotayı kontrol et",
+    "querying": "Kontrol ediliyor",
+    "saveToCodex": "Codex’e yaz",
+    "saving": "Yazılıyor",
+    "saveSuccess": "Codex Provider’a yazıldı: {{name}}",
+    "toolsTitle": "İstemci config yaz",
+    "toolsDesc": "APIKEY.FUN dokümanına ve CC Switch dosya yapısına göre yerel istemci yapılandırma dosyalarını doğrudan yazar.",
+    "endpoint": {
+      "global": "Küresel hat",
+      "globalDesc": "Çoğu ağ ortamı için resmi varsayılan API Base.",
+      "direct": "Direkt hat",
+      "directDesc": "Gecikmeye duyarlı senaryolar için."
+    },
+    "wireApi": {
+      "responses": "Responses protokolü",
+      "responsesDesc": "Codex için tercih edilir, OpenAI Responses protokolünü doğrudan kullanır.",
+      "chatCompletions": "Chat Completions protokolü",
+      "chatCompletionsDesc": "Yerel gateway ile uyumluluk sağlar."
+    },
+    "usage": {
+      "remaining": "Kalan",
+      "used": "Kullanılan",
+      "todayRequests": "Bugün",
+      "todayTokens": "Bugünkü Token",
+      "totalRequests": "Toplam istek",
+      "totalTokens": "Toplam Token"
+    },
+    "tool": {
+      "codexTitle": "Codex sağlayıcı",
+      "codexDesc": "Geçerli endpoint’in /v1 Base URL’siyle Provider yazar.",
+      "envTitle": "Ortam",
+      "envDesc": "Claude Code, Gemini CLI, Hermes gibi OpenAI uyumlu girişler için referans.",
+      "curlTitle": "API betiği",
+      "curlDesc": "Chat Completions uyumlu isteği hızlıca doğrular."
+    },
+    "docTool": {
+      "codex": "Doğrudan Codex Provider’a yazılabilir.",
+      "claudeCode": "Anthropic Messages uyumlu parametreleri kopyala.",
+      "geminiCli": "OpenAI uyumlu Base URL ve API Key’i kopyala.",
+      "traeSolo": "Resmi dokümanda gereken relay parametrelerini kopyala.",
+      "openClaw": "OpenAI uyumlu bağlantı parametrelerini kopyala.",
+      "hermes": "Hermes model sayfası parametrelerini kopyala.",
+      "apiScript": "Betik entegrasyonu için temel parametreleri kopyala."
+    },
+    "apply": {
+      "codexTitle": "Codex​",
+      "codexDesc": "Responses protokolü ve geçerli API Key ile ~/.codex/config.toml ve auth.json yazar.",
+      "geminiTitle": "Gemini CLI ayarı",
+      "geminiDesc": "~/.gemini/.env yazar ve settings.json auth modunu gemini-api-key yapar.",
+      "openclawTitle": "OpenClaw ayarı",
+      "openclawDesc": "~/.openclaw/openclaw.json içine models.providers.apikeyfun yazar.",
+      "hermesTitle": "Hermes ayarı",
+      "hermesDesc": "~/.hermes/config.yaml içine custom_providers yazar ve apikeyfun varsayılan modeline geçer.",
+      "button": "Config yaz",
+      "applying": "Yazılıyor",
+      "success": "Yapılandırma dosyaları yazıldı: {{paths}}",
+      "failed": "Yapılandırma yazılamadı: {{error}}"
+    },
+    "error": {
+      "missingApiKey": "API Key girin.",
+      "queryFailed": "Kota kontrolü başarısız: {{error}}",
+      "saveFailed": "Yazma başarısız: {{error}}"
+    },
+    "models": {
+      "title": "Kullanılabilir modeller",
+      "desc": "Geçerli API Key model endpoint’inden okunur ve Codex ya da Claude CLI’ye aktarılır.",
+      "count": "{{count}} model",
+      "loading": "Yükleniyor",
+      "loadingDesc": "Geçerli API Key ile model listesi okunuyor...",
+      "empty": "Kullanılabilir modelleri okumak için API Key girin.",
+      "emptyFromKey": "Geçerli API Key model döndürmedi.",
+      "queryFailed": "Model listesi okunamadı: {{error}}"
+    },
+    "keyManager": {
+      "title": "Anahtar yönetimi",
+      "desc": "Hızlı geçiş ve otomatik kota sorgusu için API Keys kaydedin.",
+      "saveButton": "Anahtarı kaydet",
+      "savedButton": "Kaydedildi",
+      "empty": "Kayıtlı anahtar yok.",
+      "lastRemaining": "Son bakiye {{value}}",
+      "notQueried": "Sorgulanmadı",
+      "deleteButton": "Sil",
+      "editAlias": "Edit alias​",
+      "renamePlaceholder": "Enter alias...​",
+      "createdAt": "{{time}} eklendi",
+      "saveFlash": "Kaydedildi",
+      "addingToCodex": "Codex’e ekleniyor...",
+      "addedToCodex": "Codex’e eklendi",
+      "addToCodexFailed": "Codex’e eklenemedi: {{error}}",
+      "addingToClaude": "Claude CLI’ye ekleniyor...",
+      "addedToClaude": "Claude CLI’ye eklendi",
+      "addToClaudeFailed": "Claude CLI’ye eklenemedi: {{error}}",
+      "codexAdded": "Codex eklendi",
+      "claudeAdded": "Claude eklendi",
+      "addToCodex": "Codex’e ekle",
+      "addToClaude": "Claude CLI’ye ekle",
+      "codexShort": "Codex",
+      "claudeShort": "Claude CLI"
+    },
+    "copyKey": "Copy Key​",
+    "clearKey": "Clear input​"
+  },
+  "claude": {
+    "import": {
+      "localSuccess": "{{count}} yerel Claude Desktop oturumu içe aktarıldı",
+      "localClient": "Geçerli Desktop içe aktar",
+      "jsonLabel": "JSON verisi",
+      "jsonPlaceholder": "Dışa aktarılan Claude hesap JSON verisini yapıştırın",
+      "localDesc": "Resmi Claude Desktop uygulamasındaki mevcut oturumu okur ve bu araca yerel hesap anlık görüntüsü olarak kopyalar.",
+      "desktopJsonPlaceholder": "Dışa aktarılan Claude Desktop hesap JSON’unu yapıştırın",
+      "cliJsonPlaceholder": "Dışa aktarılan Claude CLI hesap JSON’unu yapıştırın"
+    },
+    "deleteCurrentDisabled": "Geçerli hesap silinemez",
+    "flowNotice": {
+      "title": "Claude hesapları",
+      "desc": "Bu araç Claude Desktop oturum durumunu ve Anthropic API Key bilgilerini yönetir. Desktop oturumu bu platformun yetkilendirme penceresinde tamamlanır ve önce yerelde saklanır; resmi Claude Desktop’a yalnızca hesap değiştirirken yazılır.",
+      "permission": "İzin kapsamı: resmi Claude Desktop uygulama veri dizinini okuma/yazma. API Key ve Desktop anlık görüntüleri bu aracın yerel hesap verilerinde saklanır.",
+      "network": "Ağ kapsamı: Desktop giriş penceresi claude.ai açar; hesap yenileme Claude Web uç noktalarına istek atabilir. API Key içe aktarma tek başına ağ kullanmaz.",
+      "desktopDesc": "Bu araç Claude Desktop oturum durumunu yönetir. Oturum önce yerelde kaydedilir ve yalnızca hesap değiştirirken resmi Claude Desktop’a yazılır.",
+      "cliDesc": "Bu araç Claude Code OAuth ve çoklu sağlayıcı API Key hesaplarını yönetir. OAuth geçişi yerel Claude Code yapılandırmasına yazar; API Key, sağlayıcı env değerlerini Claude Code settings.json içine yazar.",
+      "desktopPermission": "İzin kapsamı: resmi Claude Desktop uygulama veri dizinini okuma/yazma. Desktop anlık görüntüleri bu aracın yerel hesap verilerinde saklanır.",
+      "cliPermission": "İzin kapsamı: yerel Claude Code yapılandırmasını ve macOS Keychain içindeki Claude Code kimlik bilgilerini okuma/yazma; API Key hesapları bu araçta yerel olarak saklanır ve geçiş ya da CLI başlatma sırasında settings.json env alanına düz metin olarak yazılır.",
+      "desktopNetwork": "Ağ kapsamı: Desktop oturum penceresi claude.ai açar; hesap yenileme Claude Web endpoint istekleri yapabilir.",
+      "cliNetwork": "Ağ kapsamı: OAuth, Claude resmi yetkilendirme ve token/profile/usage endpointlerine erişir; API Key içe aktarma çevrimdışıdır, başlatma sonrası Claude CLI seçilen sağlayıcıya bağlanır."
+    },
+    "search": "Claude hesaplarında ara...",
+    "noAccounts": "Claude hesabı yok",
+    "addAccount": {
+      "title": "Claude hesabı ekle",
+      "desktopTitle": "Claude Desktop Hesabı Ekle",
+      "cliTitle": "Claude CLI Hesabı Ekle"
+    },
+    "deleteConfirm": "Claude hesabı {{email}} silinsin mi?",
+    "switch": {
+      "success": "Başarıyla değiştirildi"
+    },
+    "instances": {
+      "unsupportedDescPlatform": "Claude Desktop çoklu örnek yalnızca macOS, Windows ve Linux üzerinde desteklenir.",
+      "launchDialogTitle": "Örneği başlat",
+      "launchCommand": "Başlatma komutu",
+      "executeInTerminal": "Terminalde çalıştır",
+      "startSuccess": "Claude Desktop başlatıldı"
+    },
+    "quota": {
+      "title": "Kota",
+      "fiveHour": "Geçerli oturum",
+      "sevenDay": "Bu hafta (tüm modeller)",
+      "sonnet": "Sonnet 7 gün",
+      "extra": "Ek kullanım",
+      "empty": "Kota yok",
+      "unsupported": "Yenilenemez",
+      "updatedAt": "Güncellendi: {{time}}",
+      "resetAt": "{{label}} sıfırlanır: {{time}}",
+      "refreshSuccess": "Kota yenilendi",
+      "refreshAllDone": "Kota yenileme tamamlandı",
+      "refreshFailed": "Kota yenileme başarısız: {{error}}",
+      "refreshWithWarning": "Kota yenileme başarısız: {{error}}",
+      "notUpdated": "Kota yenilenmedi",
+      "updated": "Güncellendi",
+      "notUpdatedShort": "Yenilenmedi"
+    },
+    "addTabs": {
+      "desktop": "Masa",
+      "oauth": "OAuth",
+      "apiKey": "API anahtarı",
+      "import": "Yerel/JSON"
+    },
+    "authMode": {
+      "oauth": "OAuth modu",
+      "setup_token": "Kurulum tokenı",
+      "api_key": "API anahtarı",
+      "desktop_oauth": "Desktop oturumu"
+    },
+    "apiKey": {
+      "desc": "Claude CLI API Key değerini ayrı kimlik bilgisi olarak kaydeder. Geçiş veya CLI başlatma sırasında sağlayıcı env değerlerini Claude Code settings.json içine yazar, Claude Desktop oturum durumuna yazmaz.",
+      "nameLabel": "Hesap adı",
+      "namePlaceholder": "İsteğe bağlı, ör. APIKEY.FUN",
+      "keyLabel": "API anahtarı",
+      "placeholder": "Sağlayıcı API Key yapıştırın",
+      "hide": "API Key gizle",
+      "show": "API Key göster",
+      "hint": "API Key hesapları yalnızca Claude CLI içindir. Claude Code settings.json içine düz metin env olarak yazılır, Claude Desktop oturumunu etkilemez ve abonelik kota yenilemeyi desteklemez.",
+      "importAction": "API Key içe aktar",
+      "required": "API Key girin",
+      "importSuccess": "Claude API Key hesabı içe aktarıldı: {{name}}",
+      "quotaUnsupported": "API Key hesapları yenilenmez",
+      "switchDisabled": "API Key hesabı Claude Desktop’a geçirilemez",
+      "cliUnsupported": "API Key hesabı Claude CLI başlatamaz",
+      "providerLabel": "Sağlayıcı",
+      "customProvider": "Özel",
+      "endpointLabel": "Sağlayıcı endpoint",
+      "officialEndpoint": "Resmi varsayılan",
+      "baseUrlLabel": "Temel URL",
+      "baseUrlPlaceholder": "Boşsa Anthropic resmi adresi",
+      "keyFieldLabel": "Auth alanı",
+      "baseUrlInvalid": "Base URL geçerli değil"
+    },
+    "desktopOAuth": {
+      "title": "Claude Desktop oturumu",
+      "desc": "Bu araçta Claude girişi; Google, Apple, e-posta ve free destekler.",
+      "start": "Girişi aç",
+      "hint": "Önce yerelde saklar; Claude Desktop’a geçişte yazar.",
+      "nameLabel": "Hesap adı",
+      "namePlaceholder": "İsteğe bağlı, örn. Claude Free",
+      "waiting": "Claude penceresinde giriş yapın, burada içe aktarmayı bitirin.",
+      "profileDir": "Yalıtılmış profile dizini",
+      "complete": "Tamamla",
+      "localTitle": "Geçerli Desktop içe aktar",
+      "localDesc": "Geçerli Claude Desktop oturumunu yerel snapshot olarak kopyalar.",
+      "localAction": "İçe aktar",
+      "localSuccess": "Yerel Claude Desktop oturumu içe aktarıldı: {{name}}",
+      "importSuccess": "Claude Desktop oturumu içe aktarıldı: {{name}}",
+      "switchHint": "Resmi Claude Desktop’a geç",
+      "planUnknown": "Plan bilinmiyor"
+    },
+    "oauth": {
+      "title": "Claude OAuth Yetkilendirme",
+      "desc": "Resmi Claude OAuth yetkilendirme sayfasını açın, ardından hesabı içe aktarmak için geri dönüş bağlantısını veya code değerini yapıştırın.",
+      "start": "OAuth yetkilendir",
+      "proRequiredHint": "Claude resmi OAuth genellikle Claude Code yetkilendirmesi için kullanılır. Sayfa yükseltme veya yetki yok ekranında kalırsa Claude Desktop girişi kullanın.",
+      "openInstruction": "Aşağıdaki düğmeye tıklayın ve Claude OAuth yetkilendirmesini tarayıcıda tamamlayın.",
+      "waiting": "Tamamlandıktan sonra son sayfa adresini veya gösterilen code değerini aşağıya yapıştırın.",
+      "authUrl": "Yetkilendirme bağlantısı",
+      "preparing": "Yetkilendirme bağlantısı oluşturuluyor...",
+      "openInBrowser": "Tarayıcıda aç",
+      "openFailed": "Yetkilendirme bağlantısı açılamadı: {{error}}",
+      "callbackPlaceholder": "Geri dönüş bağlantısı veya yetkilendirme code yapıştır",
+      "callbackRequired": "Yetkilendirme tamamlandıktan sonra geri dönüş bağlantısını veya code değerini yapıştırın",
+      "authorizeUrlNotCallback": "Yapıştırılan değer yukarıdaki yetkilendirme giriş bağlantısıdır, tamamlanmış code değildir. Önce tarayıcıda yetkilendirmeyi tamamlayın, sonra son sayfa adresini veya gösterilen code değerini kopyalayın.",
+      "complete": "İçe aktarmayı tamamla",
+      "emailPlaceholder": "E-posta (algılanamazsa doldurun)",
+      "importSuccess": "Claude OAuth yetkilendirmesi içe aktarıldı: {{name}}"
+    },
+    "plan": {
+      "label": "Plan rozeti",
+      "selectPlaceholder": "Plan seç",
+      "updateFailed": "Plan rozeti güncellenemedi: {{error}}"
+    },
+    "legacyOAuth": {
+      "switchDisabled": "Eski OAuth hesapları Claude Desktop’a geçirilemez",
+      "quotaUnsupported": "Eski OAuth hesapları artık yenilemeyi desteklemez",
+      "cliUnsupported": "Eski OAuth hesapları Claude CLI başlatamaz"
+    },
+    "cli": {
+      "quickLaunch": "CLI başlat",
+      "selectWorkingDir": "Claude CLI çalışma klasörünü seç",
+      "launchSuccess": "Claude CLI başlatıldı",
+      "prepared": "Claude CLI hazır",
+      "launchFailed": "Claude CLI başlatılamadı: {{error}}",
+      "localTitle": "Geçerli Claude Code’u içe aktar",
+      "localDesc": "Geçerli yerel Claude Code OAuth oturum durumunu okur ve yerel hesap anlık görüntüsü olarak kopyalar.",
+      "localSuccess": "Yerel Claude Code oturumu içe aktarıldı: {{name}}"
+    },
+    "accountNote": {
+      "title": "Hesap notu",
+      "desc": "{{email}} için yerel not ekleyin; hesap değiştirirken ayırt etmek kolaylaşır.",
+      "label": "Hesap notu",
+      "placeholder": "Örn: Free ana, Max 20x, ekip hesabı",
+      "saved": "Hesap notu kaydedildi",
+      "saveFailed": "Hesap notu kaydedilemedi: {{error}}",
+      "emptyTitle": "Hesap notu ekle",
+      "short": "Not",
+      "addShort": "Not"
+    },
+    "account": {
+      "signedInWith": "{{provider}} ile giriş",
+      "userId": "Kullanıcı ID",
+      "nickname": "Takma ad"
+    },
+    "selection": {
+      "selected": "{{count}} seçildi"
+    },
+    "deleteSelectedLabel": "{{count}} hesap",
+    "subPlatform": {
+      "label": "Claude alt platformu",
+      "desktop": "Claude Masaüstü",
+      "cli": "Claude komut satırı"
+    },
+    "searchDesktop": "Claude Desktop hesaplarında ara...",
+    "searchCli": "Claude CLI hesaplarında ara...",
+    "noDesktopAccounts": "Henüz Claude Desktop hesabı yok",
+    "noCliAccounts": "Henüz Claude CLI hesabı yok"
   }
 }

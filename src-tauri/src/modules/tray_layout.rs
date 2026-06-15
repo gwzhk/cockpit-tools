@@ -10,6 +10,8 @@ const TRAY_LAYOUT_FILE: &str = "tray_layout.json";
 
 pub const PLATFORM_ANTIGRAVITY: &str = "antigravity";
 pub const PLATFORM_CODEX: &str = "codex";
+pub const PLATFORM_CLAUDE: &str = "claude";
+pub const PLATFORM_CLAUDE_CLI: &str = "claude_cli";
 pub const PLATFORM_ZED: &str = "zed";
 pub const PLATFORM_GITHUB_COPILOT: &str = "github-copilot";
 pub const PLATFORM_WINDSURF: &str = "windsurf";
@@ -22,9 +24,11 @@ pub const PLATFORM_QODER: &str = "qoder";
 pub const PLATFORM_TRAE: &str = "trae";
 pub const PLATFORM_WORKBUDDY: &str = "workbuddy";
 
-pub const SUPPORTED_PLATFORM_IDS: [&str; 13] = [
+pub const SUPPORTED_PLATFORM_IDS: [&str; 15] = [
     PLATFORM_ANTIGRAVITY,
     PLATFORM_CODEX,
+    PLATFORM_CLAUDE,
+    PLATFORM_CLAUDE_CLI,
     PLATFORM_ZED,
     PLATFORM_GITHUB_COPILOT,
     PLATFORM_WINDSURF,
@@ -42,6 +46,7 @@ pub const SORT_MODE_AUTO: &str = "auto";
 pub const SORT_MODE_MANUAL: &str = "manual";
 
 const DEFAULT_CODEBUDDY_GROUP_ID: &str = "codebuddy-suite";
+const DEFAULT_CLAUDE_GROUP_ID: &str = "claude-suite";
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -84,16 +89,24 @@ fn default_tray_platforms() -> Vec<String> {
 }
 
 fn default_platform_groups() -> Vec<TrayLayoutGroup> {
-    vec![TrayLayoutGroup {
-        id: DEFAULT_CODEBUDDY_GROUP_ID.to_string(),
-        name: "CodeBuddy".to_string(),
-        platform_ids: vec![
-            PLATFORM_CODEBUDDY.to_string(),
-            PLATFORM_CODEBUDDY_CN.to_string(),
-            PLATFORM_WORKBUDDY.to_string(),
-        ],
-        default_platform_id: PLATFORM_CODEBUDDY.to_string(),
-    }]
+    vec![
+        TrayLayoutGroup {
+            id: DEFAULT_CLAUDE_GROUP_ID.to_string(),
+            name: "Claude".to_string(),
+            platform_ids: vec![PLATFORM_CLAUDE.to_string(), PLATFORM_CLAUDE_CLI.to_string()],
+            default_platform_id: PLATFORM_CLAUDE.to_string(),
+        },
+        TrayLayoutGroup {
+            id: DEFAULT_CODEBUDDY_GROUP_ID.to_string(),
+            name: "CodeBuddy".to_string(),
+            platform_ids: vec![
+                PLATFORM_CODEBUDDY.to_string(),
+                PLATFORM_CODEBUDDY_CN.to_string(),
+                PLATFORM_WORKBUDDY.to_string(),
+            ],
+            default_platform_id: PLATFORM_CODEBUDDY.to_string(),
+        },
+    ]
 }
 
 fn default_ordered_entries() -> Vec<String> {
@@ -167,6 +180,8 @@ fn normalize_tray_platforms(
 
     for &new_platform in &[
         PLATFORM_ZED,
+        PLATFORM_CLAUDE,
+        PLATFORM_CLAUDE_CLI,
         PLATFORM_KIRO,
         PLATFORM_CURSOR,
         PLATFORM_GEMINI,
@@ -374,6 +389,7 @@ fn normalize_config(
     let ordered_platform_ids = normalize_order(&config.ordered_platform_ids);
 
     let raw_order_new_platforms: Vec<&str> = [
+        PLATFORM_CLAUDE_CLI,
         PLATFORM_KIRO,
         PLATFORM_CURSOR,
         PLATFORM_GEMINI,
@@ -384,7 +400,7 @@ fn normalize_config(
         PLATFORM_WORKBUDDY,
     ]
     .iter()
-    .filter(|&&p| ordered_platform_ids.iter().any(|id| id.trim() == p))
+    .filter(|&&p| config.ordered_platform_ids.iter().any(|id| id.trim() == p))
     .copied()
     .collect();
 

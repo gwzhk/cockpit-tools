@@ -14,6 +14,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	internallogging "github.com/router-for-me/CLIProxyAPI/v7/internal/logging"
+	"github.com/router-for-me/CLIProxyAPI/v7/internal/registry"
+	"github.com/router-for-me/CLIProxyAPI/v7/internal/thinking"
+	"github.com/router-for-me/CLIProxyAPI/v7/sdk/cliproxy"
 	coreauth "github.com/router-for-me/CLIProxyAPI/v7/sdk/cliproxy/auth"
 	cliproxyexecutor "github.com/router-for-me/CLIProxyAPI/v7/sdk/cliproxy/executor"
 	coreusage "github.com/router-for-me/CLIProxyAPI/v7/sdk/cliproxy/usage"
@@ -23,22 +26,46 @@ import (
 
 func TestCodexClientModelsResponseShape(t *testing.T) {
 	response := buildCodexClientModelsResponse([]string{"gpt-5.4", "gpt-image-2", codexAutoReviewModel})
-	models, ok := response["models"].([]gin.H)
+	models, ok := response["models"].([]map[string]any)
 	if !ok {
 		t.Fatalf("models response should contain a models array: %#v", response["models"])
 	}
 	if len(models) != 3 {
 		t.Fatalf("expected 3 models, got %d", len(models))
 	}
-	if models[0]["slug"] != "gpt-5.4" || models[0]["prefer_websockets"] != true {
-		t.Fatalf("unexpected first model: %#v", models[0])
+	textModel := findCodexClientModelForTest(models, "gpt-5.4")
+	imageModel := findCodexClientModelForTest(models, "gpt-image-2")
+	reviewModel := findCodexClientModelForTest(models, codexAutoReviewModel)
+	if textModel == nil || imageModel == nil || reviewModel == nil {
+		t.Fatalf("expected all requested models, got %#v", models)
 	}
-	if models[1]["visibility"] != "hide" {
-		t.Fatalf("image model should be hidden in Codex client catalog: %#v", models[1])
+	if _, ok := textModel["prefer_websockets"].(bool); !ok {
+		t.Fatalf("text model should keep websocket preference: %#v", textModel)
 	}
-	if models[2]["slug"] != codexAutoReviewModel || models[2]["visibility"] != "hide" {
-		t.Fatalf("auto review model should be hidden in Codex client catalog: %#v", models[2])
+	if textModel["visibility"] != "list" {
+		t.Fatalf("text model should be listed in Codex client catalog: %#v", textModel)
 	}
+	if textModel["shell_type"] != "shell_command" || textModel["supported_in_api"] != true {
+		t.Fatalf("text model should keep required Codex catalog fields: %#v", textModel)
+	}
+	if _, ok := textModel["input_modalities"].([]any); !ok {
+		t.Fatalf("text model should keep input modalities: %#v", textModel)
+	}
+	if imageModel["visibility"] != "hide" {
+		t.Fatalf("image model should be hidden in Codex client catalog: %#v", imageModel)
+	}
+	if reviewModel["visibility"] != "hide" {
+		t.Fatalf("auto review model should be hidden in Codex client catalog: %#v", reviewModel)
+	}
+}
+
+func findCodexClientModelForTest(models []map[string]any, slug string) map[string]any {
+	for _, model := range models {
+		if model["slug"] == slug {
+			return model
+		}
+	}
+	return nil
 }
 
 func TestVisibleModelsForAPIKeyUsesPrefixAndFilters(t *testing.T) {
@@ -163,6 +190,131 @@ func TestSidecarRuntimeRegistersConfigCodexAPIKeyAuths(t *testing.T) {
 	if got := m.accountByAuthID[strings.ToLower(codexAPIKeyAuth.ID)]; got == nil || got.ID != "api-account" {
 		t.Fatalf("expected auth to be linked to manifest account, got %#v", got)
 	}
+}
+
+func TestManifestRegistryModelsPreservesStaticThinkingSupport(t *testing.T) {
+	models := manifestRegistryModels(&manifest{
+		ModelIDs: []string{"gpt-5.2"},
+	})
+
+	info := findModelInfoForTest(models, "gpt-5.2")
+	if info == nil {
+		t.Fatalf("expected gpt-5.2 in manifest registry models: %#v", models)
+	}
+	if info.Thinking == nil {
+		t.Fatalf("expected gpt-5.2 to preserve static thinking support: %#v", info)
+	}
+	if !stringSliceContains(info.Thinking.Levels, "high") {
+		t.Fatalf("expected gpt-5.2 thinking levels to include high: %#v", info.Thinking.Levels)
+	}
+	if info.UserDefined {
+		t.Fatalf("static model should not be marked user-defined: %#v", info)
+	}
+}
+
+func TestManifestRegistryModelsCopiesSourceThinkingToAliases(t *testing.T) {
+	models := manifestRegistryModels(&manifest{
+		ModelAliases: []modelAliasSpec{{
+			SourceModel: "gpt-5.2",
+			Alias:       "gpt-5.2-codex",
+			Fork:        true,
+		}},
+	})
+
+	alias := findModelInfoForTest(models, "gpt-5.2-codex")
+	if alias == nil {
+		t.Fatalf("expected alias in manifest registry models: %#v", models)
+	}
+	if alias.Thinking == nil {
+		t.Fatalf("expected alias to inherit source thinking support: %#v", alias)
+	}
+	if !stringSliceContains(alias.Thinking.Levels, "high") {
+		t.Fatalf("expected alias thinking levels to include high: %#v", alias.Thinking.Levels)
+	}
+	if alias.UserDefined {
+		t.Fatalf("alias backed by static source should not be marked user-defined: %#v", alias)
+	}
+}
+
+func TestManifestRegistryModelsTreatsUnknownModelsAsUserDefined(t *testing.T) {
+	models := manifestRegistryModels(&manifest{
+		ModelIDs: []string{"custom-codex-model"},
+	})
+
+	info := findModelInfoForTest(models, "custom-codex-model")
+	if info == nil {
+		t.Fatalf("expected custom model in manifest registry models: %#v", models)
+	}
+	if !info.UserDefined {
+		t.Fatalf("unknown manifest model should be user-defined so thinking passes upstream: %#v", info)
+	}
+	if info.Thinking != nil {
+		t.Fatalf("unknown manifest model should not invent thinking support: %#v", info)
+	}
+}
+
+func TestManifestRegisteredModelsPreserveReasoningEffortThroughThinkingPipeline(t *testing.T) {
+	auth := &coreauth.Auth{
+		ID:       "test-codex-auth",
+		Provider: "codex",
+		Status:   coreauth.StatusActive,
+	}
+	manager := buildCoreAuthManager(&config.Config{}, &cockpitSelector{}, nil)
+	registered, err := manager.Register(context.Background(), auth)
+	if err != nil {
+		t.Fatalf("register auth: %v", err)
+	}
+	auth = registered
+	t.Cleanup(func() {
+		registry.GetGlobalRegistry().UnregisterClient(auth.ID)
+	})
+
+	registerManifestModelsForAuth(manager, &manifest{
+		ModelIDs: []string{"gpt-5.2"},
+		ModelAliases: []modelAliasSpec{{
+			SourceModel: "gpt-5.2",
+			Alias:       "gpt-5.2-codex",
+		}},
+	}, auth)
+
+	for _, model := range []string{"gpt-5.2", "gpt-5.2-codex"} {
+		out, err := thinking.ApplyThinking(
+			[]byte(`{"model":"`+model+`","reasoning":{"effort":"high"}}`),
+			model,
+			"openai-response",
+			"codex",
+			"codex",
+		)
+		if err != nil {
+			t.Fatalf("ApplyThinking(%s): %v", model, err)
+		}
+		var payload map[string]any
+		if err := json.Unmarshal(out, &payload); err != nil {
+			t.Fatalf("translated payload for %s should be JSON: %v", model, err)
+		}
+		reasoning, _ := payload["reasoning"].(map[string]any)
+		if reasoning["effort"] != "high" {
+			t.Fatalf("reasoning effort should survive manifest registry for %s: %s", model, out)
+		}
+	}
+}
+
+func findModelInfoForTest(models []*cliproxy.ModelInfo, id string) *cliproxy.ModelInfo {
+	for _, model := range models {
+		if model != nil && strings.EqualFold(model.ID, id) {
+			return model
+		}
+	}
+	return nil
+}
+
+func stringSliceContains(values []string, target string) bool {
+	for _, value := range values {
+		if strings.EqualFold(value, target) {
+			return true
+		}
+	}
+	return false
 }
 
 func TestBuiltinTranslatorNormalizesOpenAIResponsesForCodex(t *testing.T) {
@@ -488,6 +640,535 @@ func TestRelayServerExecutesNonStreamingRequestThroughRuntime(t *testing.T) {
 	}
 }
 
+func TestRelayServerProviderGatewayRoutesResponsesToChatCompletions(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	var upstreamPath string
+	var upstreamAuth string
+	var upstreamBody string
+	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		upstreamPath = r.URL.Path
+		upstreamAuth = r.Header.Get("Authorization")
+		body, _ := io.ReadAll(r.Body)
+		upstreamBody = string(body)
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"id":"chatcmpl_1","object":"chat.completion","created":1,"model":"deepseek-chat","choices":[{"index":0,"message":{"role":"assistant","content":"ok"},"finish_reason":"stop"}],"usage":{"prompt_tokens":1,"completion_tokens":1,"total_tokens":2}}`))
+	}))
+	defer upstream.Close()
+
+	runtime := &fakeRuntime{}
+	m := &manifest{
+		APIKeys: []apiKeySpec{{
+			ID:      "provider_gateway_account_1",
+			Label:   "Provider Gateway",
+			Key:     "client-key",
+			Enabled: true,
+			ProviderGateway: &providerGatewaySpec{
+				BaseURL:        upstream.URL,
+				APIKey:         "deepseek-key",
+				UpstreamModel:  "deepseek-v4-flash",
+				UpstreamModels: []string{"deepseek-v4-flash", "deepseek-v4-pro"},
+				WireAPI:        "chat_completions",
+			},
+		}},
+		ModelIDs: []string{"deepseek-chat"},
+		apiKeyByValue: map[string]*apiKeySpec{
+			"client-key": {
+				ID:      "provider_gateway_account_1",
+				Label:   "Provider Gateway",
+				Key:     "client-key",
+				Enabled: true,
+				ProviderGateway: &providerGatewaySpec{
+					BaseURL:        upstream.URL,
+					APIKey:         "deepseek-key",
+					UpstreamModel:  "deepseek-v4-flash",
+					UpstreamModels: []string{"deepseek-v4-flash", "deepseek-v4-pro"},
+					WireAPI:        "chat_completions",
+				},
+			},
+		},
+	}
+	router := (&relayServer{
+		runtime:  runtime,
+		cfg:      &config.Config{},
+		manifest: m,
+		policy:   &requestPolicy{manifest: m},
+	}).router()
+
+	req := httptest.NewRequest(http.MethodPost, "/v1/responses", strings.NewReader(`{"model":"deepseek-v4-flash","input":"hello","stream":false}`))
+	req.Header.Set("Authorization", "Bearer client-key")
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("unexpected status: %d body=%s", w.Code, w.Body.String())
+	}
+	if runtime.executeCalls != 0 || runtime.streamCalls != 0 {
+		t.Fatalf("provider gateway should bypass runtime auth pool: execute=%d stream=%d", runtime.executeCalls, runtime.streamCalls)
+	}
+	if upstreamPath != "/v1/chat/completions" {
+		t.Fatalf("unexpected upstream path: %s", upstreamPath)
+	}
+	if upstreamAuth != "Bearer deepseek-key" {
+		t.Fatalf("unexpected upstream auth: %s", upstreamAuth)
+	}
+	if !strings.Contains(upstreamBody, `"messages"`) || !strings.Contains(upstreamBody, `"stream":false`) {
+		t.Fatalf("request should be converted to chat completions: %s", upstreamBody)
+	}
+	if !strings.Contains(upstreamBody, `"model":"deepseek-v4-flash"`) || strings.Contains(upstreamBody, `"model":"gpt-5.5"`) {
+		t.Fatalf("request should use provider upstream model: %s", upstreamBody)
+	}
+	if !strings.Contains(w.Body.String(), `"object":"response"`) || !strings.Contains(w.Body.String(), `"output_text"`) {
+		t.Fatalf("response should be converted back to responses shape: %s", w.Body.String())
+	}
+
+	modelReq := httptest.NewRequest(http.MethodGet, "/v1/models?codex_client=1", nil)
+	modelReq.Header.Set("Authorization", "Bearer client-key")
+	modelW := httptest.NewRecorder()
+	router.ServeHTTP(modelW, modelReq)
+	if modelW.Code != http.StatusOK {
+		t.Fatalf("unexpected models status: %d body=%s", modelW.Code, modelW.Body.String())
+	}
+	if !strings.Contains(modelW.Body.String(), "deepseek-v4-flash") || !strings.Contains(modelW.Body.String(), "deepseek-v4-pro") || strings.Contains(modelW.Body.String(), "gpt-5.5") {
+		t.Fatalf("provider gateway should expose DeepSeek models only: %s", modelW.Body.String())
+	}
+}
+
+func TestRelayServerProviderGatewayChatStreamTerminatesResponsesSSEFrames(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/event-stream")
+		_, _ = io.WriteString(w, "data: {\"id\":\"chatcmpl_1\",\"object\":\"chat.completion.chunk\",\"created\":1,\"model\":\"deepseek-v4-flash\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"content\":\"ok\"},\"finish_reason\":null}]}\n\n")
+		_, _ = io.WriteString(w, "data: [DONE]\n\n")
+	}))
+	defer upstream.Close()
+
+	gateway := &providerGatewaySpec{
+		BaseURL:        upstream.URL,
+		APIKey:         "deepseek-key",
+		UpstreamModel:  "deepseek-v4-flash",
+		UpstreamModels: []string{"deepseek-v4-flash"},
+		WireAPI:        "chat_completions",
+		SupportsVision: true,
+	}
+	m := &manifest{
+		APIKeys:  []apiKeySpec{{ID: "provider_gateway_account_1", Label: "Provider Gateway", Key: "client-key", Enabled: true, ProviderGateway: gateway}},
+		ModelIDs: []string{"deepseek-v4-flash"},
+		apiKeyByValue: map[string]*apiKeySpec{
+			"client-key": {ID: "provider_gateway_account_1", Label: "Provider Gateway", Key: "client-key", Enabled: true, ProviderGateway: gateway},
+		},
+	}
+	router := (&relayServer{
+		runtime:  &fakeRuntime{},
+		cfg:      &config.Config{},
+		manifest: m,
+		policy:   &requestPolicy{manifest: m},
+	}).router()
+
+	req := httptest.NewRequest(http.MethodPost, "/v1/responses", strings.NewReader(`{"model":"deepseek-v4-flash","input":"hello","stream":true}`))
+	req.Header.Set("Authorization", "Bearer client-key")
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("unexpected status: %d body=%s", w.Code, w.Body.String())
+	}
+	body := w.Body.String()
+	if !strings.Contains(body, "event: response.completed") {
+		t.Fatalf("stream should include response.completed: %s", body)
+	}
+	if !strings.Contains(body, "event: response.completed\n") || !strings.Contains(body, "\n\n") {
+		t.Fatalf("stream should emit complete SSE frames separated by a blank line: %q", body)
+	}
+}
+
+func TestRelayServerProviderGatewayFallsBackToDefaultUpstreamModel(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	var upstreamBody string
+	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		body, _ := io.ReadAll(r.Body)
+		upstreamBody = string(body)
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"id":"chatcmpl_1","object":"chat.completion","created":1,"model":"deepseek-v4-flash","choices":[{"index":0,"message":{"role":"assistant","content":"ok"},"finish_reason":"stop"}]}`))
+	}))
+	defer upstream.Close()
+
+	gateway := &providerGatewaySpec{
+		BaseURL:        upstream.URL,
+		APIKey:         "deepseek-key",
+		UpstreamModel:  "deepseek-v4-flash",
+		UpstreamModels: []string{"deepseek-v4-flash", "deepseek-v4-pro"},
+		WireAPI:        "chat_completions",
+	}
+	m := &manifest{
+		APIKeys:  []apiKeySpec{{ID: "provider_gateway_account_1", Label: "Provider Gateway", Key: "client-key", Enabled: true, ProviderGateway: gateway}},
+		ModelIDs: []string{"deepseek-v4-flash", "deepseek-v4-pro"},
+		apiKeyByValue: map[string]*apiKeySpec{
+			"client-key": {ID: "provider_gateway_account_1", Label: "Provider Gateway", Key: "client-key", Enabled: true, ProviderGateway: gateway},
+		},
+	}
+	router := (&relayServer{
+		runtime:  &fakeRuntime{},
+		cfg:      &config.Config{},
+		manifest: m,
+		policy:   &requestPolicy{manifest: m},
+	}).router()
+
+	req := httptest.NewRequest(http.MethodPost, "/v1/responses", strings.NewReader(`{"model":"gpt-5.4","input":"hello","stream":false}`))
+	req.Header.Set("Authorization", "Bearer client-key")
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("unexpected status: %d body=%s", w.Code, w.Body.String())
+	}
+	if !strings.Contains(upstreamBody, `"model":"deepseek-v4-flash"`) || strings.Contains(upstreamBody, `"model":"gpt-5.4"`) {
+		t.Fatalf("request should fall back to provider default upstream model: %s", upstreamBody)
+	}
+}
+
+func TestRelayServerProviderGatewayPassesThroughModelWhenCatalogEmpty(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	var upstreamBody string
+	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		body, _ := io.ReadAll(r.Body)
+		upstreamBody = string(body)
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"id":"chatcmpl_1","object":"chat.completion","created":1,"model":"gpt-5","choices":[{"index":0,"message":{"role":"assistant","content":"ok"},"finish_reason":"stop"}]}`))
+	}))
+	defer upstream.Close()
+
+	gateway := &providerGatewaySpec{
+		BaseURL: upstream.URL,
+		APIKey:  "provider-key",
+		WireAPI: "chat_completions",
+	}
+	m := &manifest{
+		APIKeys:  []apiKeySpec{{ID: "provider_gateway_account_1", Label: "Provider Gateway", Key: "client-key", Enabled: true, ProviderGateway: gateway}},
+		ModelIDs: []string{"gpt-5"},
+		apiKeyByValue: map[string]*apiKeySpec{
+			"client-key": {ID: "provider_gateway_account_1", Label: "Provider Gateway", Key: "client-key", Enabled: true, ProviderGateway: gateway},
+		},
+	}
+	router := (&relayServer{
+		runtime:  &fakeRuntime{},
+		cfg:      &config.Config{},
+		manifest: m,
+		policy:   &requestPolicy{manifest: m},
+	}).router()
+
+	req := httptest.NewRequest(http.MethodPost, "/v1/responses", strings.NewReader(`{"model":"gpt-5","input":"hello","stream":false}`))
+	req.Header.Set("Authorization", "Bearer client-key")
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("unexpected status: %d body=%s", w.Code, w.Body.String())
+	}
+	if !strings.Contains(upstreamBody, `"model":"gpt-5"`) || strings.Contains(upstreamBody, "gpt-5.5") {
+		t.Fatalf("request should pass through the client model when provider catalog is empty: %s", upstreamBody)
+	}
+}
+
+func TestRelayServerProviderGatewayUsesSelectedUpstreamModel(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	var upstreamBody string
+	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		body, _ := io.ReadAll(r.Body)
+		upstreamBody = string(body)
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"id":"chatcmpl_1","object":"chat.completion","created":1,"model":"deepseek-v4-pro","choices":[{"index":0,"message":{"role":"assistant","content":"ok"},"finish_reason":"stop"}]}`))
+	}))
+	defer upstream.Close()
+
+	gateway := &providerGatewaySpec{
+		BaseURL:        upstream.URL,
+		APIKey:         "deepseek-key",
+		UpstreamModel:  "deepseek-v4-flash",
+		UpstreamModels: []string{"deepseek-v4-flash", "deepseek-v4-pro"},
+		WireAPI:        "chat_completions",
+	}
+	m := &manifest{
+		APIKeys:  []apiKeySpec{{ID: "provider_gateway_account_1", Label: "Provider Gateway", Key: "client-key", Enabled: true, ProviderGateway: gateway}},
+		ModelIDs: []string{"deepseek-v4-flash", "deepseek-v4-pro"},
+		apiKeyByValue: map[string]*apiKeySpec{
+			"client-key": {ID: "provider_gateway_account_1", Label: "Provider Gateway", Key: "client-key", Enabled: true, ProviderGateway: gateway},
+		},
+	}
+	router := (&relayServer{
+		runtime:  &fakeRuntime{},
+		cfg:      &config.Config{},
+		manifest: m,
+		policy:   &requestPolicy{manifest: m},
+	}).router()
+
+	req := httptest.NewRequest(http.MethodPost, "/v1/responses", strings.NewReader(`{"model":"deepseek-v4-pro","input":"hello","stream":false}`))
+	req.Header.Set("Authorization", "Bearer client-key")
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("unexpected status: %d body=%s", w.Code, w.Body.String())
+	}
+	if !strings.Contains(upstreamBody, `"model":"deepseek-v4-pro"`) || strings.Contains(upstreamBody, `"model":"deepseek-v4-flash"`) {
+		t.Fatalf("request should use selected upstream model: %s", upstreamBody)
+	}
+}
+
+func TestRelayServerProviderGatewayRejectsVisionInputWhenUnsupported(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	upstreamCalled := false
+	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		upstreamCalled = true
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"id":"chatcmpl_1","object":"chat.completion","created":1,"model":"deepseek-v4-flash","choices":[{"index":0,"message":{"role":"assistant","content":"ok"},"finish_reason":"stop"}]}`))
+	}))
+	defer upstream.Close()
+
+	gateway := &providerGatewaySpec{
+		BaseURL:        upstream.URL,
+		APIKey:         "deepseek-key",
+		UpstreamModel:  "deepseek-v4-flash",
+		UpstreamModels: []string{"deepseek-v4-flash"},
+		WireAPI:        "chat_completions",
+	}
+	m := &manifest{
+		APIKeys:  []apiKeySpec{{ID: "provider_gateway_account_1", Label: "Provider Gateway", Key: "client-key", Enabled: true, ProviderGateway: gateway}},
+		ModelIDs: []string{"deepseek-v4-flash"},
+		apiKeyByValue: map[string]*apiKeySpec{
+			"client-key": {ID: "provider_gateway_account_1", Label: "Provider Gateway", Key: "client-key", Enabled: true, ProviderGateway: gateway},
+		},
+	}
+	router := (&relayServer{
+		runtime:  &fakeRuntime{},
+		cfg:      &config.Config{},
+		manifest: m,
+		policy:   &requestPolicy{manifest: m},
+	}).router()
+
+	req := httptest.NewRequest(http.MethodPost, "/v1/responses", strings.NewReader(`{"model":"deepseek-v4-flash","input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"describe"},{"type":"input_image","image_url":"data:image/png;base64,abc"}]}],"stream":false}`))
+	req.Header.Set("Authorization", "Bearer client-key")
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Fatalf("unexpected status: %d body=%s", w.Code, w.Body.String())
+	}
+	if upstreamCalled {
+		t.Fatal("unsupported image input without routing model should not call upstream")
+	}
+	if !strings.Contains(w.Body.String(), "unsupported_image_input") {
+		t.Fatalf("unsupported image input should return explicit error: %s", w.Body.String())
+	}
+}
+
+func TestRelayServerProviderGatewayRoutesVisionInputToConfiguredModel(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	var upstreamPath string
+	var upstreamBody string
+	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		upstreamPath = r.URL.Path
+		body, _ := io.ReadAll(r.Body)
+		upstreamBody = string(body)
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"id":"chatcmpl_1","object":"chat.completion","created":1,"model":"mimo-v2.5","choices":[{"index":0,"message":{"role":"assistant","content":"ok"},"finish_reason":"stop"}]}`))
+	}))
+	defer upstream.Close()
+
+	gateway := &providerGatewaySpec{
+		BaseURL:            upstream.URL,
+		APIKey:             "mimo-key",
+		UpstreamModel:      "mimo-v2.5-pro",
+		UpstreamModels:     []string{"mimo-v2.5-pro", "mimo-v2.5"},
+		WireAPI:            "chat_completions",
+		VisionRoutingModel: "mimo-v2.5",
+		ModelCapabilities: map[string]providerGatewayModelCapability{
+			"mimo-v2.5": {SupportsVision: true},
+		},
+	}
+	m := &manifest{
+		APIKeys:  []apiKeySpec{{ID: "provider_gateway_account_1", Label: "Provider Gateway", Key: "client-key", Enabled: true, ProviderGateway: gateway}},
+		ModelIDs: []string{"mimo-v2.5-pro", "mimo-v2.5"},
+		apiKeyByValue: map[string]*apiKeySpec{
+			"client-key": {ID: "provider_gateway_account_1", Label: "Provider Gateway", Key: "client-key", Enabled: true, ProviderGateway: gateway},
+		},
+	}
+	router := (&relayServer{
+		runtime:  &fakeRuntime{},
+		cfg:      &config.Config{},
+		manifest: m,
+		policy:   &requestPolicy{manifest: m},
+	}).router()
+
+	req := httptest.NewRequest(http.MethodPost, "/v1/responses", strings.NewReader(`{"model":"mimo-v2.5-pro","input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"describe"},{"type":"input_image","image_url":"data:image/png;base64,abc"}]}],"stream":false}`))
+	req.Header.Set("Authorization", "Bearer client-key")
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("unexpected status: %d body=%s", w.Code, w.Body.String())
+	}
+	if upstreamPath != "/v1/chat/completions" {
+		t.Fatalf("unexpected upstream path: %s", upstreamPath)
+	}
+	if !strings.Contains(upstreamBody, `"model":"mimo-v2.5"`) || strings.Contains(upstreamBody, `"model":"mimo-v2.5-pro"`) {
+		t.Fatalf("vision request should be routed to configured model: %s", upstreamBody)
+	}
+	if !strings.Contains(upstreamBody, "image_url") {
+		t.Fatalf("vision request should keep image input: %s", upstreamBody)
+	}
+}
+
+func TestRelayServerProviderGatewayRoutesVisionInputToOnlyVisionModel(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	var upstreamBody string
+	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		body, _ := io.ReadAll(r.Body)
+		upstreamBody = string(body)
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"id":"chatcmpl_1","object":"chat.completion","created":1,"model":"mimo-v2.5","choices":[{"index":0,"message":{"role":"assistant","content":"ok"},"finish_reason":"stop"}]}`))
+	}))
+	defer upstream.Close()
+
+	gateway := &providerGatewaySpec{
+		BaseURL:        upstream.URL,
+		APIKey:         "mimo-key",
+		UpstreamModel:  "mimo-v2.5-pro",
+		UpstreamModels: []string{"mimo-v2.5-pro", "mimo-v2.5"},
+		WireAPI:        "chat_completions",
+		ModelCapabilities: map[string]providerGatewayModelCapability{
+			"mimo-v2.5": {SupportsVision: true},
+		},
+	}
+	m := &manifest{
+		APIKeys:  []apiKeySpec{{ID: "provider_gateway_account_1", Label: "Provider Gateway", Key: "client-key", Enabled: true, ProviderGateway: gateway}},
+		ModelIDs: []string{"mimo-v2.5-pro", "mimo-v2.5"},
+		apiKeyByValue: map[string]*apiKeySpec{
+			"client-key": {ID: "provider_gateway_account_1", Label: "Provider Gateway", Key: "client-key", Enabled: true, ProviderGateway: gateway},
+		},
+	}
+	router := (&relayServer{
+		runtime:  &fakeRuntime{},
+		cfg:      &config.Config{},
+		manifest: m,
+		policy:   &requestPolicy{manifest: m},
+	}).router()
+
+	req := httptest.NewRequest(http.MethodPost, "/v1/responses", strings.NewReader(`{"model":"mimo-v2.5-pro","input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"describe"},{"type":"input_image","image_url":"data:image/png;base64,abc"}]}],"stream":false}`))
+	req.Header.Set("Authorization", "Bearer client-key")
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("unexpected status: %d body=%s", w.Code, w.Body.String())
+	}
+	if !strings.Contains(upstreamBody, `"model":"mimo-v2.5"`) || strings.Contains(upstreamBody, `"model":"mimo-v2.5-pro"`) {
+		t.Fatalf("single vision model should be used automatically: %s", upstreamBody)
+	}
+}
+
+func TestRelayServerProviderGatewayAllowsVisionInputForModelCapability(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	upstreamCalled := false
+	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		upstreamCalled = true
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"id":"chatcmpl_1","object":"chat.completion","created":1,"model":"qwen-vl-plus","choices":[{"index":0,"message":{"role":"assistant","content":"ok"},"finish_reason":"stop"}]}`))
+	}))
+	defer upstream.Close()
+
+	gateway := &providerGatewaySpec{
+		BaseURL:        upstream.URL,
+		APIKey:         "qwen-key",
+		UpstreamModel:  "qwen-plus",
+		UpstreamModels: []string{"qwen-plus", "qwen-vl-plus"},
+		WireAPI:        "chat_completions",
+		ModelCapabilities: map[string]providerGatewayModelCapability{
+			"qwen-vl-plus": {SupportsVision: true},
+		},
+	}
+	m := &manifest{
+		APIKeys:  []apiKeySpec{{ID: "provider_gateway_account_1", Label: "Provider Gateway", Key: "client-key", Enabled: true, ProviderGateway: gateway}},
+		ModelIDs: []string{"qwen-plus", "qwen-vl-plus"},
+		apiKeyByValue: map[string]*apiKeySpec{
+			"client-key": {ID: "provider_gateway_account_1", Label: "Provider Gateway", Key: "client-key", Enabled: true, ProviderGateway: gateway},
+		},
+	}
+	router := (&relayServer{
+		runtime:  &fakeRuntime{},
+		cfg:      &config.Config{},
+		manifest: m,
+		policy:   &requestPolicy{manifest: m},
+	}).router()
+
+	req := httptest.NewRequest(http.MethodPost, "/v1/responses", strings.NewReader(`{"model":"qwen-vl-plus","input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"describe"},{"type":"input_image","image_url":"data:image/png;base64,abc"}]}],"stream":false}`))
+	req.Header.Set("Authorization", "Bearer client-key")
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("unexpected status: %d body=%s", w.Code, w.Body.String())
+	}
+	if !upstreamCalled {
+		t.Fatal("vision-capable model should call upstream")
+	}
+}
+
+func TestRelayServerProviderGatewayAllowsVisionInputForProviderDefault(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	var upstreamBody string
+	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		body, _ := io.ReadAll(r.Body)
+		upstreamBody = string(body)
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"id":"chatcmpl_1","object":"chat.completion","created":1,"model":"qwen-vl-plus","choices":[{"index":0,"message":{"role":"assistant","content":"ok"},"finish_reason":"stop"}]}`))
+	}))
+	defer upstream.Close()
+
+	gateway := &providerGatewaySpec{
+		BaseURL:        upstream.URL,
+		APIKey:         "qwen-key",
+		UpstreamModel:  "qwen-vl-plus",
+		UpstreamModels: []string{"qwen-vl-plus"},
+		WireAPI:        "chat_completions",
+		SupportsVision: true,
+	}
+	m := &manifest{
+		APIKeys:  []apiKeySpec{{ID: "provider_gateway_account_1", Label: "Provider Gateway", Key: "client-key", Enabled: true, ProviderGateway: gateway}},
+		ModelIDs: []string{"qwen-vl-plus"},
+		apiKeyByValue: map[string]*apiKeySpec{
+			"client-key": {ID: "provider_gateway_account_1", Label: "Provider Gateway", Key: "client-key", Enabled: true, ProviderGateway: gateway},
+		},
+	}
+	router := (&relayServer{
+		runtime:  &fakeRuntime{},
+		cfg:      &config.Config{},
+		manifest: m,
+		policy:   &requestPolicy{manifest: m},
+	}).router()
+
+	req := httptest.NewRequest(http.MethodPost, "/v1/responses", strings.NewReader(`{"model":"qwen-vl-plus","input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"describe"},{"type":"input_image","image_url":"data:image/png;base64,abc"}]}],"stream":false}`))
+	req.Header.Set("Authorization", "Bearer client-key")
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("unexpected status: %d body=%s", w.Code, w.Body.String())
+	}
+	if strings.Contains(upstreamBody, "Image omitted") || !strings.Contains(upstreamBody, "image_url") {
+		t.Fatalf("provider default vision support should keep image input: %s", upstreamBody)
+	}
+}
+
 func TestRelayServerAcceptsCodexAutoReviewModel(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	runtime := &fakeRuntime{
@@ -804,6 +1485,156 @@ func TestRelayServerTimesOutIdleOpenedStream(t *testing.T) {
 	}
 	if !strings.Contains(w.Body.String(), "stream_idle") {
 		t.Fatalf("idle timeout should be sent as terminal SSE error: %s", w.Body.String())
+	}
+}
+
+func TestRelayServerAnthropicMessagesUsesClaudeFormat(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	runtime := &fakeRuntime{
+		response: cliproxyexecutor.Response{
+			Headers: http.Header{"Content-Type": []string{"application/json"}},
+			Payload: []byte(`{"id":"msg_1","type":"message","role":"assistant","content":[{"type":"text","text":"ok"}]}`),
+		},
+	}
+	router := testRelayRouter(runtime)
+
+	req := httptest.NewRequest(http.MethodPost, "/v1/messages", strings.NewReader(`{"model":"gpt-5.5","messages":[{"role":"user","content":"hello"}],"stream":false}`))
+	req.Header.Set("Authorization", "Bearer client-key")
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("unexpected status: %d body=%s", w.Code, w.Body.String())
+	}
+	if runtime.executeCalls != 1 || runtime.lastOpts.SourceFormat != sdktranslator.FormatClaude || runtime.lastReq.Format != sdktranslator.FormatClaude {
+		t.Fatalf("expected Claude executor request, got calls=%d req=%#v opts=%#v", runtime.executeCalls, runtime.lastReq, runtime.lastOpts)
+	}
+}
+
+func TestRelayServerAnthropicCountTokensUsesClaudeShape(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	router := testRelayRouter(&fakeRuntime{})
+
+	req := httptest.NewRequest(http.MethodPost, "/v1/messages/count_tokens", strings.NewReader(`{"model":"gpt-5.5","messages":[{"role":"user","content":"hello world"}]}`))
+	req.Header.Set("Authorization", "Bearer client-key")
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("unexpected status: %d body=%s", w.Code, w.Body.String())
+	}
+	if !strings.Contains(w.Body.String(), `"input_tokens"`) {
+		t.Fatalf("Anthropic token count response should use input_tokens: %s", w.Body.String())
+	}
+}
+
+func TestRelayServerGeminiGenerateInjectsPathModel(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	runtime := &fakeRuntime{
+		response: cliproxyexecutor.Response{
+			Headers: http.Header{"Content-Type": []string{"application/json"}},
+			Payload: []byte(`{"candidates":[{"content":{"role":"model","parts":[{"text":"ok"}]}}]}`),
+		},
+	}
+	router := testRelayRouter(runtime)
+
+	req := httptest.NewRequest(http.MethodPost, "/v1beta/models/gpt-5.5:generateContent", strings.NewReader(`{"contents":[{"role":"user","parts":[{"text":"hello"}]}]}`))
+	req.Header.Set("Authorization", "Bearer client-key")
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("unexpected status: %d body=%s", w.Code, w.Body.String())
+	}
+	if runtime.executeCalls != 1 || runtime.lastOpts.SourceFormat != sdktranslator.FormatGemini || runtime.lastReq.Model != "gpt-5.5" {
+		t.Fatalf("expected Gemini executor request, got calls=%d req=%#v opts=%#v", runtime.executeCalls, runtime.lastReq, runtime.lastOpts)
+	}
+	if !strings.Contains(string(runtime.lastReq.Payload), `"model":"gpt-5.5"`) {
+		t.Fatalf("Gemini path model should be injected into executor payload: %s", runtime.lastReq.Payload)
+	}
+}
+
+func TestRelayServerGeminiModelsResponseShape(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	router := testRelayRouter(&fakeRuntime{})
+
+	req := httptest.NewRequest(http.MethodGet, "/v1beta/models", nil)
+	req.Header.Set("Authorization", "Bearer client-key")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("unexpected status: %d body=%s", w.Code, w.Body.String())
+	}
+	if !strings.Contains(w.Body.String(), `"name":"models/gpt-5.5"`) ||
+		!strings.Contains(w.Body.String(), `"streamGenerateContent"`) ||
+		!strings.Contains(w.Body.String(), `"countTokens"`) {
+		t.Fatalf("Gemini models response has unexpected shape: %s", w.Body.String())
+	}
+}
+
+func TestRelayServerOllamaChatConvertsNonStreamingResponse(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	runtime := &fakeRuntime{
+		response: cliproxyexecutor.Response{
+			Headers: http.Header{"Content-Type": []string{"application/json"}},
+			Payload: []byte(`{"id":"chatcmpl_1","object":"chat.completion","created":1,"model":"gpt-5.5","choices":[{"index":0,"message":{"role":"assistant","content":"ok"},"finish_reason":"stop"}],"usage":{"prompt_tokens":2,"completion_tokens":3,"total_tokens":5}}`),
+		},
+	}
+	router := testRelayRouter(runtime)
+
+	req := httptest.NewRequest(http.MethodPost, "/api/chat", strings.NewReader(`{"model":"gpt-5.5","messages":[{"role":"user","content":"hello"}],"stream":false}`))
+	req.Header.Set("Authorization", "Bearer client-key")
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("unexpected status: %d body=%s", w.Code, w.Body.String())
+	}
+	if runtime.executeCalls != 1 || runtime.lastOpts.SourceFormat != sdktranslator.FormatOpenAI || runtime.lastReq.Model != "gpt-5.5" {
+		t.Fatalf("expected OpenAI chat executor request, got calls=%d req=%#v opts=%#v", runtime.executeCalls, runtime.lastReq, runtime.lastOpts)
+	}
+	if !strings.Contains(w.Body.String(), `"done":true`) || !strings.Contains(w.Body.String(), `"content":"ok"`) || !strings.Contains(w.Body.String(), `"eval_count":3`) {
+		t.Fatalf("Ollama response has unexpected shape: %s", w.Body.String())
+	}
+}
+
+func TestRelayServerOllamaChatConvertsStreamingChunks(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	chunks := make(chan cliproxyexecutor.StreamChunk, 2)
+	chunks <- cliproxyexecutor.StreamChunk{Payload: []byte(`{"id":"chatcmpl_1","object":"chat.completion.chunk","created":1,"model":"gpt-5.5","choices":[{"index":0,"delta":{"role":"assistant","content":"ok"},"finish_reason":null}]}`)}
+	chunks <- cliproxyexecutor.StreamChunk{Payload: []byte(`{"id":"chatcmpl_1","object":"chat.completion.chunk","created":1,"model":"gpt-5.5","choices":[{"index":0,"delta":{},"finish_reason":"stop"}],"usage":{"prompt_tokens":2,"completion_tokens":3,"total_tokens":5}}`)}
+	close(chunks)
+	runtime := &fakeRuntime{
+		streamResult: &cliproxyexecutor.StreamResult{
+			Headers: http.Header{"Content-Type": []string{"text/event-stream"}},
+			Chunks:  chunks,
+		},
+	}
+	router := testRelayRouter(runtime)
+
+	req := httptest.NewRequest(http.MethodPost, "/api/chat", strings.NewReader(`{"model":"gpt-5.5","messages":[{"role":"user","content":"hello"}]}`))
+	req.Header.Set("Authorization", "Bearer client-key")
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("unexpected status: %d body=%s", w.Code, w.Body.String())
+	}
+	if runtime.streamCalls != 1 || runtime.lastOpts.SourceFormat != sdktranslator.FormatOpenAI {
+		t.Fatalf("expected OpenAI chat stream executor request, got calls=%d opts=%#v", runtime.streamCalls, runtime.lastOpts)
+	}
+	lines := strings.Split(strings.TrimSpace(w.Body.String()), "\n")
+	if len(lines) != 2 {
+		t.Fatalf("expected content and final Ollama chunks, got %d lines: %s", len(lines), w.Body.String())
+	}
+	if !strings.Contains(lines[0], `"content":"ok"`) || !strings.Contains(lines[1], `"done":true`) || !strings.Contains(lines[1], `"eval_count":3`) {
+		t.Fatalf("unexpected Ollama stream body: %s", w.Body.String())
 	}
 }
 

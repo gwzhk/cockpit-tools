@@ -184,7 +184,7 @@
         "relativeHours": "{{hours}}시간",
         "relativeHoursMinutes": "{{hours}}시간 {{minutes}}분",
         "relativeMinutes": "{{minutes}}분",
-        "relativeWithAbsolute": "{{relative}} ({{absolute}})"
+        "relativeWithAbsolute": "{{relative}} ({{absolute}})​"
       },
       "credits": {
         "leftInline": "{{left}} 남음",
@@ -197,7 +197,7 @@
         "planEndsInHours": "{{hours}}h 후에 재설정됩니다."
       },
       "flowNotice": {
-        "alternative": "대안: 멀티 인스턴스 격리(서로 다른 --user-data-dir)를 사용하세요. 인스턴스별로 한 번만 로그인하면 이후에는 인스턴스 단위 실행으로 원하는 계정 환경으로 빠르게 전환할 수 있습니다."
+        "alternative": "멀티 인스턴스 격리: 별도 관리 프로필을 사용하고 인스턴스마다 한 번 로그인해 계정 환경을 빠르게 전환하세요."
       },
       "injecting": "주입 중...",
       "usage": {
@@ -218,7 +218,7 @@
       "desc": "이 영역은 모든 페이지의 우측 상단에 고정되어 캠페인 또는 브랜드 광고 노출에 적합합니다.",
       "action": "자세히 보기"
     },
-    "appName": "Cockpit Tools",
+    "appName": "Cockpit Tools​",
     "collapse": "접기",
     "confirmDelete": "삭제 확인",
     "confirmDeleteTag": "태그 삭제 확인",
@@ -228,14 +228,13 @@
     "selectAll": "전체 선택"
   },
   "nav": {
-    "overview": "Antigravity IDE",
+    "overview": "Antigravity IDE​",
     "accounts": "계정 관리",
     "wakeup": "깨우기 작업",
-    "fingerprints": "기기 지문",
     "settings": "설정",
-    "codex": "Codex",
-    "githubCopilot": "GitHub Copilot",
-    "windsurf": "Windsurf",
+    "codex": "Codex​",
+    "githubCopilot": "GitHub Copilot​",
+    "windsurf": "Windsurf​",
     "dashboard": "대시보드",
     "morePlatforms": "더 많은 플랫폼",
     "instances": "멀티 인스턴스",
@@ -245,21 +244,35 @@
       "restart": "재시작",
       "installing": "설치 중"
     },
-    "gemini": "Gemini Cli",
-    "codebuddy": "CodeBuddy",
-    "qoder": "Qoder",
-    "trae": "Trae",
-    "codebuddyCn": "CodeBuddy CN",
+    "gemini": "Gemini Cli​",
+    "codebuddy": "CodeBuddy​",
+    "qoder": "Qoder​",
+    "trae": "Trae​",
+    "codebuddyCn": "CodeBuddy CN​",
     "zed": "Zed 플랫폼",
     "expandSidebar": "사이드바 확장",
     "collapseSidebar": "사이드바 축소",
     "logs": "로그",
+    "sponsors": "스폰서",
+    "sponsorAppreciation": "후원",
     "switchClassicLayoutEntry": "클래식 레이아웃으로 전환",
     "switchClassicLayoutTitle": "클래식 사이드바 레이아웃으로 전환",
     "switchClassicLayoutDesc": "클래식 레이아웃은 플랫폼 내비게이션을 모두 표시하고 사이드바 접기를 지원합니다. 설정 > 일반 > 사이드바 레이아웃에서 언제든 다시 변경할 수 있습니다.",
     "switchClassicLayoutDontAskAgain": "이 안내를 다시 표시하지 않기",
     "switchClassicLayoutConfirm": "지금 전환",
-    "2faManager": "2FA 관리"
+    "2faManager": "2FA 관리",
+    "apiRelay": "중계소",
+    "claude": "Claude"
+  },
+  "sponsors": {
+    "pageTitle": "스폰서",
+    "pageDesc": "Cockpit Tools를 지원해 주시는 스폰서에게 감사드립니다.",
+    "loading": "스폰서 불러오는 중...",
+    "emptyTitle": "아직 스폰서가 없습니다",
+    "emptyDesc": "원격 스폰서 모듈이 현재 비활성화되어 있습니다.",
+    "listAriaLabel": "스폰서 목록",
+    "defaultDescription": "Cockpit Tools를 지원해 주셔서 감사합니다.",
+    "openSponsor": "열기"
   },
   "platformLayout": {
     "title": "플랫폼 레이아웃",
@@ -269,10 +282,11 @@
     "sidebarToggle": "사이드바에 표시",
     "dashboardToggle": "대시보드에 표시",
     "trayToggle": "트레이에 표시",
+    "apiRelayTrayDisabled": "릴레이는 아직 트레이에 표시할 수 없습니다",
     "hiddenBadge": "숨김",
     "openFromMore": "플랫폼 레이아웃 관리",
     "dragHandleLabel": "드래그하여 순서 변경",
-    "tipWithGroups": "드래그로 정렬할 수 있습니다. 사이드바에는 최대 3개의 항목만 표시할 수 있습니다. 그룹 하위 플랫폼은 사이드바/대시보드 토글을 제공하지 않으며 메뉴바 표시와 기본 플랫폼 전환에만 사용됩니다.",
+    "tipWithGroups": "드래그하여 순서를 바꿀 수 있습니다. 사이드바에는 최대 {{max}}개 항목을 표시할 수 있습니다. 그룹 하위 항목은 사이드바/대시보드 토글에 포함되지 않으며 메뉴 표시줄과 기본 플랫폼 전환에만 사용됩니다.",
     "addGroup": "그룹 추가",
     "editGroup": "그룹 편집",
     "deleteGroup": "그룹 삭제",
@@ -509,7 +523,7 @@
       "force": {
         "title": "강제 재시작",
         "principle": "--user-data-dir로 프로세스를 찾아 강제 종료(SIGKILL / taskkill /F)한 다음, 대상 인스턴스를 다시 시작합니다.",
-        "commandMac": "macOS/Linux: pkill -9 -f \"--user-data-dir <dir>\"",
+        "commandMac": "macOS/Linux: pkill -9 -f \"--user-data-dir <dir>\"​",
         "commandWin": "Windows: taskkill /F /PID <pid> (--user-data-dir 일치 항목)",
         "pros": "단일 인스턴스를 정확하게 재시작할 수 있습니다.",
         "cons": "“예기치 않은 종료” 경고가 발생할 수 있으며 저장되지 않은 데이터 손실 위험이 있습니다."
@@ -549,7 +563,8 @@
     "tabs": {
       "general": "일반",
       "network": "네트워크",
-      "about": "정보"
+      "about": "정보",
+      "data": "데이터 관리"
     },
     "general": {
       "appearance": "디자인",
@@ -603,8 +618,8 @@
       "floatingCardShowNowAction": "플로팅 카드 표시",
       "dataDir": "데이터 디렉터리",
       "dataDirDesc": "계정 및 구성 파일 저장 위치.",
-      "fpDir": "Antigravity IDE 저장소",
-      "fpDirDesc": "Antigravity IDE 데이터 파일 저장 위치.",
+      "topRightAdVisible": "상단 프로모션 표시",
+      "topRightAdVisibleDesc": "앱 상단 프로모션 영역을 숨깁니다. 스폰서 페이지에는 영향을 주지 않습니다.",
       "opencodeTitle": "OpenCode 연동",
       "opencodeRestart": "Codex 전환 시 OpenCode 재시작",
       "opencodeRestartDesc": "OpenCode에서 Codex 계정 정보를 동기화하여 전환",
@@ -619,6 +634,11 @@
       "codexAppPathPlaceholder": "기본 경로",
       "codexPathSelect": "선택",
       "codexPathReset": "기본값으로 재설정",
+      "codexSyncWsl": "Codex를 WSL에 동기화",
+      "codexSyncWslDesc": "기본 Codex 계정을 전환한 뒤 auth.json과 config.toml도 WSL의 Codex 디렉터리에 씁니다.",
+      "codexWslConfigDir": "WSL Codex 디렉터리",
+      "codexWslConfigDirDesc": "WSL 안의 .codex 디렉터리를 입력하세요. \\\\wsl.localhost\\ 경로를 지원합니다.",
+      "codexWslConfigDirPlaceholder": "예: \\\\wsl.localhost\\Ubuntu-24.04\\home\\user\\.codex",
       "vscodeTitle": "VS Code 실행",
       "vscodeAppPath": "VS Code 앱 경로",
       "vscodeAppPathDesc": "비워 두면 기본 경로를 사용합니다",
@@ -759,7 +779,10 @@
       "codexAppSpeedFast": "빠름",
       "codexAppSpeedLaunch": "Codex 재시작",
       "codexAppSpeedSaveFailed": "Codex 속도를 저장하지 못했습니다: {{error}}",
-      "codexAppSpeedLaunchFailed": "Codex를 재시작하지 못했습니다: {{error}}"
+      "codexAppSpeedLaunchFailed": "Codex를 재시작하지 못했습니다: {{error}}",
+      "claudeSettingsTitle": "Claude Desktop 설정",
+      "claudeAutoRefresh": "Claude Desktop 할당량 자동 새로고침",
+      "claudeAutoRefreshDesc": "백그라운드에서 Claude Desktop 계정의 할당량 캐시를 자동으로 갱신합니다."
     },
     "network": {
       "apiTitle": "반중력 조종석 API",
@@ -801,7 +824,7 @@
       "proxyUrlRequired": "전역 프록시를 켠 경우 프록시 URL은 비워둘 수 없습니다."
     },
     "about": {
-      "appName": "Cockpit Tools",
+      "appName": "Cockpit Tools​",
       "slogan": "전문적인 계정 관리 솔루션",
       "author": "제작자",
       "wechat": "WeChat 플러스",
@@ -928,6 +951,66 @@
         "unsupportedLegacyFile": "이 구버전 계정 백업 형식은 인식할 수 없습니다",
         "unsupportedVersion": "현재 앱 버전은 해당 묶음 버전을 지원하지 않습니다"
       }
+    },
+    "webdav": {
+      "groupTitle": "WebDAV 동기화",
+      "enabledTitle": "WebDAV 백업 동기화",
+      "enabledDesc": "기본값은 Jianguoyun이며 모든 WebDAV 서비스로 변경할 수 있습니다.",
+      "urlTitle": "서비스 주소",
+      "urlDesc": "Jianguoyun 기본 주소: https://dav.jianguoyun.com/dav/",
+      "usernameTitle": "계정",
+      "usernameDesc": "Jianguoyun은 계정 이메일을 사용합니다.",
+      "usernamePlaceholder": "이메일 또는 사용자 이름",
+      "passwordTitle": "앱 비밀번호",
+      "passwordDesc": "로컬에 저장됩니다. 기존 비밀번호를 유지하려면 비워 두십시오.",
+      "passwordPlaceholder": "Jianguoyun 제3자 앱 비밀번호",
+      "passwordSavedPlaceholder": "저장됨; 유지하려면 비워 두십시오",
+      "clearPassword": "지우기",
+      "remoteDirTitle": "원격 디렉토리",
+      "remoteDirDesc": "이 디렉토리 내의 Cockpit 백업 파일만 관리됩니다.",
+      "statusTitle": "동기화 상태",
+      "statusDesc": "원격 복구는 수동 선택이 필요하며 로컬 데이터를 자동으로 덮어쓰지 않습니다.",
+      "lastUpload": "최근 업로드: {{time}}",
+      "lastDownload": "최근 복구: {{time}}",
+      "never": "아직 동기화되지 않음",
+      "testAction": "테스트/설정 저장",
+      "uploadAction": "생성 및 업로드",
+      "syncAction": "설정 동기화",
+      "syncLatestConfirm": "최신 원격 백업 {{name}}을 가져와 로컬로 동기화하시겠습니까? 이렇게 하면 기존 로컬 데이터가 덮어씌워집니다.",
+      "remoteListTitle": "원격 백업",
+      "remoteListDesc": "Cockpit 자동/수동 백업 이름과 일치하는 JSON 및 ZIP 파일만 표시됩니다.",
+      "emptyTitle": "원격 백업 없음",
+      "emptyDesc": "설정을 저장한 다음 백업을 생성하고 업로드하십시오.",
+      "unknownTime": "미상",
+      "restoreAction": "복구",
+      "restoreConfirm": "원격 백업 {{name}}에서 데이터를 복구하시겠습니까?",
+      "deleteConfirm": "원격 백업 {{name}}을(를) 삭제하시겠습니까?",
+      "feedback": {
+        "testingAndSaving": "WebDAV 연결을 저장하고 테스트하는 중...",
+        "saveAndTestSuccess": "설정이 저장되고 연결 테스트에 성공했습니다!",
+        "saveSuccessTestFailed": "설정은 저장되었으나 연결 테스트에 실패했습니다: {{message}}",
+        "saveAndTestFailed": "연결 저장 및 테스트 실패: {{error}}",
+        "uploading": "백업 생성 및 업로드 중...",
+        "uploadSuccess": "{{count}}개 파일 업로드 완료, 만료된 원격 백업 {{deleted}}개 정리됨",
+        "uploadFailed": "WebDAV 업로드 실패: {{error}}",
+        "listFailed": "원격 백업 로드 실패: {{error}}",
+        "loadSettingsFailed": "WebDAV 설정 로드 실패: {{error}}",
+        "restoring": "원격 백업을 읽고 가져오는 중...",
+        "restoreEmpty": "원격 백업에서 복구된 데이터가 없습니다",
+        "deleteSuccess": "원격 백업이 삭제되었습니다",
+        "deleteFailed": "원격 백업 삭제 실패: {{error}}",
+        "syncingLatest": "최신 원격 구성 동기화 중...",
+        "syncFailed": "최신 구성 동기화 실패: {{error}}",
+        "noRemoteBackup": "원격에서 복구 가능한 백업 파일을 찾을 수 없습니다"
+      },
+      "errors": {
+        "notEnabled": "먼저 WebDAV 동기화를 활성화하십시오"
+      },
+      "retentionTitle": "Remote Retention Days",
+      "retentionDesc": "Backups older than this on the cloud will be removed during the next sync.",
+      "retentionUnit": "days",
+      "collapseAll": "Collapse remote backups",
+      "expandAll": "Expand all remote backups ({{count}} more)"
     }
   },
   "appPath": {
@@ -959,7 +1042,6 @@
       "email": "이메일",
       "subscription": "구독 유형",
       "quota": "할당량 상태",
-      "fingerprint": "지문",
       "lastUsed": "마지막 사용",
       "actions": "작업"
     },
@@ -969,13 +1051,13 @@
       "authInvalid": "잘못된 자격 증명",
       "refreshFailed": "새로고침 실패",
       "normal": "정상",
-      "forbidden": "403",
+      "forbidden": "403​",
       "forbidden_tooltip": "API가 403 Forbidden을 반환했습니다. 계정이 Gemini Code Assist에 접근할 수 없습니다",
       "forbidden_msg": "계정 금지됨, 자동 새로고침 건너뜀"
     },
     "tier": {
-      "pro": "PRO",
-      "ultra": "ULTRA"
+      "pro": "PRO​",
+      "ultra": "ULTRA​"
     },
     "credits": {
       "label": "AI 크레딧"
@@ -1045,10 +1127,8 @@
     "actions": {
       "viewDetails": "상세 보기",
       "viewError": "오류 보기",
-      "fingerprint": "지문",
       "switch": "계정 전환",
       "switchTo": "이 계정으로 전환",
-      "selectFingerprint": "지문 선택",
       "delete": "삭제",
       "deleteSelected": "선택 항목 삭제",
       "export": "내보내기",
@@ -1186,7 +1266,10 @@
     "switchSuccess": "전환 성공",
     "switched": "{{email}}으로 전환했습니다",
     "tagButton": "태그 수정",
-    "tagUpdated": "태그가 업데이트되었습니다"
+    "tagUpdated": "태그가 업데이트되었습니다",
+    "plan": {
+      "personal": "개인"
+    }
   },
   "overview": {
     "title": "계정 개요",
@@ -1197,106 +1280,8 @@
     "currentAccount": "현재 사용 중",
     "switchTo": "이 계정으로 전환",
     "switching": "전환 중...",
-    "fingerprint": "지문",
     "bound": "연결됨",
     "brandTitle": "Antigravity IDE 계정 관리"
-  },
-  "fingerprints": {
-    "title": "기기 지문",
-    "subtitle": "계정에 연결된 기기 지문을 관리합니다.",
-    "toolbar": {
-      "generate": "새로 생성",
-      "capture": "현재 지문 캡처",
-      "import": "가져오기",
-      "folder": "폴더",
-      "delete": "삭제",
-      "deleteUnbound": "미연결 삭제"
-    },
-    "table": {
-      "name": "지문 이름",
-      "machineId": "기기 ID",
-      "accounts": "연결된 계정",
-      "actions": "작업",
-      "accountCount": "{{count}}개 계정",
-      "apply": "적용",
-      "noData": "지문 데이터 없음",
-      "preview": "미리보기",
-      "rename": "이름 변경"
-    },
-    "modals": {
-      "generate": {
-        "title": "지문 생성",
-        "btn": "생성"
-      },
-      "capture": {
-        "title": "현재 지문 캡처",
-        "btn": "캡처"
-      },
-      "rename": {
-        "title": "이름 변경",
-        "label": "지문 이름"
-      },
-      "import": {
-        "title": "지문 가져오기",
-        "fromTools": "Antigravity Tools에서 가져오기",
-        "desc": "~/.antigravity_tools/ 디렉토리에서 가져옵니다",
-        "fromJsonBtn": "JSON에서 가져오기",
-        "jsonExample": "형식 예시:",
-        "jsonPlaceholder": "업무 지문",
-        "orPasteJson": "또는 JSON 붙여넣기"
-      },
-      "bound": {
-        "title": "연결된 계정 관리",
-        "add": "계정 추가",
-        "empty": "연결된 계정 없음",
-        "emptyAll": "모든 계정이 이미 연결되었습니다",
-        "select": "추가할 계정 선택",
-        "from": "소스: {{name}}",
-        "back": "뒤로"
-      },
-      "detail": {
-        "title": "지문 상세 정보",
-        "created": "생성일: {{time}}"
-      }
-    },
-    "messages": {
-      "deleteConfirm": "이 지문을 삭제하시겠습니까? 연결된 계정들은 기본 지문으로 돌아갑니다.",
-      "batchDeleteConfirm": "{{count}}개의 지문을 삭제하시겠습니까? 연결된 계정들은 기본 지문으로 돌아갑니다.",
-      "generated": "새 지문이 생성되었습니다",
-      "captured": "현재 지문이 캡처되었습니다",
-      "renamed": "이름이 변경되었습니다",
-      "deleted": "지문이 삭제되었습니다",
-      "imported": "{{count}}개의 지문을 가져왔습니다",
-      "addedAccounts": "{{count}}개 계정 추가됨",
-      "enterName": "지문 이름을 입력하십시오",
-      "previewNotReady": "미리보기가 준비되지 않았습니다. 잠시 후 다시 시도하십시오",
-      "duplicate": "중복된 지문이 존재합니다: {{name}}",
-      "autoGeneratedSuffix": "(찾을 수 없어 자동 생성됨)",
-      "readOnly": "읽기 전용",
-      "current": "현재",
-      "addCount": "계정 {{count}}개 추가됨",
-      "addFailed": "추가 실패",
-      "adding": "추가 중...",
-      "applyFailed": "적용 실패",
-      "boundCount": "{{count}}개 계정이 연결됨",
-      "captureFailed": "캡처 실패",
-      "count": "{{count}}개",
-      "deleteFailed": "삭제 실패",
-      "fpLabel": "지문:",
-      "generateFailed": "생성 실패",
-      "importFailed": "가져오기 실패",
-      "importPartialFailed": "{{failCount}}개 실패: {{failList}}",
-      "refreshingQuota": "할당량 갱신 중 {{done}}/{{total}} (이 창은 닫아도 됩니다)",
-      "quotaRefreshDone": "할당량 갱신 완료",
-      "importing": "가져오는 중...",
-      "loadFailed": "지문 목록 불러오기 실패",
-      "processing": "처리 중...",
-      "renameFailed": "이름 변경 실패",
-      "serviceMachineIdEmpty": "비어 있음",
-      "deleteUnboundConfirm": "연결된 계정이 없는 지문 {{count}}개를 삭제할까요?",
-      "deletedUnbound": "연결되지 않은 지문 {{count}}개를 삭제했습니다",
-      "noUnboundToDelete": "삭제할 미연결 지문이 없습니다"
-    }
   },
   "modals": {
     "addAccount": {
@@ -1332,15 +1317,6 @@
       "fromFilesDesc": "JSON 파일을 선택하여 계정 가져오기 (다양한 형식 지원)",
       "importingFiles": "{{count}}개 파일 가져오는 중..."
     },
-    "fingerprint": {
-      "title": "지문 선택",
-      "desc": "<1>{{email}}</1> 계정의 지문을 선택하십시오",
-      "original": "기본 지문",
-      "new": "새 지문 추가",
-      "bind": "연결 확인",
-      "selectLabel": "지문 선택",
-      "boundCount": "개 계정"
-    },
     "quota": {
       "title": "할당량 상세",
       "noData": "할당량 데이터 없음",
@@ -1365,6 +1341,12 @@
   "messages": {
     "deleteConfirm": "이 계정을 삭제하시겠습니까?",
     "batchDeleteConfirm": "선택한 {{count}}개 계정을 삭제하시겠습니까?",
+    "cleanErrorAccountsAction": "ERROR 계정 정리",
+    "cleanErrorAccountsConfirm": "현재 범위의 ERROR 계정 {{count}}개를 삭제할까요?",
+    "selectAllFilteredAccounts": "일치 항목 {{count}}개 모두 선택",
+    "selectedAllFilteredAccounts": "일치 항목 {{count}}개 모두 선택됨",
+    "deleteFilteredAccountsConfirm": "현재 필터와 일치하는 Codex 계정 {{count}}개를 삭제합니다. 현재 페이지만 삭제하는 것이 아닙니다. 계속할까요?",
+    "clearSelection": "선택 해제",
     "switched": "{{email}} 계정으로 전환되었습니다",
     "switchFailed": "전환 실패: {{error}}",
     "antigravityLegacyUnsupported": "여기서는 Antigravity 2.0.0 이상을 지원하지 않습니다. Antigravity 2.0.0 미만 버전을 선택하거나 Antigravity IDE를 사용하세요.",
@@ -1450,17 +1432,17 @@
     },
     "format": {
       "noReply": "(응답 없음)",
-      "durationMs": "{{ms}}ms",
+      "durationMs": "{{ms}}ms​",
       "tokens": "토큰={{prompt}}+{{completion}}={{total}}",
       "traceId": "추적 ID={{traceId}}",
-      "detailJoiner": ", ",
-      "message": "[[{{model}}]]: {{reply}}{{suffix}}",
-      "none": "--",
+      "detailJoiner": ", ​",
+      "message": "[[{{model}}]]: {{reply}}{{suffix}}​",
+      "none": "--​",
       "today": "오늘 {{time}}",
       "tomorrow": "내일 {{time}}",
-      "weekdayWithTime": "{{day}} {{time}}",
+      "weekdayWithTime": "{{day}} {{time}}​",
       "notSelected": "선택 안 됨",
-      "joiner": ", ",
+      "joiner": ", ​",
       "moreItems": "{{items}} ({{total}}개)",
       "quotaReset": "할당량 재설정 자동 깨우기",
       "crontab": "크론탭: {{expr}}",
@@ -1577,7 +1559,11 @@
       "timeWindowFrom": "시작",
       "timeWindowTo": "종료",
       "fallbackTimes": "대체 시간",
-      "saveTask": "작업 저장"
+      "saveTask": "작업 저장",
+      "executionMode": "실행 모드",
+      "executionModeAuto": "바로 실행",
+      "executionModeConfirm": "확인 필요",
+      "confirmTimeout": "확인 시간 초과"
     },
     "test": {
       "modelsLabel": "트리거할 모델",
@@ -1652,7 +1638,8 @@
       "comingSoon": "멀티 인스턴스 곧 출시",
       "comingSoonDesc": "다른 계정으로 여러 Codex.app 인스턴스를 동시에 실행할 수 있습니다.",
       "unsupported": {
-        "desc": "Codex 멀티 인스턴스는 현재 macOS에서만 사용 가능합니다."
+        "desc": "Codex 멀티 인스턴스는 현재 macOS에서만 사용 가능합니다.",
+        "title": "이 시스템에서 지원되지 않음"
       },
       "quota": {
         "hourly": "5시간",
@@ -1682,7 +1669,7 @@
         },
         "force": {
           "principle": "CODEX_HOME으로 프로세스를 찾아 강제 종료(SIGKILL / taskkill /F)한 다음, 대상 인스턴스를 다시 시작합니다.",
-          "commandMac": "macOS: pkill -9 -f \"CODEX_HOME=<dir>\"",
+          "commandMac": "macOS: pkill -9 -f \"CODEX_HOME=<dir>\"​",
           "commandWin": "Windows: taskkill /F /PID <pid> (CODEX_HOME 일치 항목)"
         }
       }
@@ -1743,7 +1730,7 @@
     },
     "exportFormat": {
       "label": "내보내기 형식",
-      "cockpitTools": "Cockpit Tools",
+      "cockpitTools": "Cockpit Tools​",
       "sub2api": "sub2api 형식",
       "cpa": "cpa 형식",
       "downloadAll": "모두 다운로드",
@@ -1795,6 +1782,7 @@
         "freeNotice": "무료 계정은 아직 지원되지 않습니다. 무료 계정은 선택할 수 없습니다.",
         "freeUnsupported": "무료 계정은 아직 지원되지 않습니다",
         "restrictFreeToggle": "Free 계정 제한",
+        "chatApiKeyUnsupported": "Chat Completions 미지원",
         "freeNoticeRestricted": "Free 계정은 제한됩니다. 선택하려면 이 옵션을 끄세요.",
         "freeNoticeUnstable": "Free 계정 프록시는 불안정할 수 있습니다. 주의해서 사용하세요.",
         "restrictFreeDisableConfirmTitle": "Free 계정 허용",
@@ -1853,7 +1841,7 @@
         "accountRequests": "{{count}}건 요청",
         "accountTokens": "{{count}} 토큰",
         "accountResult": "성공 {{success}} / 실패 {{failed}}",
-        "accountTokensCompact": "{{value}}",
+        "accountTokensCompact": "{{value}}​",
         "images": "이미지 요청",
         "imagesDetail": "생성 {{generate}} / 편집 {{edit}} / 권한 {{blocked}}",
         "estimatedCost": "예상 가치",
@@ -1918,7 +1906,7 @@
       "modelIdViewOnly": "보기 전용",
       "quotaPool": {
         "title": "할당량 풀",
-        "hourlyShort": "5h",
+        "hourlyShort": "5h​",
         "weeklyShort": "주",
         "viewFull": "전체 통계 보기",
         "modalTitle": "API 서비스 할당량 풀",
@@ -2055,11 +2043,11 @@
       "requestFailedManualRetry": "네트워크를 확인하세요. 최신 할당량을 가져오지 못했습니다. 새로고침해 다시 시도하세요."
     },
     "plan": {
-      "free": "FREE",
-      "plus": "PLUS",
-      "pro": "PRO",
-      "team": "TEAM",
-      "enterprise": "ENTERPRISE"
+      "free": "FREE​",
+      "plus": "PLUS​",
+      "pro": "PRO​",
+      "team": "TEAM​",
+      "enterprise": "ENTERPRISE​"
     },
     "list": {
       "showCodeReviewQuota": "Code Review 할당량 표시"
@@ -2067,7 +2055,7 @@
     "time": {
       "today": "오늘 {{time}}",
       "tomorrow": "내일 {{time}}",
-      "dateTime": "{{date}} {{time}}"
+      "dateTime": "{{date}} {{time}}​"
     },
     "view": {
       "compact": "간결 보기"
@@ -2305,6 +2293,8 @@
         "repairVisibility": "표시 정보 복구",
         "restoreSessions": "세션 복원",
         "copySessionId": "세션 ID 복사",
+        "selectAllSessions": "전체 선택",
+        "clearSelectedSessions": "선택 해제",
         "copyToInstance": "인스턴스에 복사"
       },
       "confirm": {
@@ -2376,67 +2366,67 @@
       },
       "providers": {
         "openai_official": {
-          "name": "OpenAI Official"
+          "name": "OpenAI Official​"
         },
         "azure_openai": {
-          "name": "Azure OpenAI"
+          "name": "Azure OpenAI​"
         },
         "packycode": {
-          "name": "PackyCode"
+          "name": "PackyCode​"
         },
         "cubence": {
-          "name": "Cubence"
+          "name": "Cubence​"
         },
         "aigocode": {
-          "name": "AIGoCode"
+          "name": "AIGoCode​"
         },
         "rightcode": {
-          "name": "RightCode"
+          "name": "RightCode​"
         },
         "sssaicode": {
-          "name": "SSSAiCode"
+          "name": "SSSAiCode​"
         },
         "micu": {
-          "name": "Micu"
+          "name": "Micu​"
         },
         "x_code_api": {
-          "name": "X-Code API"
+          "name": "X-Code API​"
         },
         "ctok_ai": {
-          "name": "CTok.ai"
+          "name": "CTok.ai​"
         },
         "aihubmix": {
-          "name": "AiHubMix"
+          "name": "AiHubMix​"
         },
         "dmxapi": {
-          "name": "DMXAPI"
+          "name": "DMXAPI​"
         },
         "compshare": {
-          "name": "Compshare"
+          "name": "Compshare​"
         },
         "openrouter": {
-          "name": "OpenRouter"
+          "name": "OpenRouter​"
         },
         "aicodemirror": {
-          "name": "AICodeMirror"
+          "name": "AICodeMirror​"
         },
         "aicoding": {
-          "name": "AICoding"
+          "name": "AICoding​"
         },
         "crazyrouter": {
-          "name": "CrazyRouter"
+          "name": "CrazyRouter​"
         },
         "deepseek": {
-          "name": "DeepSeek"
+          "name": "DeepSeek​"
         },
         "moonshot": {
-          "name": "Moonshot"
+          "name": "Moonshot​"
         },
         "siliconflow": {
-          "name": "SiliconFlow"
+          "name": "SiliconFlow​"
         },
         "cockpit_api": {
-          "name": "Cockpit Api"
+          "name": "Cockpit Api​"
         }
       },
       "oauthBinding": {
@@ -2482,7 +2472,13 @@
         "website": "웹사이트 (선택 사항)",
         "apiKeyUrl": "API 키 페이지 (선택 사항)",
         "newApiKeyName": "새 키 이름 (선택 사항)",
-        "newApiKey": "새 API 키"
+        "newApiKey": "새 API 키",
+        "wireApi": "프로토콜",
+        "enableMode": "활성화 방식",
+        "modelCatalog": "모델 카탈로그",
+        "visionCapability": "이미지 입력",
+        "visionModels": "비전 모델",
+        "visionRoutingModel": "이미지 라우팅 모델"
       },
       "validation": {
         "nameRequired": "공급자 이름은 필수입니다.",
@@ -2497,6 +2493,19 @@
       "confirmDelete": "공급자 \"{{name}}\"을(를) 삭제할까요?",
       "deleteFailed": "공급자 삭제 실패: {{error}}",
       "deleteApiKeyFailed": "API 키 삭제 실패: {{error}}",
+      "enableAsBackend": "Codex 백엔드로 사용",
+      "enabling": "활성화 중...",
+      "enableSuccess": "{{name}} 활성화 후 {{instance}} 인스턴스를 시작했습니다.",
+      "enableFailed": "공급자 활성화 실패: {{error}}",
+      "status": {
+        "active": "현재 백엔드",
+        "available": "준비됨"
+      },
+      "enableMode": {
+        "label": "연결 모드",
+        "gatewayMode": "게이트웨이 모드",
+        "directMode": "직접 모드"
+      },
       "selectSavedProvider": "저장된 공급자",
       "selectSavedApiKey": "저장된 API 키",
       "noSavedProviders": "아직 저장된 공급자가 없습니다. 필드를 바로 입력하면 자동으로 저장됩니다.",
@@ -2555,7 +2564,108 @@
         "partialDetected": "현재 하나의 관리 필드(model_context_window={{context}}, model_auto_compact_token_limit={{compact}})만 설정되어 있습니다. 저장하면 현재 구성표를 사용하여 두 필드가 모두 다시 작성됩니다.",
         "notSet": "설정되지 않음"
       },
-      "managePresets": "모델 프리셋"
+      "managePresets": "모델 프리셋",
+      "wireApi": {
+        "responses": "Responses 네이티브",
+        "chatCompletions": "Chat Completions 프로토콜",
+        "help": "대부분의 공급자는 Responses를 선택하세요. 공급자가 Chat Completions만 지원한다고 명시한 경우에만 전환하세요. 확실하지 않으면 Responses를 먼저 선택하세요.",
+        "helpAria": "프로토콜 도움말 보기"
+      },
+      "testing": "테스트 중...",
+      "testSuccess": "공급자 연결이 정상입니다: {{protocol}}, {{model}}, {{latency}}.",
+      "testFailed": "공급자 테스트 실패: {{error}}",
+      "testFailure": {
+        "credential": "API Key를 사용할 수 없음",
+        "url": "Base URL이 올바르지 않음",
+        "network": "네트워크 연결 실패",
+        "models": "모델 목록 API 오류",
+        "parse": "응답 파싱 실패",
+        "httpStatus": "상태 {{status}}",
+        "message": "{{title}}: {{detail}}. {{suggestion}}​"
+      },
+      "testSuggestion": {
+        "addApiKey": "테스트 전에 이 공급자에 API Key를 추가하세요.",
+        "checkBaseUrl": "Base URL에 /v1 같은 올바른 버전 경로가 포함되어 있는지 확인하세요.",
+        "checkNetwork": "공급자 주소, 프록시, 방화벽 또는 업스트림 서비스 상태를 확인하세요.",
+        "checkApiKey": "API Key가 유효하고 모델 목록 API 권한이 있는지 확인하세요.",
+        "checkProviderStatus": "공급자 서비스 상태, 프록시 또는 API 호환성을 확인하세요.",
+        "checkModelsApi": "이 공급자가 OpenAI 호환 모델 목록 응답을 반환하는지 확인하세요."
+      },
+      "enableAndStart": "시작",
+      "instance": {
+        "label": "시작 인스턴스",
+        "default": "기본 인스턴스",
+        "running": "실행 중",
+        "targetHint": "대상: {{instance}}",
+        "uninitializedHint": "대상 인스턴스가 초기화되지 않았습니다. 다중 인스턴스 화면에서 먼저 한 번 시작하세요.",
+        "shortLabel": "인스턴스",
+        "saveFailed": "인스턴스 바인딩 저장 실패: {{error}}"
+      },
+      "modelCatalog": "모델",
+      "modelCatalogEmpty": "모델 카탈로그 없음",
+      "gatewayHint": "타사 공급자는 인스턴스 격리와 프로토콜 변환을 위해 로컬 게이트웨이로 시작됩니다. 공식 OpenAI 공급자는 직접 연결을 유지합니다.",
+      "vision": {
+        "providerDefault": "이 공급자는 기본적으로 이미지 입력을 지원합니다",
+        "providerDefaultHint": "끄면 아래에 적은 모델만 이미지를 받을 수 있고, 나머지는 로컬 게이트웨이에서 거부됩니다.",
+        "modelsHint": "한 줄에 모델 하나씩 입력하세요. 공급자 안 일부 모델만 붙여넣은 이미지를 지원할 때 사용합니다.",
+        "routingModelHint": "현재 모델이 이미지를 읽지 못하면 요청은 이 모델을 사용합니다. 비워 두면 유일한 비전 모델을 자동 사용합니다.",
+        "allModels": "이미지",
+        "partialModels": "일부 이미지",
+        "textOnly": "텍스트만"
+      },
+      "sponsorRecommended": "중계소 추천",
+      "builtinProviders": "기본 공급자",
+      "sponsorHint": "전용 중계소 설정에 따라 호환 서비스 주소를 자동으로 채웠습니다. API Key를 입력하면 카드에서 잔액과 사용량을 자동 조회합니다.",
+      "integration": {
+        "sub2api": "Sub2API 호환",
+        "newApi": "New API 호환"
+      },
+      "usage": {
+        "title": "한도 개요",
+        "remaining": "남은 한도",
+        "today": "오늘 사용량",
+        "total": "누적 사용량",
+        "requests": "오늘 요청",
+        "loading": "한도 조회 중...",
+        "failed": "한도 조회 실패: {{error}}",
+        "pending": "한도 조회 대기 중",
+        "noKey": "조회 가능한 한도가 없습니다",
+        "used": "사용됨",
+        "limit": "총 한도",
+        "viewDetail": "상세",
+        "detailTitle": "서비스 패널",
+        "rawFields": "서비스 데이터",
+        "fields": {
+          "status": "상태",
+          "planName": "구독",
+          "remaining": "잔여 한도",
+          "balance": "잔액",
+          "todayRequests": "오늘 요청",
+          "todayTokens": "오늘 Token",
+          "todayCost": "오늘 사용액",
+          "totalRequests": "누적 요청",
+          "totalTokens": "누적 Token",
+          "totalCost": "누적 사용액",
+          "hardLimitUsd": "하드 한도",
+          "softLimitUsd": "소프트 한도",
+          "systemHardLimitUsd": "시스템 한도",
+          "accessUntil": "사용 가능 기한",
+          "totalUsage": "누적 사용액",
+          "quotaUnlimited": "무제한",
+          "expiresAt": "만료 시각",
+          "totalGranted": "부여 한도",
+          "totalAvailable": "사용 가능",
+          "modelLimitsEnabled": "모델 제한"
+        },
+        "accountBalance": "계정 잔액",
+        "unlimitedQuota": "무제한",
+        "booleanTrue": "예",
+        "booleanFalse": "아니요"
+      },
+      "oauthBinding": {
+        "desc": "선택 사항입니다. refresh_token 이 있는 OAuth 계정을 연결할 수 있습니다. 연결하지 않으면 공급자는 기존 API Key 흐름으로 계속 실행됩니다.",
+        "currentProvider": "공급자: {{name}}"
+      }
     },
     "quickSwitch": {
       "action": "공급자 빠른 전환",
@@ -2657,6 +2767,21 @@
         "logs": "통계 및 로그"
       },
       "healthTitle": "서비스 상태",
+      "compat": {
+        "title": "프로토콜 호환",
+        "desc": "동일한 API 서비스 URL에서 OpenAI Chat, Responses, Anthropic Messages, Gemini, Ollama 엔트리를 지원합니다.",
+        "openaiTitle": "OpenAI 호환",
+        "openaiNote": "Base URL은 /v1을 사용합니다.",
+        "responsesTitle": "Responses 엔트리",
+        "responsesNote": "Codex 네이티브 Responses 엔트리입니다.",
+        "anthropicTitle": "Anthropic 메시지",
+        "anthropicNote": "같은 서비스 키를 사용합니다.",
+        "geminiTitle": "Gemini 엔트리",
+        "geminiNote": "Base URL은 /v1beta를 사용합니다.",
+        "ollamaTitle": "Ollama 브리지",
+        "ollamaNote": "Authorization: Bearer를 사용합니다.",
+        "modelCatalogLabel": "모델 카탈로그"
+      },
       "health": {
         "availableAccounts": "사용 가능 계정",
         "cooldowns": "쿨다운",
@@ -2801,6 +2926,46 @@
         "saveSuccess": "계정 모델 차단 규칙이 저장되었습니다",
         "cardCount": "{{count}}개 차단"
       }
+    },
+    "apiKey": {
+      "renameSuccess": "이름이 변경되었습니다",
+      "renameFailed": "이름 변경 실패"
+    },
+    "batchImport": {
+      "title": "Codex 일괄 가져오기",
+      "resultSubtitle": "가져오기 결과",
+      "previewSubtitle": "저장할 계정 선택",
+      "scanSubtitle": "계정을 하나씩 분석하고 확인 중",
+      "parseSubtitle": "계정 파일을 분석하는 중",
+      "cancelling": "취소 중...",
+      "scanDone": "스캔 완료",
+      "parseDone": "분석 완료",
+      "scanning": "스캔 중",
+      "parsing": "분석 중",
+      "current": "현재",
+      "imported": "가져옴",
+      "failed": "실패",
+      "quotaOk": "계정 정상",
+      "quotaFailed": "이상",
+      "checkQuotaToggle": "계정 검사",
+      "preparing": "가져오기 작업 준비 중...",
+      "importSelected": "선택한 계정 가져오기",
+      "noSelection": "가져올 계정을 먼저 선택하세요",
+      "groups": {
+        "ready": "가져오기 가능",
+        "quotaFailed": "이상",
+        "existing": "이미 있음",
+        "invalid": "유효하지 않음"
+      },
+      "cancelScan": "스캔 취소",
+      "cancelParse": "분석 취소",
+      "cancelled": "취소됨",
+      "resumeScan": "스캔 계속",
+      "resumeParse": "분석 계속",
+      "selectedCount": "선택 {{count}}/{{total}}",
+      "selectAllAccounts": "전체 계정 선택",
+      "selectReady": "정상 계정 선택",
+      "clearSelection": "선택 해제"
     }
   },
   "githubCopilot": {
@@ -2863,6 +3028,13 @@
   },
   "dashboard": {
     "title": "계정 대시보드",
+    "apiRelay": {
+      "localConfig": "로컬 설정",
+      "localConfigDesc": "로컬 릴레이 설정, API Key 조회, 클라이언트 원클릭 설정을 관리합니다.",
+      "status": "설정 상태",
+      "enabledByConfig": "원격 설정으로 활성화됨",
+      "openLocalConfig": "로컬 설정 열기"
+    },
     "summary": {
       "label": "개요",
       "title": "계정 스냅샷",
@@ -2877,9 +3049,9 @@
       "totalAccounts": "전체 계정 수"
     },
     "panels": {
-      "antigravity": "Antigravity IDE",
-      "codex": "Codex",
-      "githubCopilot": "GitHub Copilot",
+      "antigravity": "Antigravity IDE​",
+      "codex": "Codex​",
+      "githubCopilot": "GitHub Copilot​",
       "planDistribution": "플랜 분포",
       "current": "현재 계정",
       "recommended": "추천 계정",
@@ -3065,6 +3237,10 @@
       "title": "필터 기억",
       "enable": "계정 개요 필터 기억(검색 제외)",
       "hint": "기본값은 꺼짐입니다. 켜면 플랫폼별로 필터, 태그, 정렬이 유지됩니다."
+    },
+    "claudeRefreshInterval": "할당량 자동 새로고침",
+    "claude": {
+      "appPath": "Claude Desktop 경로"
     }
   },
   "quotaAlert": {
@@ -3125,7 +3301,7 @@
       "batchDelimiterSpace": "공백",
       "batchDelimiterComma": "쉼표",
       "batchDelimiterPipe": "파이프",
-      "batchDelimiterDash": "----",
+      "batchDelimiterDash": "----​",
       "batchDelimiterCustom": "사용자 지정",
       "batchJsonDesc": "각 항목에 email 과 password 가 들어 있는 JSON 배열을 붙여넣으세요.",
       "batchTextDesc": "한 줄에 한 계정씩 입력하고 선택한 구분자로 엄격히 파싱합니다.",
@@ -3148,7 +3324,7 @@
       "batchPartial": "성공 {{success}}개, 실패 {{failed}}개",
       "batchFailed": "{{failed}}개 계정 일괄 가져오기 실패",
       "batchFailureEntryWithLine": "{{line}}번째 항목 ({{email}}): {{error}}",
-      "batchFailureEntry": "{{email}}: {{error}}",
+      "batchFailureEntry": "{{email}}: {{error}}​",
       "batchFailureMore": "{{count}}개 추가 실패"
     },
     "oauth": {
@@ -3205,7 +3381,7 @@
       "bonusUsageLine": "{{used}} 사용 / {{total}} 총",
       "planUsageCoveredLine": "{{used}} 사용됨 / {{total}} 계획에 포함됨",
       "expiryDays": "{{days}}일",
-      "expiryUnknown": "—",
+      "expiryUnknown": "—​",
       "resetNow": "곧 재설정",
       "resetInHours": "{{hours}}h 후에 재설정됩니다.",
       "resetInMinutes": "{{minutes}}m 후에 재설정됩니다."
@@ -3217,11 +3393,11 @@
       "estUsage": "예상 용법"
     },
     "plan": {
-      "free": "Kiro Free",
-      "individual": "Kiro Individual",
-      "pro": "Kiro Pro",
-      "business": "Kiro Business",
-      "enterprise": "Kiro Enterprise",
+      "free": "Kiro Free​",
+      "individual": "Kiro Individual​",
+      "pro": "Kiro Pro​",
+      "business": "Kiro Business​",
+      "enterprise": "Kiro Enterprise​",
       "unknown": "알려지지 않은"
     },
     "flowNotice": {
@@ -3300,7 +3476,7 @@
     "startHint": "시작 버튼 또는 스페이스를 누르세요",
     "rankTitle": "로컬 기록 순위",
     "rankCurrent": "현재",
-    "rankNoData": "--",
+    "rankNoData": "--​",
     "restart": "다시 시작",
     "pause": "일시정지",
     "resume": "계속",
@@ -3323,7 +3499,7 @@
     "rankingShort": "로컬",
     "rankingEmpty": "로컬 기록이 없습니다",
     "rankingClear": "로컬 기록 지우기",
-    "rankingRankShort": "#{{rank}}",
+    "rankingRankShort": "#{{rank}}​",
     "minimize": "최소화",
     "resumeGameNav": "게임 계속하기",
     "closeConfirmTitle": "이번 플레이를 종료할까요?",
@@ -3363,7 +3539,6 @@
       "goAntigravity": "Antigravity IDE로 이동",
       "goCodex": "Codex로 이동",
       "goDashboard": "대시보드로 이동",
-      "goFingerprints": "디바이스 지문으로 이동",
       "goGitHubCopilot": "GitHub Copilot로 이동",
       "goInstances": "다중 인스턴스로 이동",
       "goKiro": "Kiro로 이동",
@@ -3458,28 +3633,6 @@
     "empty": {
       "desc": "인스턴스, 전환, 설정, 내보내기 같은 키워드를 시도하세요.",
       "title": "일치하는 내용이 없습니다"
-    },
-    "fingerprints": {
-      "cautions": {
-        "0": "디바이스 지문에서 대량/고위험 작업 전에는 반드시 백업하세요."
-      },
-      "keywords": {
-        "0": "디바이스 지문",
-        "1": "가이드",
-        "2": "흐름",
-        "3": "계정"
-      },
-      "outcomes": {
-        "0": "디바이스 지문가 어떤 문제를 해결하는지 이해합니다.",
-        "1": "디바이스 지문의 권장 흐름으로 실수를 줄입니다."
-      },
-      "steps": {
-        "0": "디바이스 지문 페이지를 엽니다.",
-        "1": "디바이스 지문의 기본 설정과 필요한 바인딩을 완료합니다.",
-        "2": "디바이스 지문에서 수동 작업을 1회 실행해 결과를 확인합니다."
-      },
-      "summary": "이 섹션은 일상 워크플로우에서 디바이스 지문 사용 방법을 설명합니다.",
-      "title": "디바이스 지문"
     },
     "instances": {
       "cautions": {
@@ -3626,7 +3779,11 @@
       "resetsIn": "{{relative}} 후 재설정",
       "resetsSoon": "곧 재설정됨",
       "resetsUnknown": "재설정 시간 알 수 없음",
-      "onDemand": "온디맨드"
+      "onDemand": "온디맨드",
+      "gemini5h": "5h",
+      "geminiWeekly": "Weekly",
+      "claude5h": "5h",
+      "claudeWeekly": "Weekly"
     },
     "title": "Gemini Cli 계정 관리",
     "instances": {
@@ -3693,9 +3850,9 @@
       "leftOfTotal": "남은 양 / 전체",
       "usage": "사용량",
       "usageResets": "사용량 재설정",
-      "usedPercent": "{{value}}%",
-      "remainingOfTotal": "{{remaining}} / {{total}}",
-      "resetAtWithRelative": "{{absolute}} ({{relative}})"
+      "usedPercent": "{{value}}%​",
+      "remainingOfTotal": "{{remaining}} / {{total}}​",
+      "resetAtWithRelative": "{{absolute}} ({{relative}})​"
     },
     "tierText": {
       "pro": "Google One AI Pro의 Gemini Code Assist",
@@ -3800,7 +3957,7 @@
       }
     },
     "quota": {
-      "usedOfTotal": "{{used}} / {{total}}"
+      "usedOfTotal": "{{used}} / {{total}}​"
     }
   },
   "qoder": {
@@ -3822,8 +3979,8 @@
       "title": "사용량 개요",
       "viewDetails": "자세히 보기",
       "includedCredits": "플랜 포함 크레딧",
-      "usedOfTotal": "{{used}} / {{total}}",
-      "usedEmpty": "-- / --",
+      "usedOfTotal": "{{used}} / {{total}}​",
+      "usedEmpty": "-- / --​",
       "upgradeHint": "월간 한도를 늘리려면 플랜을 업그레이드하세요",
       "upgradeAction": "업그레이드"
     },
@@ -4014,7 +4171,7 @@
       }
     },
     "quota": {
-      "usedOfTotal": "{{used}} / {{total}}"
+      "usedOfTotal": "{{used}} / {{total}}​"
     },
     "checkin": {
       "title": "일일 체크인",
@@ -4121,7 +4278,7 @@
     "plan": "플랜",
     "cycle": "주기",
     "status": "상태",
-    "pager": "{{current}} / {{total}}",
+    "pager": "{{current}} / {{total}}​",
     "badges": {
       "recommended": "추천"
     },
@@ -4255,5 +4412,333 @@
     "copyCode": "코드 복사",
     "copied": "복사됨",
     "refreshIn": "{{time}}초"
+  },
+  "relay": {
+    "pageTitle": "전용 중계소",
+    "pageDesc": "Cockpit Tools 사용자를 위한 제휴 API 서비스이며 Codex API Key 계정에 사용할 수 있습니다.",
+    "loading": "중계소를 불러오는 중...",
+    "emptyTitle": "중계소 비활성화",
+    "emptyDesc": "현재 원격 설정에서 전용 중계소가 활성화되지 않았습니다.",
+    "defaultDescription": "제휴 API 중계 서비스입니다.",
+    "getApiKey": "API Key 받기",
+    "configTitle": "Codex에 활성화",
+    "apiKeyLabel": "API 키",
+    "apiKeyPlaceholder": "중계소에서 받은 API Key 붙여넣기",
+    "apiKeyRequired": "API Key를 입력하세요.",
+    "baseUrl": "API 주소",
+    "protocol": "프로토콜",
+    "vision": "이미지 입력",
+    "testConnection": "연결 테스트",
+    "saveAndEnable": "저장 후 활성화",
+    "goCodex": "Codex로 이동",
+    "statusUnavailable": "현재 중계소 설정을 사용할 수 없습니다.",
+    "testing": "연결 테스트 중...",
+    "testSuccess": "연결 테스트를 통과했습니다. 이 API Key를 중계소에서 사용할 수 있습니다.",
+    "testFailed": "연결 테스트에 실패했습니다.",
+    "saving": "Codex에 저장하고 활성화하는 중...",
+    "saveSuccess": "중계소 설정을 저장했습니다. Codex 계정 페이지에서 사용할 수 있습니다.",
+    "saveFailed": "중계소 설정 저장에 실패했습니다.",
+    "savedProvider": "저장된 공급자: {{name}}",
+    "modelsTitle": "지원 모델",
+    "modelsEmpty": "원격에 고정 모델 목록이 설정되지 않았습니다. 저장 후 Codex가 서비스 기능에 따라 사용할 수 있습니다."
+  },
+  "apiKeyFun": {
+    "eyebrow": "중계 서비스",
+    "title": "APIKEY.FUN 릴레이",
+    "description": "Cockpit 공식 파트너 중계 서비스로, 안정적이고 개방적이며 비용 효율적인 대형 모델 API 접속을 제공합니다. Claude, OpenAI, Gemini 등 주요 모델을 지원하며 Codex, Gemini CLI, Claude Code 및 기타 개발 도구에서 통합 구성하기에 적합합니다. Cockpit 전용 링크로 가입하면 충전 금액에 대해 영구적으로 최대 5% 할인을 받을 수 있습니다.",
+    "register": "전용 가입 링크",
+    "docs": "공식 문서",
+    "viewNow": "바로 보기",
+    "queryTitle": "키 잔액 조회",
+    "queryDesc": "APIKEY.FUN API Key를 입력하면 잔액을 자동으로 조회합니다.",
+    "keyNotSet": "키 없음",
+    "apiKeyLabel": "API 키",
+    "apiKeyPlaceholder": "APIKEY.FUN 콘솔에서 만든 API Key 붙여넣기",
+    "hideKey": "숨기기",
+    "showKey": "표시",
+    "endpointLabel": "연결 대상",
+    "protocolLabel": "Codex 프로토콜",
+    "queryUsage": "한도 확인",
+    "querying": "확인 중",
+    "saveToCodex": "Codex에 쓰기",
+    "saving": "쓰는 중",
+    "saveSuccess": "Codex Provider에 기록됨: {{name}}",
+    "toolsTitle": "클라이언트 설정 쓰기",
+    "toolsDesc": "APIKEY.FUN 문서와 CC Switch 파일 구조에 맞춰 로컬 클라이언트 설정 파일에 직접 씁니다.",
+    "endpoint": {
+      "global": "글로벌 회선",
+      "globalDesc": "대부분의 네트워크 환경에 적합한 공식 기본 API Base입니다.",
+      "direct": "직접 연결",
+      "directDesc": "지연 시간에 민감한 상황에 적합합니다."
+    },
+    "wireApi": {
+      "responses": "Responses 프로토콜",
+      "responsesDesc": "Codex 권장 방식으로 OpenAI Responses 프로토콜에 직접 연결합니다.",
+      "chatCompletions": "Chat Completions 프로토콜",
+      "chatCompletionsDesc": "로컬 게이트웨이를 통해 Chat Completions를 지원합니다."
+    },
+    "usage": {
+      "remaining": "남은 한도",
+      "used": "사용량",
+      "todayRequests": "오늘",
+      "todayTokens": "오늘 Token",
+      "totalRequests": "총 요청",
+      "totalTokens": "총 Token"
+    },
+    "tool": {
+      "codexTitle": "Codex 공급자",
+      "codexDesc": "현재 엔드포인트의 /v1 Base URL로 Provider를 씁니다.",
+      "envTitle": "환경 변수",
+      "envDesc": "Claude Code, Gemini CLI, Hermes 등 OpenAI 호환 항목 참고용입니다.",
+      "curlTitle": "API 스크립트",
+      "curlDesc": "Chat Completions 호환 요청을 빠르게 검증합니다."
+    },
+    "docTool": {
+      "codex": "Codex Provider에 직접 쓸 수 있습니다.",
+      "claudeCode": "Anthropic Messages 호환 파라미터를 복사합니다.",
+      "geminiCli": "OpenAI 호환 Base URL과 API Key를 복사합니다.",
+      "traeSolo": "공식 문서에 필요한 릴레이 파라미터를 복사합니다.",
+      "openClaw": "OpenAI 호환 연결 파라미터를 복사합니다.",
+      "hermes": "Hermes 모델 페이지용 파라미터를 복사합니다.",
+      "apiScript": "스크립트 연동 기본 파라미터를 복사합니다."
+    },
+    "apply": {
+      "codexTitle": "Codex​",
+      "codexDesc": "Responses 프로토콜과 현재 API Key로 ~/.codex/config.toml 및 auth.json을 씁니다.",
+      "geminiTitle": "Gemini CLI 설정",
+      "geminiDesc": "~/.gemini/.env를 쓰고 settings.json 인증 모드를 gemini-api-key로 설정합니다.",
+      "openclawTitle": "OpenClaw 설정",
+      "openclawDesc": "~/.openclaw/openclaw.json의 models.providers.apikeyfun을 씁니다.",
+      "hermesTitle": "Hermes 설정",
+      "hermesDesc": "~/.hermes/config.yaml의 custom_providers를 쓰고 apikeyfun 기본 모델로 전환합니다.",
+      "button": "설정 쓰기",
+      "applying": "쓰는 중",
+      "success": "설정 파일을 썼습니다: {{paths}}",
+      "failed": "설정 쓰기 실패: {{error}}"
+    },
+    "error": {
+      "missingApiKey": "API Key를 입력하세요.",
+      "queryFailed": "한도 확인 실패: {{error}}",
+      "saveFailed": "쓰기 실패: {{error}}"
+    },
+    "models": {
+      "title": "사용 가능 모델",
+      "desc": "현재 API Key의 모델 엔드포인트에서 읽어 Codex 또는 Claude CLI로 전달합니다.",
+      "count": "모델 {{count}}개",
+      "loading": "읽는 중",
+      "loadingDesc": "현재 API Key에서 모델 목록을 읽는 중...",
+      "empty": "API Key를 입력하면 사용 가능 모델을 읽습니다.",
+      "emptyFromKey": "현재 API Key가 모델을 반환하지 않았습니다.",
+      "queryFailed": "모델 목록 읽기 실패: {{error}}"
+    },
+    "keyManager": {
+      "title": "키 관리",
+      "desc": "자주 쓰는 API Key를 저장하고 클릭해 전환하면 잔액을 자동으로 조회합니다.",
+      "saveButton": "키 저장",
+      "savedButton": "저장됨",
+      "empty": "저장된 키가 없습니다.",
+      "lastRemaining": "이전 잔액 {{value}}",
+      "notQueried": "조회 안 함",
+      "deleteButton": "삭제",
+      "editAlias": "Edit alias​",
+      "renamePlaceholder": "Enter alias...​",
+      "createdAt": "{{time}} 추가",
+      "saveFlash": "방금 저장됨",
+      "addingToCodex": "Codex에 추가 중...",
+      "addedToCodex": "Codex에 추가됨",
+      "addToCodexFailed": "Codex 추가 실패: {{error}}",
+      "addingToClaude": "Claude CLI에 추가 중...",
+      "addedToClaude": "Claude CLI에 추가됨",
+      "addToClaudeFailed": "Claude CLI 추가 실패: {{error}}",
+      "codexAdded": "Codex 추가됨",
+      "claudeAdded": "Claude 추가됨",
+      "addToCodex": "Codex에 추가",
+      "addToClaude": "Claude CLI에 추가",
+      "codexShort": "Codex",
+      "claudeShort": "Claude CLI"
+    },
+    "copyKey": "Copy Key​",
+    "clearKey": "Clear input​"
+  },
+  "claude": {
+    "import": {
+      "localSuccess": "로컬 Claude Desktop 로그인 {{count}}개를 가져왔습니다",
+      "localClient": "현재 Desktop 가져오기",
+      "jsonLabel": "JSON 데이터",
+      "jsonPlaceholder": "내보낸 Claude 계정 JSON 붙여넣기",
+      "localDesc": "이 컴퓨터의 공식 Claude Desktop 현재 로그인 상태를 읽어 이 도구의 로컬 계정 스냅샷으로 복사합니다.",
+      "desktopJsonPlaceholder": "내보낸 Claude Desktop 계정 JSON 붙여넣기",
+      "cliJsonPlaceholder": "내보낸 Claude CLI 계정 JSON 붙여넣기"
+    },
+    "deleteCurrentDisabled": "현재 계정은 삭제할 수 없습니다",
+    "flowNotice": {
+      "title": "Claude 계정 관리",
+      "desc": "이 도구는 Claude Desktop 로그인 상태와 Anthropic API Key를 관리합니다. Desktop 로그인은 이 플랫폼의 인증 창에서 완료되고 먼저 로컬 계정 저장소에 저장되며, 계정 전환 때만 공식 Claude Desktop에 기록됩니다.",
+      "permission": "권한 범위: 공식 Claude Desktop 앱 데이터 디렉터리를 읽고 씁니다. API Key와 Desktop 스냅샷은 이 도구의 로컬 계정 데이터에 저장됩니다.",
+      "network": "네트워크 범위: Desktop 로그인 창은 claude.ai에 접속합니다. 계정 새로고침은 Claude Web 관련 API를 요청할 수 있습니다. API Key 가져오기 자체는 네트워크를 사용하지 않습니다.",
+      "desktopDesc": "이 도구는 Claude Desktop 로그인 상태를 관리합니다. 로그인 상태는 먼저 로컬에 저장되고, 계정 전환 시에만 공식 Claude Desktop에 기록됩니다.",
+      "cliDesc": "이 도구는 Claude Code OAuth와 여러 공급자의 API Key를 관리합니다. OAuth 전환은 로컬 Claude Code 설정에 기록하고, API Key는 Claude Code settings.json의 env에 기록합니다.",
+      "desktopPermission": "권한 범위: 공식 Claude Desktop 앱 데이터 디렉터리 읽기/쓰기. Desktop 스냅샷은 이 도구의 로컬 계정 데이터에 저장됩니다.",
+      "cliPermission": "권한 범위: 로컬 Claude Code 설정 디렉터리와 macOS Keychain의 Claude Code 자격 증명을 읽고 씁니다. API Key 계정은 이 도구의 로컬 데이터에 저장되며, 전환 또는 CLI 실행 시 settings.json의 env에 평문으로 기록됩니다.",
+      "desktopNetwork": "네트워크 범위: Desktop 로그인 창은 claude.ai를 엽니다. 계정 새로고침은 Claude Web 엔드포인트를 요청할 수 있습니다.",
+      "cliNetwork": "네트워크 범위: OAuth 인증은 Claude 공식 인증 페이지와 token/profile/usage 엔드포인트에 접속합니다. API Key 가져오기는 오프라인이며 시작 후 Claude CLI가 선택한 공급자에 접속합니다."
+    },
+    "search": "Claude 계정 검색...",
+    "noAccounts": "Claude 계정 없음",
+    "addAccount": {
+      "title": "Claude 계정 추가",
+      "desktopTitle": "Claude Desktop 계정 추가",
+      "cliTitle": "Claude CLI 계정 추가"
+    },
+    "deleteConfirm": "Claude 계정 {{email}}을 삭제할까요?",
+    "switch": {
+      "success": "전환 완료"
+    },
+    "instances": {
+      "unsupportedDescPlatform": "Claude Desktop 다중 인스턴스는 macOS, Windows, Linux에서만 지원됩니다.",
+      "launchDialogTitle": "인스턴스 실행",
+      "launchCommand": "실행 명령",
+      "executeInTerminal": "터미널에서 실행",
+      "startSuccess": "Claude Desktop을 시작했습니다"
+    },
+    "quota": {
+      "title": "한도",
+      "fiveHour": "현재 세션",
+      "sevenDay": "이번 주(모든 모델)",
+      "sonnet": "Sonnet 한도",
+      "extra": "추가 사용량",
+      "empty": "한도 없음",
+      "unsupported": "새로고침 불가",
+      "updatedAt": "업데이트: {{time}}",
+      "resetAt": "{{label}} 재설정: {{time}}",
+      "refreshSuccess": "한도를 새로고침했습니다",
+      "refreshAllDone": "한도 새로고침 완료",
+      "refreshFailed": "한도 새로고침 실패: {{error}}",
+      "refreshWithWarning": "한도 새로고침 실패: {{error}}",
+      "notUpdated": "한도 미갱신",
+      "updated": "업데이트됨",
+      "notUpdatedShort": "미갱신"
+    },
+    "addTabs": {
+      "desktop": "데스크",
+      "oauth": "OAuth",
+      "apiKey": "API 키",
+      "import": "로컬/JSON"
+    },
+    "authMode": {
+      "oauth": "OAuth 모드",
+      "setup_token": "설정 토큰",
+      "api_key": "API 키",
+      "desktop_oauth": "Desktop 로그인"
+    },
+    "apiKey": {
+      "desc": "Claude CLI API Key를 독립 자격 증명으로 저장합니다. 전환 또는 CLI 실행 시 공급자 env를 Claude Code settings.json에 기록하며 Claude Desktop 로그인 상태에는 기록하지 않습니다.",
+      "nameLabel": "계정 이름",
+      "namePlaceholder": "선택, 예: APIKEY.FUN",
+      "keyLabel": "API 키",
+      "placeholder": "공급자 API Key 붙여넣기",
+      "hide": "API Key 숨기기",
+      "show": "API Key 표시",
+      "hint": "API Key 계정은 Claude CLI 전용입니다. Claude Code settings.json에 평문 env로 기록되며 Claude Desktop 로그인 상태에는 영향을 주지 않고 구독 한도 새로고침도 지원하지 않습니다.",
+      "importAction": "API Key 가져오기",
+      "required": "API Key를 입력하세요",
+      "importSuccess": "Claude API Key 계정을 가져왔습니다: {{name}}",
+      "quotaUnsupported": "API Key 계정은 새로고침을 지원하지 않습니다",
+      "switchDisabled": "API Key 계정은 Claude Desktop으로 전환할 수 없습니다",
+      "cliUnsupported": "API Key 계정은 Claude CLI를 시작할 수 없습니다",
+      "providerLabel": "공급자",
+      "customProvider": "사용자 지정",
+      "endpointLabel": "공급자 엔드포인트",
+      "officialEndpoint": "공식 기본값",
+      "baseUrlLabel": "기본 URL",
+      "baseUrlPlaceholder": "비워 두면 Anthropic 공식 기본 주소 사용",
+      "keyFieldLabel": "인증 필드",
+      "baseUrlInvalid": "Base URL이 올바른 URL이 아닙니다"
+    },
+    "desktopOAuth": {
+      "title": "Claude Desktop 로그인",
+      "desc": "이 도구 안에서 Claude 로그인. Google, Apple, 이메일, free 지원.",
+      "start": "로그인 열기",
+      "hint": "먼저 로컬에 저장하고 전환 시에만 Claude Desktop에 기록합니다.",
+      "nameLabel": "계정 이름",
+      "namePlaceholder": "선택, 예: Claude Free",
+      "waiting": "Claude 창에서 로그인한 뒤 여기서 가져오기를 완료하세요.",
+      "profileDir": "격리 profile 디렉터리",
+      "complete": "완료",
+      "localTitle": "현재 Desktop 가져오기",
+      "localDesc": "현재 Claude Desktop 세션을 로컬 스냅샷으로 복사합니다.",
+      "localAction": "가져오기",
+      "localSuccess": "로컬 Claude Desktop 로그인을 가져왔습니다: {{name}}",
+      "importSuccess": "Claude Desktop 로그인을 가져왔습니다: {{name}}",
+      "switchHint": "공식 Claude Desktop으로 전환",
+      "planUnknown": "요금제 알 수 없음"
+    },
+    "oauth": {
+      "title": "Claude OAuth 승인",
+      "desc": "Claude 공식 OAuth 승인 페이지를 열고, 완료 후 콜백 링크나 code를 붙여 넣어 계정을 가져옵니다.",
+      "start": "OAuth 승인",
+      "proRequiredHint": "Claude 공식 OAuth는 보통 Claude Code 승인에 사용됩니다. 업그레이드 또는 권한 없음 페이지에서 멈추면 Claude Desktop 로그인을 사용하세요.",
+      "openInstruction": "아래 버튼을 클릭하고 브라우저에서 Claude OAuth 승인을 완료하세요.",
+      "waiting": "승인이 끝나면 최종 페이지 주소나 표시된 code를 아래에 붙여 넣으세요.",
+      "authUrl": "승인 링크",
+      "preparing": "승인 링크 생성 중...",
+      "openInBrowser": "브라우저에서 열기",
+      "openFailed": "승인 링크를 열지 못했습니다: {{error}}",
+      "callbackPlaceholder": "콜백 링크 또는 승인 code 붙여넣기",
+      "callbackRequired": "승인 완료 후 콜백 링크 또는 code를 붙여 넣으세요",
+      "authorizeUrlNotCallback": "붙여 넣은 값은 위의 승인 시작 링크이며 완료 후 code가 아닙니다. 먼저 브라우저에서 승인을 완료한 뒤 최종 페이지 주소나 표시된 code를 복사하세요.",
+      "complete": "가져오기 완료",
+      "emailPlaceholder": "이메일(자동 인식 실패 시 입력)",
+      "importSuccess": "Claude OAuth 승인을 가져왔습니다: {{name}}"
+    },
+    "plan": {
+      "label": "구독 표시",
+      "selectPlaceholder": "선택 대기",
+      "updateFailed": "구독 표시 업데이트 실패: {{error}}"
+    },
+    "legacyOAuth": {
+      "switchDisabled": "이전 OAuth 계정은 Claude Desktop으로 전환할 수 없습니다",
+      "quotaUnsupported": "이전 OAuth 계정은 새로고침을 지원하지 않습니다",
+      "cliUnsupported": "기존 OAuth 계정은 Claude CLI를 실행할 수 없습니다"
+    },
+    "cli": {
+      "quickLaunch": "CLI 실행",
+      "selectWorkingDir": "Claude CLI 작업 폴더 선택",
+      "launchSuccess": "Claude CLI를 실행했습니다",
+      "prepared": "Claude CLI 준비 완료",
+      "launchFailed": "Claude CLI 실행 실패: {{error}}",
+      "localTitle": "현재 Claude Code 가져오기",
+      "localDesc": "현재 로컬 Claude Code OAuth 로그인 상태를 읽어 로컬 계정 스냅샷으로 복사합니다.",
+      "localSuccess": "로컬 Claude Code 로그인을 가져왔습니다: {{name}}"
+    },
+    "accountNote": {
+      "title": "계정 메모",
+      "desc": "{{email}}에 로컬 메모를 추가해 계정 전환 시 쉽게 구분합니다.",
+      "label": "계정 메모",
+      "placeholder": "예: Free 기본, Max 20x, 팀 계정",
+      "saved": "계정 메모를 저장했습니다",
+      "saveFailed": "계정 메모 저장 실패: {{error}}",
+      "emptyTitle": "계정 메모 입력",
+      "short": "메모",
+      "addShort": "메모 추가"
+    },
+    "account": {
+      "signedInWith": "{{provider}}로 로그인",
+      "userId": "사용자 ID",
+      "nickname": "닉네임"
+    },
+    "selection": {
+      "selected": "{{count}}개 선택됨"
+    },
+    "deleteSelectedLabel": "계정 {{count}}개",
+    "subPlatform": {
+      "label": "Claude 하위 플랫폼",
+      "desktop": "Claude 데스크톱",
+      "cli": "Claude 명령줄"
+    },
+    "searchDesktop": "Claude Desktop 계정 검색...",
+    "searchCli": "Claude CLI 계정 검색...",
+    "noDesktopAccounts": "아직 Claude Desktop 계정이 없습니다",
+    "noCliAccounts": "아직 Claude CLI 계정이 없습니다"
   }
 }

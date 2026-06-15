@@ -4,6 +4,8 @@ export type PlatformId =
   | 'antigravity'
   | 'antigravity_ide'
   | 'codex'
+  | 'claude'
+  | 'claude_cli'
   | 'zed'
   | 'github-copilot'
   | 'windsurf'
@@ -20,6 +22,8 @@ export const ALL_PLATFORM_IDS: PlatformId[] = [
   'antigravity',
   'antigravity_ide',
   'codex',
+  'claude',
+  'claude_cli',
   'zed',
   'github-copilot',
   'windsurf',
@@ -33,7 +37,7 @@ export const ALL_PLATFORM_IDS: PlatformId[] = [
   'workbuddy',
 ];
 
-export const MENU_HIDDEN_PLATFORM_IDS: PlatformId[] = [];
+export const MENU_HIDDEN_PLATFORM_IDS: PlatformId[] = ['claude_cli'];
 
 export const MENU_VISIBLE_PLATFORM_IDS: PlatformId[] = ALL_PLATFORM_IDS.filter(
   (platformId) => !MENU_HIDDEN_PLATFORM_IDS.includes(platformId),
@@ -47,6 +51,8 @@ export const PLATFORM_PAGE_MAP: Record<PlatformId, Page> = {
   antigravity: 'overview',
   antigravity_ide: 'overview',
   codex: 'codex',
+  claude: 'claude',
+  claude_cli: 'claude-cli',
   zed: 'zed',
   'github-copilot': 'github-copilot',
   windsurf: 'windsurf',

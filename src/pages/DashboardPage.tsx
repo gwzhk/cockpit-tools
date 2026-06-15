@@ -7,13 +7,18 @@ import { useWindsurfAccountStore } from '../stores/useWindsurfAccountStore';
 import { useKiroAccountStore } from '../stores/useKiroAccountStore';
 import { useCursorAccountStore } from '../stores/useCursorAccountStore';
 import { useGeminiAccountStore } from '../stores/useGeminiAccountStore';
+import { useClaudeAccountStore } from '../stores/useClaudeAccountStore';
 import { useCodebuddyAccountStore } from '../stores/useCodebuddyAccountStore';
 import { useCodebuddyCnAccountStore } from '../stores/useCodebuddyCnAccountStore';
 import { useQoderAccountStore } from '../stores/useQoderAccountStore';
 import { useTraeAccountStore } from '../stores/useTraeAccountStore';
 import { useWorkbuddyAccountStore } from '../stores/useWorkbuddyAccountStore';
 import { useZedAccountStore } from '../stores/useZedAccountStore';
+import { useSponsorStore } from '../stores/useSponsorStore';
+import { useRemoteConfigStore } from '../stores/useRemoteConfigStore';
 import {
+  API_RELAY_LAYOUT_ENTRY_ID,
+  ApiRelayLayoutEntryId,
   parseGroupEntryId,
   PlatformLayoutEntryId,
   resolveEntryDefaultPlatformId,
@@ -60,14 +65,22 @@ import {
   GeminiAccount,
   getGeminiTierQuotaSummary,
 } from '../types/gemini';
+import { ClaudeAccount } from '../types/claude';
 import { ZedAccount, getZedUsage } from '../types/zed';
+import {
+  isCodexApiKeyAccount,
+  isCodexChatCompletionsApiKeyAccount,
+  isCodexNewApiAccount,
+} from '../types/codex';
 import './DashboardPage.css';
+import apiKeyFunIcon from '../assets/icons/apikey-fun.png';
 import { RobotIcon } from '../components/icons/RobotIcon';
 import { CodexIcon } from '../components/icons/CodexIcon';
 import { WindsurfIcon } from '../components/icons/WindsurfIcon';
 import { KiroIcon } from '../components/icons/KiroIcon';
 import { CursorIcon } from '../components/icons/CursorIcon';
 import { GeminiIcon } from '../components/icons/GeminiIcon';
+import { ClaudeIcon } from '../components/icons/ClaudeIcon';
 import { CodebuddyIcon } from '../components/icons/CodebuddyIcon';
 import { QoderIcon } from '../components/icons/QoderIcon';
 import { TraeIcon } from '../components/icons/TraeIcon';
@@ -81,6 +94,7 @@ import { isPrivacyModeEnabledByDefault, maskSensitiveValue } from '../utils/priv
 import { DisplayGroup, getDisplayGroups } from '../services/groupService';
 import {
   buildAntigravityAccountPresentation,
+  buildClaudeAccountPresentation,
   buildCodebuddyAccountPresentation,
   buildCodexAccountPresentation,
   buildCursorAccountPresentation,
@@ -95,6 +109,10 @@ import {
   buildWindsurfAccountPresentation,
   UnifiedQuotaMetric,
 } from '../presentation/platformAccountPresentation';
+import {
+  queryModelProviderUsage,
+  type ModelProviderUsageSummary,
+} from '../services/modelProviderUsageService';
 
 interface DashboardPageProps {
   onNavigate: (page: Page) => void;
@@ -114,6 +132,37 @@ function normalizeDashboardCardPlatformId(platformId: PlatformId): PlatformId {
 
 function toFiniteNumber(value: number | null | undefined): number | null {
   return typeof value === 'number' && Number.isFinite(value) ? value : null;
+}
+
+function resolveDashboardCodexApiUsageMode(
+  summary?: ModelProviderUsageSummary | null,
+): 'new_api' | 'sub2api' | null {
+  if (!summary) return null;
+  if (summary.mode === 'new_api' || summary.mode === 'sub2api') {
+    return summary.mode;
+  }
+  if (
+    typeof summary.todayRequests === 'number' ||
+    typeof summary.todayTotalTokens === 'number'
+  ) {
+    return 'sub2api';
+  }
+  const detailKeys = new Set((summary.details ?? []).map((item) => item.key));
+  if (
+    detailKeys.has('todayRequests') ||
+    detailKeys.has('todayTokens') ||
+    detailKeys.has('remaining')
+  ) {
+    return 'sub2api';
+  }
+  if (
+    detailKeys.has('totalGranted') ||
+    detailKeys.has('totalAvailable') ||
+    detailKeys.has('expiresAt')
+  ) {
+    return 'new_api';
+  }
+  return null;
 }
 
 function resolveDashboardCurrentAccount<T extends { id: string }>(
@@ -163,6 +212,8 @@ interface DashboardCardCollapseState {
   workbuddy: boolean;
 }
 
+type DashboardEntryId = PlatformLayoutEntryId | ApiRelayLayoutEntryId;
+
 export function DashboardPage({
   onNavigate,
   onOpenPlatformLayout,
@@ -193,6 +244,9 @@ export function DashboardPage({
           break;
         case 'codex':
           await useCodexAccountStore.getState().updateAccountTags(accountId, newTags);
+          break;
+        case 'claude':
+          await useClaudeAccountStore.getState().updateAccountTags(accountId, newTags);
           break;
         case 'github-copilot':
           await useGitHubCopilotAccountStore.getState().updateAccountTags(accountId, newTags);
@@ -234,19 +288,43 @@ export function DashboardPage({
     }
   };
 
-  const { orderedEntryIds, hiddenEntryIds, platformGroups, setHiddenEntry } = usePlatformLayoutStore();
+  const {
+    orderedEntryIds,
+    hiddenEntryIds,
+    platformGroups,
+    apiRelayDashboardVisible,
+    apiRelayEntryOrder,
+    setHiddenEntry,
+  } = usePlatformLayoutStore();
+  const apiRelayEntryEnabled = useSponsorStore((state) => Boolean(state.state.sponsorModule));
+  const remoteHiddenPlatformIds = useRemoteConfigStore((state) => state.hiddenPlatformIds);
+  const apiRelayDashboardEnabled = apiRelayEntryEnabled && apiRelayDashboardVisible;
   const hiddenEntrySet = useMemo(() => new Set(hiddenEntryIds), [hiddenEntryIds]);
+  const remoteHiddenPlatformSet = useMemo(
+    () => new Set(remoteHiddenPlatformIds),
+    [remoteHiddenPlatformIds],
+  );
   const visibleEntryOrder = useMemo(
-    () => orderedEntryIds.filter((entryId) => !hiddenEntrySet.has(entryId)),
-    [orderedEntryIds, hiddenEntrySet],
-  );
-  const visiblePlatformOrder = useMemo(
     () =>
-      visibleEntryOrder
-        .map((entryId) => resolveEntryDefaultPlatformId(entryId, platformGroups))
-        .filter((platformId): platformId is PlatformId => !!platformId),
-    [visibleEntryOrder, platformGroups],
+      orderedEntryIds.filter((entryId) => {
+        if (hiddenEntrySet.has(entryId)) {
+          return false;
+        }
+        return resolveEntryPlatformIds(entryId, platformGroups).some(
+          (platformId) => !remoteHiddenPlatformSet.has(platformId),
+        );
+      }),
+    [orderedEntryIds, hiddenEntrySet, platformGroups, remoteHiddenPlatformSet],
   );
+  const visibleDashboardEntryOrder = useMemo<DashboardEntryId[]>(() => {
+    const result: DashboardEntryId[] = [...visibleEntryOrder];
+    if (!apiRelayDashboardEnabled) {
+      return result;
+    }
+    const insertIndex = Math.max(0, Math.min(apiRelayEntryOrder, result.length));
+    result.splice(insertIndex, 0, API_RELAY_LAYOUT_ENTRY_ID);
+    return result;
+  }, [apiRelayDashboardEnabled, apiRelayEntryOrder, visibleEntryOrder]);
   const [privacyModeEnabled, setPrivacyModeEnabled] = React.useState<boolean>(() =>
     isPrivacyModeEnabledByDefault()
   );
@@ -299,6 +377,14 @@ export function DashboardPage({
     fetchAccounts: fetchCodexAccounts,
     fetchCurrentAccount: fetchCodexCurrent
   } = useCodexAccountStore();
+
+  // Claude Code Data
+  const {
+    accounts: claudeAccounts,
+    currentAccountId: claudeCurrentId,
+    fetchAccounts: fetchClaudeAccounts,
+    switchAccount: switchClaudeAccount,
+  } = useClaudeAccountStore();
 
   // GitHub Copilot Data
   const {
@@ -393,6 +479,11 @@ export function DashboardPage({
     return resolveDashboardCurrentAccount(codexAccounts, codexCurrentId, codexCurrent);
   }, [codexAccounts, codexCurrent, codexCurrentId]);
 
+  const claudeCurrent = useMemo(
+    () => resolveDashboardCurrentAccount(claudeAccounts, claudeCurrentId),
+    [claudeAccounts, claudeCurrentId],
+  );
+
   React.useEffect(() => {
     let disposed = false;
     let deferredTimer: number | null = null;
@@ -417,6 +508,7 @@ export function DashboardPage({
     const deferredTasks: Array<() => Promise<unknown>> = [
       fetchCodexAccounts,
       fetchCodexCurrent,
+      fetchClaudeAccounts,
       fetchZedAccounts,
       fetchGitHubCopilotAccounts,
       fetchWindsurfAccounts,
@@ -479,6 +571,7 @@ export function DashboardPage({
       total:
         agAccounts.length +
         codexAccounts.length +
+        claudeAccounts.length +
         zedAccounts.length +
         githubCopilotAccounts.length +
         windsurfAccounts.length +
@@ -492,6 +585,7 @@ export function DashboardPage({
         workbuddyAccounts.length,
       antigravity: agAccounts.length,
       codex: codexAccounts.length,
+      claude: claudeAccounts.length,
       zed: zedAccounts.length,
       githubCopilot: githubCopilotAccounts.length,
       windsurf: windsurfAccounts.length,
@@ -504,13 +598,14 @@ export function DashboardPage({
       trae: traeAccounts.length,
       workbuddy: workbuddyAccounts.length,
     };
-  }, [agAccounts, codexAccounts, zedAccounts, githubCopilotAccounts, windsurfAccounts, kiroAccounts, cursorAccounts, geminiAccounts, codebuddyAccounts, codebuddyCnAccounts, qoderAccounts, traeAccounts, workbuddyAccounts]);
+  }, [agAccounts, codexAccounts, claudeAccounts, zedAccounts, githubCopilotAccounts, windsurfAccounts, kiroAccounts, cursorAccounts, geminiAccounts, codebuddyAccounts, codebuddyCnAccounts, qoderAccounts, traeAccounts, workbuddyAccounts]);
 
   const dashboardAvailableTags = useMemo(() => {
     const tagSet = new Set<string>();
     const allAccounts = [
       ...agAccounts,
       ...codexAccounts,
+      ...claudeAccounts,
       ...zedAccounts,
       ...githubCopilotAccounts,
       ...windsurfAccounts,
@@ -531,15 +626,21 @@ export function DashboardPage({
       }
     }
     return Array.from(tagSet).sort((a, b) => a.localeCompare(b));
-  }, [agAccounts, codexAccounts, zedAccounts, githubCopilotAccounts, windsurfAccounts, kiroAccounts, cursorAccounts, geminiAccounts, codebuddyAccounts, codebuddyCnAccounts, qoderAccounts, traeAccounts, workbuddyAccounts]);
+  }, [agAccounts, codexAccounts, claudeAccounts, zedAccounts, githubCopilotAccounts, windsurfAccounts, kiroAccounts, cursorAccounts, geminiAccounts, codebuddyAccounts, codebuddyCnAccounts, qoderAccounts, traeAccounts, workbuddyAccounts]);
 
 
   // Refresh States
   const [refreshing, setRefreshing] = React.useState<Set<string>>(new Set());
   const [switching, setSwitching] = React.useState<Set<string>>(new Set());
+  const [codexApiUsageMap, setCodexApiUsageMap] = React.useState<Record<string, {
+    loading: boolean;
+    summary?: ModelProviderUsageSummary;
+    error?: string;
+  }>>({});
   const [cardRefreshing, setCardRefreshing] = React.useState<{
     ag: boolean;
     codex: boolean;
+    claude: boolean;
     zed: boolean;
     githubCopilot: boolean;
     windsurf: boolean;
@@ -554,6 +655,7 @@ export function DashboardPage({
   }>({
     ag: false,
     codex: false,
+    claude: false,
     zed: false,
     githubCopilot: false,
     windsurf: false,
@@ -600,6 +702,22 @@ export function DashboardPage({
     }
   };
 
+  const handleRefreshClaude = async (accountId: string) => {
+    if (refreshing.has(accountId)) return;
+    setRefreshing((prev) => new Set(prev).add(accountId));
+    try {
+      await useClaudeAccountStore.getState().refreshToken(accountId);
+    } catch (error) {
+      console.error('Refresh failed:', error);
+    } finally {
+      setRefreshing((prev) => {
+        const next = new Set(prev);
+        next.delete(accountId);
+        return next;
+      });
+    }
+  };
+
   const handleRefreshZed = async (accountId: string) => {
     if (refreshing.has(accountId)) return;
     setRefreshing((prev) => new Set(prev).add(accountId));
@@ -615,6 +733,43 @@ export function DashboardPage({
       });
     }
   };
+
+  const refreshCodexApiUsage = useCallback(async (account: CodexAccount) => {
+    if (isCodexChatCompletionsApiKeyAccount(account)) return;
+    const apiKey = (account.openai_api_key || '').trim();
+    const baseUrl = (account.api_base_url || '').trim();
+    if (!apiKey || !baseUrl) return;
+    setCodexApiUsageMap((prev) => ({
+      ...prev,
+      [account.id]: {
+        ...prev[account.id],
+        loading: true,
+        error: undefined,
+      },
+    }));
+    try {
+      const summary = await queryModelProviderUsage({
+        baseUrl,
+        apiKey,
+      });
+      setCodexApiUsageMap((prev) => ({
+        ...prev,
+        [account.id]: {
+          loading: false,
+          summary,
+        },
+      }));
+    } catch (error) {
+      setCodexApiUsageMap((prev) => ({
+        ...prev,
+        [account.id]: {
+          loading: false,
+          summary: prev[account.id]?.summary,
+          error: String(error).replace(/^Error:\s*/, ''),
+        },
+      }));
+    }
+  }, []);
 
   const handleRefreshGitHubCopilot = async (accountId: string) => {
     if (refreshing.has(accountId)) return;
@@ -711,18 +866,18 @@ export function DashboardPage({
     }
   };
 
-  const handleRefreshCodexCard = async () => {
-    if (cardRefreshing.codex) return;
-    setCardRefreshing(prev => ({ ...prev, codex: true }));
-    const idsToRefresh = Array.from(new Set([codexCurrentAccount?.id, codexRecommended?.id].filter(Boolean))) as string[];
+  const handleRefreshClaudeCard = async () => {
+    if (cardRefreshing.claude) return;
+    setCardRefreshing((prev) => ({ ...prev, claude: true }));
+    const idsToRefresh = Array.from(new Set([claudeCurrent?.id, claudeRecommended?.id].filter(Boolean))) as string[];
     try {
       for (const id of idsToRefresh) {
-        await useCodexAccountStore.getState().refreshQuota(id);
+        await useClaudeAccountStore.getState().refreshToken(id);
       }
     } catch (error) {
       console.error('Card refresh failed:', error);
     } finally {
-      setCardRefreshing(prev => ({ ...prev, codex: false }));
+      setCardRefreshing((prev) => ({ ...prev, claude: false }));
     }
   };
 
@@ -821,6 +976,22 @@ export function DashboardPage({
     setSwitching((prev) => new Set(prev).add(accountId));
     try {
       await switchGitHubCopilotAccount(accountId);
+    } catch (error) {
+      console.error('Switch failed:', error);
+    } finally {
+      setSwitching((prev) => {
+        const next = new Set(prev);
+        next.delete(accountId);
+        return next;
+      });
+    }
+  };
+
+  const handleSwitchClaude = async (accountId: string) => {
+    if (switching.has(accountId)) return;
+    setSwitching((prev) => new Set(prev).add(accountId));
+    try {
+      await switchClaudeAccount(accountId);
     } catch (error) {
       console.error('Switch failed:', error);
     } finally {
@@ -1182,6 +1353,7 @@ export function DashboardPage({
 
     const others = codexAccounts.filter((a) => {
       if (a.id === currentId) return false;
+      if (isCodexChatCompletionsApiKeyAccount(a)) return false;
       if (!a.quota) return false;
       return true;
     });
@@ -1195,6 +1367,63 @@ export function DashboardPage({
       return getScore(curr) > getScore(prev) ? curr : prev;
     });
   }, [codexAccounts, codexCurrentAccount?.id]);
+
+  const codexCardRefreshTargets = useMemo(() => {
+    const deduped = new Map<string, CodexAccount>();
+    [codexCurrentAccount, codexRecommended].forEach((account) => {
+      if (!account || isCodexChatCompletionsApiKeyAccount(account)) return;
+      deduped.set(account.id, account);
+    });
+    return Array.from(deduped.values());
+  }, [codexCurrentAccount, codexRecommended]);
+
+  const canRefreshCodexCard = codexCardRefreshTargets.length > 0;
+
+  const handleRefreshCodexCard = async () => {
+    if (cardRefreshing.codex || !canRefreshCodexCard) return;
+    setCardRefreshing(prev => ({ ...prev, codex: true }));
+    try {
+      for (const account of codexCardRefreshTargets) {
+        if (isCodexApiKeyAccount(account) && !isCodexNewApiAccount(account)) {
+          await refreshCodexApiUsage(account);
+        } else {
+          await useCodexAccountStore.getState().refreshQuota(account.id);
+        }
+      }
+    } catch (error) {
+      console.error('Card refresh failed:', error);
+    } finally {
+      setCardRefreshing(prev => ({ ...prev, codex: false }));
+    }
+  };
+
+  const claudeRecommended = useMemo(() => {
+    if (claudeAccounts.length <= 1) return null;
+    const currentId = claudeCurrent?.id;
+    const others = claudeAccounts.filter((account) => account.id !== currentId);
+    if (others.length === 0) return null;
+
+    const getScore = (account: ClaudeAccount) => {
+      const usedValues = [
+        account.quota?.five_hour_percentage,
+        account.quota?.seven_day_percentage,
+      ].filter((value): value is number => typeof value === 'number' && Number.isFinite(value));
+      const remaining = usedValues.length > 0 ? 100 - Math.max(...usedValues) : -1;
+      return {
+        remaining,
+        freshness: account.last_used || account.created_at || 0,
+      };
+    };
+
+    return others.reduce((best, candidate) => {
+      const bestScore = getScore(best);
+      const candidateScore = getScore(candidate);
+      if (candidateScore.remaining !== bestScore.remaining) {
+        return candidateScore.remaining > bestScore.remaining ? candidate : best;
+      }
+      return candidateScore.freshness > bestScore.freshness ? candidate : best;
+    });
+  }, [claudeAccounts, claudeCurrent?.id]);
 
   const githubCopilotCurrent = useMemo(
     () => resolveDashboardCurrentAccount(githubCopilotAccounts, githubCopilotCurrentId),
@@ -1402,7 +1631,12 @@ export function DashboardPage({
 
     const getScore = (account: GeminiAccount) => {
       const tiers = getGeminiTierQuotaSummary(account);
-      const remainingValues = [tiers.pro.remainingPercent, tiers.flash.remainingPercent].filter(
+      const remainingValues = [
+        tiers.gemini5h.remainingPercent,
+        tiers.geminiWeekly.remainingPercent,
+        tiers.claude5h.remainingPercent,
+        tiers.claudeWeekly.remainingPercent,
+      ].filter(
         (value): value is number => typeof value === 'number' && Number.isFinite(value),
       );
       const totalUsed = remainingValues.length > 0
@@ -1809,6 +2043,112 @@ export function DashboardPage({
   const renderCodexAccountContent = (account: CodexAccount | null) => {
     if (!account) return <div className="empty-slot">{t('dashboard.noAccount', '无账号')}</div>;
 
+    if (isCodexApiKeyAccount(account) && !isCodexNewApiAccount(account)) {
+      const isChatCompletionsApiKey =
+        isCodexChatCompletionsApiKeyAccount(account);
+      const usageState = codexApiUsageMap[account.id];
+      const usageSummary = usageState?.summary;
+      const usageMode = resolveDashboardCodexApiUsageMode(usageSummary);
+      const newApiGranted = Number(
+        usageSummary?.details?.find((item) => item.key === 'totalGranted')?.value ?? NaN,
+      );
+      const newApiAvailable = Number(
+        usageSummary?.details?.find((item) => item.key === 'totalAvailable')?.value ?? NaN,
+      );
+      const newApiExpiresAt = Number(
+        usageSummary?.details?.find((item) => item.key === 'expiresAt')?.value ?? NaN,
+      );
+      const isUnlimited = usageSummary?.quotaUnlimited === true;
+      const progressPercent =
+        usageMode === 'new_api' && Number.isFinite(newApiGranted) && Number.isFinite(newApiAvailable) && newApiGranted > 0
+          ? Math.max(0, Math.min(100, Math.round(((newApiGranted - newApiAvailable) / newApiGranted) * 100)))
+          : isUnlimited
+            ? 100
+            : 0;
+
+      return (
+        <div className={`account-mini-card codex-api-mini-card ${account.api_provider_id ? "sponsor-api-account" : ""}`}>
+          <div className="account-mini-header">
+            <div className="account-info-row">
+              <span className="account-email" title={account.account_name || account.email || account.id}>
+                {account.account_name || account.email || account.id}
+              </span>
+              <span className="tier-badge sponsor-api">
+                {(account.api_provider_name || 'API_KEY').toUpperCase()}
+              </span>
+            </div>
+          </div>
+
+          {!isChatCompletionsApiKey && (
+            <div className="account-mini-quotas codex-api-mini-quotas">
+              {usageMode === 'new_api' ? (
+                <div className="mini-quota-row-stacked">
+                  <div className="mini-quota-header">
+                    <span className="model-name">{t('codex.cockpitApi.balance', '额度')}</span>
+                    <span className="model-pct high">
+                      {isUnlimited
+                        ? t('codex.newApi.quota.unlimited', '不限量')
+                        : Number.isFinite(newApiAvailable) && Number.isFinite(newApiGranted)
+                          ? `$${newApiAvailable.toFixed(2)} / $${newApiGranted.toFixed(2)}`
+                          : '-'}
+                    </span>
+                  </div>
+                  <div className="mini-progress-track">
+                    <div
+                      className="mini-progress-bar high"
+                      style={{ width: `${progressPercent}%` }}
+                    />
+                  </div>
+                  <div className="mini-reset-time">
+                    {Number.isFinite(newApiExpiresAt) && newApiExpiresAt > 0
+                      ? `${t('codex.modelProviders.usage.fields.expiresAt', '过期时间')} ${new Date(newApiExpiresAt * 1000).toLocaleDateString()}`
+                      : t('dashboard.noData', '暂无数据')}
+                  </div>
+                </div>
+              ) : usageMode === 'sub2api' ? (
+                <div className="codex-api-mini-stats">
+                  <div className="codex-api-mini-stat">
+                    <span>{t('codex.modelProviders.usage.accountBalance', '账户余额')}</span>
+                    <strong>{typeof usageSummary?.balance === 'number' || typeof usageSummary?.remaining === 'number' ? `$${(usageSummary?.remaining ?? usageSummary?.balance ?? 0).toFixed(2)}` : '-'}</strong>
+                  </div>
+                  <div className="codex-api-mini-stat">
+                    <span>{t('codex.modelProviders.usage.fields.todayRequests', '今日请求')}</span>
+                    <strong>{usageSummary?.todayRequests ?? '-'}</strong>
+                  </div>
+                  <div className="codex-api-mini-stat">
+                    <span>{t('codex.modelProviders.usage.fields.todayTokens', '今日 Token')}</span>
+                    <strong>{typeof usageSummary?.todayTotalTokens === 'number' ? usageSummary.todayTotalTokens.toLocaleString('en-US') : '-'}</strong>
+                  </div>
+                </div>
+              ) : (
+                <span className="no-data-text">{t('dashboard.noData', '暂无数据')}</span>
+              )}
+            </div>
+          )}
+
+          <div className="account-mini-actions icon-only-row">
+            {!isChatCompletionsApiKey && (
+              <button
+                className="mini-icon-btn"
+                onClick={() => void refreshCodexApiUsage(account)}
+                title={t('common.refresh', '刷新')}
+                disabled={refreshing.has(account.id) || usageState?.loading}
+              >
+                <RotateCw size={14} className={refreshing.has(account.id) || usageState?.loading ? 'loading-spinner' : ''} />
+              </button>
+            )}
+            <button
+              className="mini-icon-btn"
+              onClick={() => switchCodexAccount(account.id)}
+              title={t('dashboard.switch', '切换')}
+            >
+              <Play size={14} />
+            </button>
+          </div>
+        </div>
+      );
+    }
+
     const presentation = buildCodexAccountPresentation(account, t);
     return renderUnifiedAccountCard({
       presentation,
@@ -1818,6 +2158,37 @@ export function DashboardPage({
       isSwitching: false,
       maxMetrics: 4,
       onEditTags: () => setTagModalState({ accountId: account.id, platform: 'codex', tags: account.tags || [] }),
+    });
+  };
+
+  React.useEffect(() => {
+    const targetAccounts = [codexCurrentAccount, codexRecommended].filter(
+      (account): account is CodexAccount =>
+        Boolean(account) &&
+        isCodexApiKeyAccount(account!) &&
+        !isCodexNewApiAccount(account!) &&
+        !isCodexChatCompletionsApiKeyAccount(account!),
+    );
+    targetAccounts.forEach((account) => {
+      if (codexApiUsageMap[account.id]?.loading || codexApiUsageMap[account.id]?.summary) {
+        return;
+      }
+      void refreshCodexApiUsage(account);
+    });
+  }, [codexApiUsageMap, codexCurrentAccount, codexRecommended, refreshCodexApiUsage]);
+
+  const renderClaudeAccountContent = (account: ClaudeAccount | null) => {
+    if (!account) return <div className="empty-slot">{t('dashboard.noAccount', '无账号')}</div>;
+
+    const presentation = buildClaudeAccountPresentation(account, t);
+    return renderUnifiedAccountCard({
+      presentation,
+      onRefresh: () => handleRefreshClaude(account.id),
+      onSwitch: () => handleSwitchClaude(account.id),
+      isRefreshing: refreshing.has(account.id),
+      isSwitching: switching.has(account.id),
+      maxMetrics: 3,
+      onEditTags: () => setTagModalState({ accountId: account.id, platform: 'claude', tags: account.tags || [] }),
     });
   };
 
@@ -2023,6 +2394,8 @@ export function DashboardPage({
     antigravity: stats.antigravity,
     antigravity_ide: stats.antigravity,
     codex: stats.codex,
+    claude: stats.claude,
+    claude_cli: stats.claude,
     zed: stats.zed,
     'github-copilot': stats.githubCopilot,
     windsurf: stats.windsurf,
@@ -2039,10 +2412,17 @@ export function DashboardPage({
   const entryCounts = useMemo(() => {
     const result = new Map<PlatformLayoutEntryId, number>();
     for (const entryId of visibleEntryOrder) {
-      const platformIds = resolveEntryPlatformIds(entryId, platformGroups);
+      const platformIds = resolveEntryPlatformIds(entryId, platformGroups).filter(
+        (platformId) => !remoteHiddenPlatformSet.has(platformId),
+      );
       const countedPlatformIds = new Set<PlatformId>();
       const count = platformIds.reduce((sum, platformId) => {
-        const countPlatformId = platformId === 'antigravity_ide' ? 'antigravity' : platformId;
+        const countPlatformId =
+          platformId === 'antigravity_ide'
+            ? 'antigravity'
+            : platformId === 'claude_cli'
+              ? 'claude'
+              : platformId;
         if (countedPlatformIds.has(countPlatformId)) {
           return sum;
         }
@@ -2052,12 +2432,29 @@ export function DashboardPage({
       result.set(entryId, count);
     }
     return result;
-  }, [visibleEntryOrder, platformGroups, platformCounts]);
+  }, [visibleEntryOrder, platformGroups, platformCounts, remoteHiddenPlatformSet]);
 
-  const visibleCardPlatformIds = useMemo(() => {
+  const visibleDashboardCardIds = useMemo(() => {
     const seen = new Set<PlatformId>();
     const result: PlatformId[] = [];
-    for (const platformId of visiblePlatformOrder) {
+    for (const entryId of visibleDashboardEntryOrder) {
+      if (entryId === API_RELAY_LAYOUT_ENTRY_ID) {
+        continue;
+      }
+      const entryPlatformIds = resolveEntryPlatformIds(entryId, platformGroups).filter(
+        (candidate) => !remoteHiddenPlatformSet.has(candidate),
+      );
+      if (entryPlatformIds.length === 0) {
+        continue;
+      }
+      const defaultPlatformId = resolveEntryDefaultPlatformId(entryId, platformGroups);
+      const platformId =
+        defaultPlatformId && entryPlatformIds.includes(defaultPlatformId)
+          ? defaultPlatformId
+          : entryPlatformIds[0];
+      if (!platformId) {
+        continue;
+      }
       const normalizedPlatformId = normalizeDashboardCardPlatformId(platformId);
       if (seen.has(normalizedPlatformId)) {
         continue;
@@ -2066,15 +2463,15 @@ export function DashboardPage({
       result.push(normalizedPlatformId);
     }
     return result;
-  }, [visiblePlatformOrder]);
-  const isSinglePlatformMode = visibleCardPlatformIds.length === 1;
+  }, [platformGroups, remoteHiddenPlatformSet, visibleDashboardEntryOrder]);
+  const isSinglePlatformMode = visibleDashboardCardIds.length === 1;
   const cardRows = useMemo(() => {
     const rows: PlatformId[][] = [];
-    for (let i = 0; i < visibleCardPlatformIds.length; i += 2) {
-      rows.push(visibleCardPlatformIds.slice(i, i + 2));
+    for (let i = 0; i < visibleDashboardCardIds.length; i += 2) {
+      rows.push(visibleDashboardCardIds.slice(i, i + 2));
     }
     return rows;
-  }, [visibleCardPlatformIds]);
+  }, [visibleDashboardCardIds]);
 
   const handleHidePlatformCard = useCallback((platformId: PlatformId) => {
     const entryId = orderedEntryIds.find(
@@ -2157,7 +2554,7 @@ export function DashboardPage({
               <button
                 className="header-action-btn"
                 onClick={handleRefreshCodexCard}
-                disabled={cardRefreshing.codex}
+                disabled={cardRefreshing.codex || !canRefreshCodexCard}
                 title={t('common.refresh', '刷新')}
               >
                 <RotateCw size={14} className={cardRefreshing.codex ? 'loading-spinner' : ''} />
@@ -2186,6 +2583,53 @@ export function DashboardPage({
           </div>
 
           <button className="card-footer-action" onClick={() => onNavigate('codex')}>
+            {t('dashboard.viewAllAccounts', '查看所有账号')}
+          </button>
+        </div>
+      );
+    }
+
+    if (platformId === 'claude') {
+      return (
+        <div className="main-card codex-card" key={platformId}>
+          <div className="main-card-header">
+            <div className="header-title">
+              <ClaudeIcon size={18} />
+              <h3>{getPlatformLabel(platformId, t)}</h3>
+            </div>
+            <div className="header-action-group">
+              <button
+                className="header-action-btn"
+                onClick={handleRefreshClaudeCard}
+                disabled={cardRefreshing.claude}
+                title={t('common.refresh', '刷新')}
+              >
+                <RotateCw size={14} className={cardRefreshing.claude ? 'loading-spinner' : ''} />
+                <span>{t('common.refresh', '刷新')}</span>
+              </button>
+              {renderHideCardButton(platformId)}
+            </div>
+          </div>
+
+          <div className="split-content">
+            <div className="split-half current-half">
+              <span className="half-label"><CheckCircle2 size={12} /> {t('dashboard.current', '当前账户')}</span>
+              {renderClaudeAccountContent(claudeCurrent)}
+            </div>
+
+            <div className="split-divider"></div>
+
+            <div className="split-half recommend-half">
+              <span className="half-label"><Sparkles size={12} /> {t('dashboard.recommended', '推荐账号')}</span>
+              {claudeRecommended ? (
+                renderClaudeAccountContent(claudeRecommended)
+              ) : (
+                <div className="empty-slot-text">{t('dashboard.noRecommendation', '暂无更好推荐')}</div>
+              )}
+            </div>
+          </div>
+
+          <button className="card-footer-action" onClick={() => onNavigate('claude')}>
             {t('dashboard.viewAllAccounts', '查看所有账号')}
           </button>
         </div>
@@ -2781,15 +3225,44 @@ export function DashboardPage({
           </div>
         </div>
 
-        {visibleEntryOrder.map((entryId) => {
-          const platformId = resolveEntryDefaultPlatformId(entryId, platformGroups);
+        {visibleDashboardEntryOrder.map((entryId) => {
+          if (entryId === API_RELAY_LAYOUT_ENTRY_ID) {
+            return (
+              <button
+                className="stat-card stat-card-button"
+                key="api-relay"
+                onClick={() => onNavigate('api-relay')}
+                title={t('dashboard.apiRelay.openLocalConfig', '打开本地配置页')}
+              >
+                <div className="stat-icon-bg info">
+                  <img src={apiKeyFunIcon} alt="" className="dashboard-api-relay-stat-icon" />
+                </div>
+                <div className="stat-info">
+                  <span className="stat-label">{t('nav.apiRelay', '中转站')}</span>
+                  <span className="stat-value">1</span>
+                </div>
+              </button>
+            );
+          }
+
+          const entryPlatformIds = resolveEntryPlatformIds(entryId, platformGroups).filter(
+            (candidate) => !remoteHiddenPlatformSet.has(candidate),
+          );
+          if (entryPlatformIds.length === 0) {
+            return null;
+          }
+          const defaultPlatformId = resolveEntryDefaultPlatformId(entryId, platformGroups);
+          const platformId =
+            defaultPlatformId && entryPlatformIds.includes(defaultPlatformId)
+              ? defaultPlatformId
+              : entryPlatformIds[0];
           if (!platformId) {
             return null;
           }
           const groupId = parseGroupEntryId(entryId);
           const group = groupId ? platformGroups.find((item) => item.id === groupId) : null;
           const groupChildLabels = group
-            ? group.platformIds.map((childPlatformId) =>
+            ? group.platformIds.filter((childPlatformId) => !remoteHiddenPlatformSet.has(childPlatformId)).map((childPlatformId) =>
               resolveGroupChildName(group, childPlatformId, getPlatformLabel(childPlatformId, t)),
             )
             : [];
@@ -2856,6 +3329,7 @@ export function DashboardPage({
             </button>
           );
         })}
+
       </div>
 
       {/* Main Comparison Section */}
@@ -2865,7 +3339,9 @@ export function DashboardPage({
             className={`cards-split-row${isSinglePlatformMode ? ' single-platform-row' : ''}`}
             key={`row-${rowIndex}`}
           >
-            {row.map((platformId) => renderPlatformCard(platformId))}
+            {row.map((cardId) => (
+              renderPlatformCard(cardId)
+            ))}
             {!isSinglePlatformMode && row.length < 2 && <div className="main-card main-card-placeholder" />}
           </div>
         ))}

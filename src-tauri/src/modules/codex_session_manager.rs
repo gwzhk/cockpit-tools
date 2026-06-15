@@ -5,7 +5,7 @@ use std::path::{Path, PathBuf};
 use std::sync::{LazyLock, Mutex};
 use std::time::SystemTime;
 
-use chrono::{DateTime, Utc};
+use chrono::{DateTime, TimeZone, Utc};
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value as JsonValue};
 
@@ -125,6 +125,11 @@ struct TrashedSessionEntry {
     entry_dir: PathBuf,
     manifest: TrashedSessionManifest,
     trashed_rollout_path: PathBuf,
+}
+
+#[derive(Debug, Clone, Copy, Default)]
+struct RestoreTrashedSessionOutcome {
+    metadata_rebuild_failed: bool,
 }
 
 #[derive(Debug, Clone)]
@@ -523,9 +528,13 @@ pub fn restore_sessions_from_trash_across_instances(
 
     let mut restored_session_ids = HashSet::new();
     let mut restored_instance_ids = HashSet::new();
+    let mut metadata_rebuild_failed_count = 0usize;
 
     for entry in &entries {
-        restore_trashed_session_entry(entry)?;
+        let outcome = restore_trashed_session_entry(entry)?;
+        if outcome.metadata_rebuild_failed {
+            metadata_rebuild_failed_count += 1;
+        }
         restored_session_ids.insert(entry.manifest.session_id.clone());
         restored_instance_ids.insert(entry.manifest.instance_id.clone());
     }
@@ -533,7 +542,7 @@ pub fn restore_sessions_from_trash_across_instances(
     let restored_running_instance = restored_instance_ids
         .iter()
         .any(|instance_id| running_instance_ids.contains(instance_id));
-    let message = if restored_running_instance {
+    let mut message = if restored_running_instance {
         format!(
             "已恢复 {} 条会话，并已触发官方 Codex 重建会话索引；运行中的实例可能需要刷新或重启后显示",
             restored_session_ids.len()
@@ -544,6 +553,12 @@ pub fn restore_sessions_from_trash_across_instances(
             restored_session_ids.len()
         )
     };
+    if metadata_rebuild_failed_count > 0 {
+        message.push_str(&format!(
+            "；{} 个实例的官方侧边栏索引重建未完成，重启 Codex 后会重新加载",
+            metadata_rebuild_failed_count
+        ));
+    }
 
     Ok(CodexSessionRestoreSummary {
         requested_session_count: requested_ids.len(),
@@ -584,11 +599,7 @@ fn is_instance_running(
     instance: &CodexSyncInstance,
     process_entries: &[(u32, Option<String>)],
 ) -> bool {
-    let codex_home = if instance.id == DEFAULT_INSTANCE_ID {
-        None
-    } else {
-        instance.data_dir.to_str()
-    };
+    let codex_home = instance.data_dir.to_str();
     modules::process::resolve_codex_pid_from_entries(instance.last_pid, codex_home, process_entries)
         .is_some()
 }
@@ -1093,7 +1104,16 @@ fn load_trash_entries() -> Result<Vec<TrashedSessionEntry>, String> {
     Ok(entries)
 }
 
-fn restore_trashed_session_entry(entry: &TrashedSessionEntry) -> Result<(), String> {
+fn restore_trashed_session_entry(
+    entry: &TrashedSessionEntry,
+) -> Result<RestoreTrashedSessionOutcome, String> {
+    restore_trashed_session_entry_with_metadata_rebuild(entry, true)
+}
+
+fn restore_trashed_session_entry_with_metadata_rebuild(
+    entry: &TrashedSessionEntry,
+    rebuild_metadata: bool,
+) -> Result<RestoreTrashedSessionOutcome, String> {
     if !entry.trashed_rollout_path.exists() {
         return Err(format!(
             "废纸篓中的会话文件不存在，无法恢复 ({}): {}",
@@ -1103,64 +1123,93 @@ fn restore_trashed_session_entry(entry: &TrashedSessionEntry) -> Result<(), Stri
     }
 
     let session_id = entry.manifest.session_id.clone();
+    if let Some(trashed_session_id) = rollout_session_id(&entry.trashed_rollout_path)? {
+        if trashed_session_id != session_id {
+            return Err(format!(
+                "废纸篓中的会话文件与清单不一致，无法恢复 (清单: {}, 文件: {}): {}",
+                session_id,
+                trashed_session_id,
+                entry.trashed_rollout_path.display()
+            ));
+        }
+    }
+
     let target_rollout_path = entry.manifest.original_rollout_path.clone();
-    if target_rollout_path.exists() {
-        return Err(format!(
-            "目标实例中已存在同名会话文件，无法恢复 ({}): {}",
-            session_id,
-            target_rollout_path.display()
-        ));
-    }
-
     let original_session_index_content = read_session_index_content(&entry.manifest.instance_root)?;
-    if session_index_contains_id(&original_session_index_content, &session_id)? {
-        return Err(format!(
-            "目标实例的 session_index.jsonl 中已存在该会话，无法恢复 ({})",
-            session_id
-        ));
-    }
+    let target_existed_before_restore = target_rollout_path.exists();
 
-    if let Some(parent) = target_rollout_path.parent() {
-        fs::create_dir_all(parent)
-            .map_err(|error| format!("创建会话恢复目录失败 ({}): {}", parent.display(), error))?;
+    if target_existed_before_restore {
+        match rollout_session_id(&target_rollout_path)? {
+            Some(existing_session_id) if existing_session_id == session_id => {}
+            Some(existing_session_id) => {
+                return Err(format!(
+                    "目标位置已存在不同会话文件，为避免覆盖，无法恢复 (待恢复: {}, 已存在: {}): {}",
+                    session_id,
+                    existing_session_id,
+                    target_rollout_path.display()
+                ));
+            }
+            None => {
+                return Err(format!(
+                    "目标位置已存在无法确认会话 ID 的文件，为避免覆盖，无法恢复 ({}): {}",
+                    session_id,
+                    target_rollout_path.display()
+                ));
+            }
+        }
+    } else {
+        if let Some(parent) = target_rollout_path.parent() {
+            fs::create_dir_all(parent).map_err(|error| {
+                format!("创建会话恢复目录失败 ({}): {}", parent.display(), error)
+            })?;
+        }
+        fs::copy(&entry.trashed_rollout_path, &target_rollout_path).map_err(|error| {
+            format!(
+                "恢复会话文件失败 ({} -> {}): {}",
+                entry.trashed_rollout_path.display(),
+                target_rollout_path.display(),
+                error
+            )
+        })?;
+        modules::codex_session_file_time::restore_modified_time(
+            &target_rollout_path,
+            modules::codex_session_file_time::read_modified_time(&entry.trashed_rollout_path),
+        )?;
     }
-    fs::copy(&entry.trashed_rollout_path, &target_rollout_path).map_err(|error| {
-        format!(
-            "恢复会话文件失败 ({} -> {}): {}",
-            entry.trashed_rollout_path.display(),
-            target_rollout_path.display(),
-            error
-        )
-    })?;
-    modules::codex_session_file_time::restore_modified_time(
-        &target_rollout_path,
-        modules::codex_session_file_time::read_modified_time(&entry.trashed_rollout_path),
-    )?;
 
     let restore_result = (|| {
-        write_session_index_with_entry(
+        let session_index_entry = build_restored_session_index_entry(entry, &target_rollout_path);
+        upsert_session_index_with_entry(
             &entry.manifest.instance_root,
             &original_session_index_content,
             &session_id,
-            &entry.manifest.session_index_entry,
+            &session_index_entry,
         )?;
-        modules::codex_official_app_server::rebuild_thread_metadata(&entry.manifest.instance_root)
-            .map_err(|error| {
-                format!(
-                    "会话文件已恢复，但官方 Codex 重建会话索引失败 ({}): {}",
-                    entry.manifest.instance_name, error
-                )
-            })?;
         Ok::<(), String>(())
     })();
 
     if let Err(error) = restore_result {
-        let _ = fs::remove_file(&target_rollout_path);
+        if !target_existed_before_restore {
+            let _ = fs::remove_file(&target_rollout_path);
+        }
         let _ = restore_session_index_content(
             &entry.manifest.instance_root,
             original_session_index_content.as_deref(),
         );
         return Err(error);
+    }
+
+    let mut metadata_rebuild_failed = false;
+    if rebuild_metadata {
+        if let Err(error) = modules::codex_official_app_server::rebuild_thread_metadata(
+            &entry.manifest.instance_root,
+        ) {
+            metadata_rebuild_failed = true;
+            modules::logger::log_warn(&format!(
+                "会话已恢复，但官方 Codex 重建会话索引失败 ({}): {}",
+                entry.manifest.instance_name, error
+            ));
+        }
     }
 
     if let Err(error) = fs::remove_dir_all(&entry.entry_dir) {
@@ -1173,7 +1222,9 @@ fn restore_trashed_session_entry(entry: &TrashedSessionEntry) -> Result<(), Stri
         cleanup_empty_trash_ancestors(&entry.entry_dir);
     }
 
-    Ok(())
+    Ok(RestoreTrashedSessionOutcome {
+        metadata_rebuild_failed,
+    })
 }
 
 fn read_session_index_content(root_dir: &Path) -> Result<Option<String>, String> {
@@ -1191,26 +1242,64 @@ fn read_session_index_content(root_dir: &Path) -> Result<Option<String>, String>
     Ok(Some(content))
 }
 
-fn session_index_contains_id(content: &Option<String>, session_id: &str) -> Result<bool, String> {
-    let Some(content) = content.as_deref() else {
-        return Ok(false);
-    };
-
-    for line in content.lines() {
-        let trimmed = line.trim();
-        if trimmed.is_empty() {
-            continue;
-        }
-        let parsed = serde_json::from_str::<JsonValue>(trimmed)
-            .map_err(|error| format!("解析 session_index.jsonl 条目失败: {}", error))?;
-        if parsed.get("id").and_then(JsonValue::as_str) == Some(session_id) {
-            return Ok(true);
-        }
-    }
-    Ok(false)
+fn rollout_session_id(path: &Path) -> Result<Option<String>, String> {
+    Ok(read_rollout_session_meta(path)?.and_then(|meta| session_meta_id(&meta)))
 }
 
-fn write_session_index_with_entry(
+fn format_session_index_updated_at(seconds: i64) -> String {
+    Utc.timestamp_opt(seconds, 0)
+        .single()
+        .unwrap_or_else(Utc::now)
+        .to_rfc3339_opts(chrono::SecondsFormat::Micros, true)
+}
+
+fn build_restored_session_index_entry(
+    entry: &TrashedSessionEntry,
+    rollout_path: &Path,
+) -> JsonValue {
+    let mut restored = entry.manifest.session_index_entry.clone();
+    if !restored.is_object() {
+        restored = json!({});
+    }
+    let Some(object) = restored.as_object_mut() else {
+        return json!({
+            "id": entry.manifest.session_id.clone(),
+            "thread_name": entry.manifest.title.clone(),
+        });
+    };
+    object.insert(
+        "id".to_string(),
+        JsonValue::String(entry.manifest.session_id.clone()),
+    );
+    if !entry.manifest.title.trim().is_empty() {
+        object
+            .entry("thread_name".to_string())
+            .or_insert_with(|| JsonValue::String(entry.manifest.title.clone()));
+    }
+    if let Some(updated_at) = rollout_file_activity_seconds(rollout_path)
+        .or_else(|| rollout_file_modified_seconds(rollout_path))
+    {
+        object.insert(
+            "updated_at".to_string(),
+            JsonValue::String(format_session_index_updated_at(updated_at)),
+        );
+    }
+    restored
+}
+
+fn merge_session_index_entry(existing: JsonValue, restored: &JsonValue) -> JsonValue {
+    let (JsonValue::Object(mut existing_object), JsonValue::Object(restored_object)) =
+        (existing, restored)
+    else {
+        return restored.clone();
+    };
+    for (key, value) in restored_object {
+        existing_object.insert(key.clone(), value.clone());
+    }
+    JsonValue::Object(existing_object)
+}
+
+fn upsert_session_index_with_entry(
     root_dir: &Path,
     original_content: &Option<String>,
     session_id: &str,
@@ -1219,7 +1308,7 @@ fn write_session_index_with_entry(
     let path = root_dir.join(SESSION_INDEX_FILE);
     let serialized_entry = serde_json::to_string(entry)
         .map_err(|error| format!("序列化 session_index 条目失败 ({}): {}", session_id, error))?;
-    let mut lines = original_content
+    let lines = original_content
         .as_deref()
         .unwrap_or_default()
         .lines()
@@ -1227,11 +1316,35 @@ fn write_session_index_with_entry(
         .filter(|line| !line.is_empty())
         .map(ToString::to_string)
         .collect::<Vec<_>>();
-    lines.push(serialized_entry);
-    let next_content = if lines.is_empty() {
+    let mut next_lines = Vec::with_capacity(lines.len() + 1);
+    let mut replaced = false;
+    for line in lines {
+        let parsed = serde_json::from_str::<JsonValue>(&line);
+        let Ok(parsed) = parsed else {
+            next_lines.push(line);
+            continue;
+        };
+        let current_id = parsed.get("id").and_then(JsonValue::as_str);
+        if current_id != Some(session_id) {
+            next_lines.push(line);
+            continue;
+        }
+        if replaced {
+            continue;
+        }
+        let merged = merge_session_index_entry(parsed, entry);
+        next_lines.push(serde_json::to_string(&merged).map_err(|error| {
+            format!("序列化 session_index 条目失败 ({}): {}", session_id, error)
+        })?);
+        replaced = true;
+    }
+    if !replaced {
+        next_lines.push(serialized_entry);
+    }
+    let next_content = if next_lines.is_empty() {
         String::new()
     } else {
-        format!("{}\n", lines.join("\n"))
+        format!("{}\n", next_lines.join("\n"))
     };
     modules::atomic_write::write_string_atomic(&path, &next_content).map_err(|error| {
         format!(
@@ -1288,5 +1401,161 @@ fn cleanup_empty_trash_ancestors(entry_dir: &Path) {
             break;
         }
         current = dir.parent();
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    fn make_temp_dir(prefix: &str) -> PathBuf {
+        let unique = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .expect("system time should be after unix epoch")
+            .as_nanos();
+        let base_dir =
+            std::env::temp_dir().join(format!("{}-{}-{}", prefix, std::process::id(), unique));
+        if base_dir.exists() {
+            fs::remove_dir_all(&base_dir).expect("cleanup old temp dir");
+        }
+        fs::create_dir_all(&base_dir).expect("create temp dir");
+        base_dir
+    }
+
+    fn write_rollout(path: &Path, session_id: &str, marker: &str) {
+        if let Some(parent) = path.parent() {
+            fs::create_dir_all(parent).expect("create rollout parent");
+        }
+        fs::write(
+            path,
+            format!(
+                "{{\"type\":\"session_meta\",\"payload\":{{\"id\":\"{}\",\"cwd\":\"/tmp/project\",\"model_provider\":\"relay\"}}}}\n{{\"type\":\"event\",\"timestamp\":\"2026-06-02T01:02:03Z\",\"payload\":{{\"marker\":\"{}\"}}}}\n",
+                session_id, marker
+            ),
+        )
+        .expect("write rollout");
+    }
+
+    fn make_trash_entry(
+        base_dir: &Path,
+        session_id: &str,
+        target_rollout_path: PathBuf,
+    ) -> TrashedSessionEntry {
+        let entry_dir = base_dir
+            .join(".Trash")
+            .join(SESSION_TRASH_ROOT_DIR)
+            .join("20260613-000000")
+            .join(format!("default--{}", session_id));
+        let relative_rollout_path =
+            PathBuf::from("sessions/2026/06/02").join(format!("rollout-{}.jsonl", session_id));
+        let trashed_rollout_path = entry_dir.join("files").join(&relative_rollout_path);
+        write_rollout(&trashed_rollout_path, session_id, "trashed");
+        TrashedSessionEntry {
+            entry_dir,
+            manifest: TrashedSessionManifest {
+                session_id: session_id.to_string(),
+                title: "Restored title".to_string(),
+                cwd: "/tmp/project".to_string(),
+                instance_id: DEFAULT_INSTANCE_ID.to_string(),
+                instance_name: DEFAULT_INSTANCE_NAME.to_string(),
+                instance_root: target_rollout_path
+                    .parent()
+                    .and_then(Path::parent)
+                    .and_then(Path::parent)
+                    .and_then(Path::parent)
+                    .and_then(Path::parent)
+                    .unwrap()
+                    .to_path_buf(),
+                original_rollout_path: target_rollout_path,
+                relative_rollout_path: relative_rollout_path.to_string_lossy().to_string(),
+                session_index_entry: json!({
+                    "id": session_id,
+                    "thread_name": "Restored title",
+                    "source": "trash",
+                }),
+                deleted_at: Some("2026-06-13T00:00:00Z".to_string()),
+            },
+            trashed_rollout_path,
+        }
+    }
+
+    #[test]
+    fn restore_allows_existing_same_rollout_and_upserts_index() {
+        let base_dir = make_temp_dir("codex-session-restore-idempotent-test");
+        let instance_root = base_dir.join("codex-home");
+        let session_id = "session-1";
+        let target_rollout_path = instance_root
+            .join("sessions")
+            .join("2026")
+            .join("06")
+            .join("02")
+            .join(format!("rollout-{}.jsonl", session_id));
+        write_rollout(&target_rollout_path, session_id, "existing");
+        let original_target_content =
+            fs::read_to_string(&target_rollout_path).expect("read target rollout");
+        fs::write(
+            instance_root.join(SESSION_INDEX_FILE),
+            format!(
+                "{{\"id\":\"{}\",\"thread_name\":\"Old title\",\"updated_at\":\"2024-01-01T00:00:00.000000Z\",\"pinned\":true}}\n",
+                session_id
+            ),
+        )
+        .expect("write session index");
+        let entry = make_trash_entry(&base_dir, session_id, target_rollout_path.clone());
+
+        let outcome = restore_trashed_session_entry_with_metadata_rebuild(&entry, false)
+            .expect("restore idempotently");
+
+        assert!(!outcome.metadata_rebuild_failed);
+        assert_eq!(
+            fs::read_to_string(&target_rollout_path).expect("read target rollout after restore"),
+            original_target_content
+        );
+        let index_map = read_session_index_map(&instance_root).expect("read index map");
+        let restored = index_map.get(session_id).expect("restored index entry");
+        assert_eq!(
+            restored.get("thread_name").and_then(JsonValue::as_str),
+            Some("Restored title")
+        );
+        assert_eq!(
+            restored.get("pinned").and_then(JsonValue::as_bool),
+            Some(true)
+        );
+        assert_eq!(
+            restored.get("source").and_then(JsonValue::as_str),
+            Some("trash")
+        );
+        assert_eq!(
+            parse_session_index_updated_at_seconds(restored),
+            Some(1_780_362_123)
+        );
+        assert!(!entry.entry_dir.exists());
+
+        fs::remove_dir_all(&base_dir).expect("cleanup temp dir");
+    }
+
+    #[test]
+    fn restore_rejects_existing_different_rollout() {
+        let base_dir = make_temp_dir("codex-session-restore-conflict-test");
+        let instance_root = base_dir.join("codex-home");
+        let session_id = "session-1";
+        let target_rollout_path = instance_root
+            .join("sessions")
+            .join("2026")
+            .join("06")
+            .join("02")
+            .join(format!("rollout-{}.jsonl", session_id));
+        write_rollout(&target_rollout_path, "other-session", "existing");
+        let entry = make_trash_entry(&base_dir, session_id, target_rollout_path.clone());
+
+        let error = restore_trashed_session_entry_with_metadata_rebuild(&entry, false)
+            .expect_err("different existing rollout should be rejected");
+
+        assert!(error.contains("不同会话文件"));
+        assert!(target_rollout_path.exists());
+        assert!(entry.entry_dir.exists());
+
+        fs::remove_dir_all(&base_dir).expect("cleanup temp dir");
     }
 }

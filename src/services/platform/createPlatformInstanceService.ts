@@ -10,6 +10,7 @@ import type { CodexAppSpeed } from "../../types/codex";
 type PlatformInstanceCommandPrefix =
   | ""
   | "codex"
+  | "claude"
   | "github_copilot"
   | "windsurf"
   | "kiro"
@@ -79,6 +80,7 @@ export function createPlatformInstanceService(
         workingDir: payload.workingDir ?? null,
         extraArgs: payload.extraArgs ?? "",
         bindAccountId: payload.bindAccountId ?? null,
+        launchMode: payload.launchMode ?? null,
         appSpeed: payload.appSpeed ?? "standard",
         copySourceInstanceId: payload.copySourceInstanceId,
         initMode: payload.initMode ?? "copy",
